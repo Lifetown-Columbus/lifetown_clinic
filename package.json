@@ -1,0 +1,23 @@
+{
+  "name": "lifetown-clinic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lifetown-Columbus/lifetown-clinic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lifetown-Columbus/lifetown-clinic/issues"
+  },
+  "homepage": "https://github.com/Lifetown-Columbus/lifetown-clinic#readme",
+  "dependencies": {
+    "electron": "^22.2.0"
+  }
+}
