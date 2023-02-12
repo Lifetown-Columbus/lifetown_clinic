@@ -4,9 +4,10 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "build": "npm run clean && tsc && npm run copy-files",
+    "build": "npm run format && npm run clean && tsc && npm run copy-files",
     "watch": "ts -w",
     "clean": "shx rm -rf dist/",
+    "format": "npx prettier --check .",
     "copy-files": "shx cp ./src/public/* ./dist/",
     "start": "npm run build && electron ./dist/main.js"
   },
