@@ -2,10 +2,13 @@
   "name": "lifetown-clinic",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && tsc && npm run copy-files",
+    "watch": "ts -w",
+    "clean": "shx rm -rf dist/",
+    "copy-files": "shx cp ./src/public/* ./dist/",
+    "start": "npm run build && electron ./dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +20,9 @@
     "url": "https://github.com/Lifetown-Columbus/lifetown-clinic/issues"
   },
   "homepage": "https://github.com/Lifetown-Columbus/lifetown-clinic#readme",
-  "dependencies": {
-    "electron": "^22.2.0"
+  "devDependencies": {
+    "electron": "^22.2.0",
+    "shx": "^0.3.4",
+    "typescript": "^4.9.5"
   }
 }
