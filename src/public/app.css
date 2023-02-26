@@ -1,5 +1,32 @@
 body {
-  background-color: rgb(213, 213, 243);
+  background-color: rgb(204, 220, 240);
+  font-family: sans-serif;
+  font-size: 1.5em;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.results > li {
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid gray;
+}
+
+.results .name{
+    flex: 2
+}
+
+.results .progress{
+    flex: 2
+}
+
+.results .school{
+    flex: 3
 }
 
 .container {
@@ -10,6 +37,9 @@ body {
     margin-top: 50px;
 }
 
+.search {
+    display: flex;
+}
 .search > input {
     line-height: 2;
 }
