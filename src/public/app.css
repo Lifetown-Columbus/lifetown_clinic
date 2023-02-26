@@ -1,3 +1,19 @@
 body {
-  background-color: blue;
+  background-color: rgb(213, 213, 243);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.search > input {
+    line-height: 2;
+}
+
+input {
+    width: 100%;
 }
