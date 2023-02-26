@@ -2,13 +2,10 @@ export {};
 
 declare global {
   interface Window {
-    versions: Versions;
+    api: Api;
   }
 }
 
-interface Versions {
-  node: () => string;
-  chrome: () => string;
-  electron: () => string;
-  ping: () => Promise<void>;
+interface Api {
+  search: (text: String) => Promise<void>;
 }

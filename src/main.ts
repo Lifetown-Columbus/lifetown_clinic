@@ -1,5 +1,9 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from "electron";
 import path from "path";
+
+const search = async (event: IpcMainInvokeEvent, ...args: any[]) => {
+  console.log("searched for: ", args[0]);
+};
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -10,7 +14,9 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  ipcMain.handle("ping", () => "pong");
+
+  ipcMain.handle("search", search);
+
   win.loadFile("index.html");
   win.setMenu(null);
   win.webContents.openDevTools();
