@@ -42,8 +42,23 @@ ul {
 }
 .search > input {
     line-height: 2;
+    flex: 1
 }
 
-input {
-    width: 100%;
+.card {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    margin: auto;
+}
+
+.card > form{
+    display: flex;
+    flex-direction: column;
+}
+
+.progress > span:hover:before {
+   content: "\2605";
+   position: absolute;
 }
