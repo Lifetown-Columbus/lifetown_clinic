@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from "electron";
+import DB from "./db";
 import path from "path";
 
 const search = async (event: IpcMainInvokeEvent, ...args: any[]) => {
@@ -20,6 +21,7 @@ const createWindow = () => {
   win.loadFile("index.html");
   win.setMenu(null);
   win.webContents.openDevTools();
+  DB.connect();
 };
 
 app.whenReady().then(() => {
