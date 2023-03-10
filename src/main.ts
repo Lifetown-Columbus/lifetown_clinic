@@ -18,10 +18,10 @@ const createWindow = () => {
 
   ipcMain.handle("search", search);
 
+  // DB.connect();
   win.loadFile("index.html");
   win.setMenu(null);
-  win.webContents.openDevTools();
-  DB.connect();
+  win.webContents.openDevTools({ mode: "detach" });
 };
 
 app.whenReady().then(() => {
