@@ -20,7 +20,7 @@ defmodule LifetownClinicWeb.Endpoint do
     at: "/",
     from: :lifetown_clinic,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: LifetownClinicWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

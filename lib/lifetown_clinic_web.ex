@@ -16,6 +16,9 @@ defmodule LifetownClinicWeb do
   below. Instead, define any helper function in modules
   and import those modules here.
   """
+  def static_paths do
+    ~w(assets fonts images favicon.ico robots.txt)
+  end
 
   def controller do
     quote do
@@ -24,6 +27,7 @@ defmodule LifetownClinicWeb do
       import Plug.Conn
       import LifetownClinicWeb.Gettext
       alias LifetownClinicWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
     end
   end
 
@@ -45,7 +49,7 @@ defmodule LifetownClinicWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {LifetownClinicWeb.LayoutView, "live.html"}
+        layout: {LifetownClinicWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end
@@ -89,15 +93,22 @@ defmodule LifetownClinicWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
-
-      # Import basic rendering functionality (render, render_layout, etc)
+      import Phoenix.Component
       import Phoenix.View
 
       import LifetownClinicWeb.ErrorHelpers
       import LifetownClinicWeb.Gettext
       alias LifetownClinicWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+      endpoint: LifetownClinicWeb.Endpoint,
+      router: LifetownClinicWeb.Router,
+      statics: LifetownClinicWeb.static_paths()
     end
   end
 
