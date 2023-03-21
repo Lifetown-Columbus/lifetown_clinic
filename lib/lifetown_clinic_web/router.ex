@@ -18,6 +18,9 @@ defmodule LifetownClinicWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/kiosk", KioskLive, :index
+    live "/admin", AdminLive, :index
+    live "/reception", ReceptionLive, :index
   end
 
   # Other scopes may use custom stacks.
