@@ -13,12 +13,12 @@ defmodule LifetownClinic.FrontDesk do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def check_in(pid, name) do
-    GenServer.call(pid, {:check_in, name})
+  def check_in(name) do
+    GenServer.call(__MODULE__, {:check_in, name})
   end
 
-  def all(pid) do
-    GenServer.call(pid, :all)
+  def all() do
+    GenServer.call(__MODULE__, :all)
   end
 
   def handle_call({:check_in, name}, _from, state) do

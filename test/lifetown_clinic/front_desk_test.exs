@@ -5,10 +5,8 @@ defmodule LifetownClinic.FrontDeskTest do
   alias LifetownClinic.Student
 
   test "patients can check in" do
-    {:ok, pid} = FrontDesk.start_link([])
+    FrontDesk.check_in("billy")
 
-    FrontDesk.check_in(pid, "billy")
-
-    assert FrontDesk.all(pid) == [%Student{id: nil, name: "billy"}]
+    assert FrontDesk.all() == [%Student{id: nil, name: "billy"}]
   end
 end
