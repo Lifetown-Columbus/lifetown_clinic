@@ -1,1 +1,17 @@
-<h1>Reception</h1>
+<h2>Awaiting Confirmation</h2>
+<ul>
+  <%= for student <- @checked_in do %>
+    <li>
+      <%= student.name %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Confirmed</h2>
+<ul>
+  <%= for student <- @confirmed do %>
+    <li>
+      <%= student.name %>
+    </li>
+  <% end %>
+</ul>

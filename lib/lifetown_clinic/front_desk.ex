@@ -3,7 +3,10 @@ defmodule LifetownClinic.FrontDesk do
   The FrontDesk context.
   """
   use GenServer
+  alias Phoenix.PubSub
   alias LifetownClinic.Student
+
+  @pubsub LifetownClinic.PubSub
 
   def init([]) do
     {:ok, []}
@@ -23,6 +26,7 @@ defmodule LifetownClinic.FrontDesk do
 
   def handle_call({:check_in, name}, _from, state) do
     student = %Student{name: name}
+    PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
     {:reply, :ok, [student | state]}
   end
 
