@@ -14,6 +14,10 @@ defmodule LifetownClinic.Student do
   def changeset(student, attrs) do
     student
     |> cast(attrs, [:name])
+    |> validate_format(:name, ~r/\A[A-Z][a-zA-Z]*[A-Z]\d?\z/,
+      message:
+        "Name must start with a capital letter and end with a captial letter or optional number. (E.G. FranD, BillB2"
+    )
     |> validate_required([:name])
   end
 end

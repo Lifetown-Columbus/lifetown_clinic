@@ -9,7 +9,7 @@ defmodule LifetownClinic.FrontDesk do
   @pubsub LifetownClinic.PubSub
 
   def init([]) do
-    {:ok, []}
+    {:ok, MapSet.new()}
   end
 
   def start_link(opts) do
@@ -27,7 +27,8 @@ defmodule LifetownClinic.FrontDesk do
   def handle_call({:check_in, name}, _from, state) do
     student = %Student{name: name}
     PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
-    {:reply, :ok, [student | state]}
+
+    {:reply, :ok, MapSet.put(state, student)}
   end
 
   def handle_call(:all, _from, state) do
