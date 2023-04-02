@@ -1,1 +1,19 @@
 @import "./phoenix.css";
+
+.check-in {
+  text-align: center;
+}
+
+.check-in  h1{
+  margin-bottom: 80px;
+}
+
+.check-in input {
+  height: 80px;
+  font-size: 24pt;
+}
+
+.check-in button {
+  display: block;
+  margin: auto;
+}

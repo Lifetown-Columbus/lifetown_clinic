@@ -1,5 +1,7 @@
-<h1>Kiosk</h1>
-<form phx-change="validate" phx-submit="check_in">
-  <input type="text" name="name" value={@name} />
-  <button>Check In</button>
-</form>
+<div class="container check-in">
+  <h1>Clinic Check-In</h1>
+  <form class="center" phx-change="validate" phx-submit="check_in">
+    <input type="text" name="name" value={@name} placeholder="First name and last initial" />
+    <button>Check In</button>
+  </form>
+</div>
