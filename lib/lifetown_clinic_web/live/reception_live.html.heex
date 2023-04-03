@@ -1,1 +1,54 @@
-<h1>Reception</h1>
+<div class="container reception">
+  <h2>Awaiting Confirmation</h2>
+  <ul>
+    <%= for student <- @checked_in do %>
+      <li phx-click="confirm" phx-value-name={student.name}>
+        <div class="name">
+          <span class="label">Name: </span>
+          <%= student.name %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <h2>Confirmed</h2>
+  <ul>
+    <%= for student <- @confirmed do %>
+      <li>
+        <div class="name">
+          <span class="label">Name: </span>
+          <%= student.name %>
+        </div>
+        <div class="school">
+          <span class="label">School: </span>
+          <%= if student.school do %>
+            <%= student.school.name %>
+          <% end %>
+        </div>
+        <div class="progress">
+          <span class="label">Progress: </span>
+          2/6
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<%= if @confirming do %>
+  <div class="modal">
+    <div class="modal-body">
+      <span class="label">Name: </span><%= @confirming.name %>
+      <form phx-submit="save">
+        <input name="name" type="hidden" value={@confirming.name} />
+        <label for="school">School</label>
+        <input list="schools" autocomplete="off" name="school" phx-change="lookup-school"/>
+        <datalist id="schools">
+          <%= for school <- @confirming.possible_schools do %>
+            <option value={school.name} />
+          <% end %>
+        </datalist>
+        <button>Save</button>
+      </form>
+    </div>
+  </div>
+<% end %> 

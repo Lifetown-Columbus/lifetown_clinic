@@ -2,15 +2,18 @@ version: "3"
 
 services:
   phoenix:
-    build:
-      context: .
+    image: lifetown_clinic:latest
     environment:
-      MIXENV: prod
+      PHX_SERVER: true
+      PHX_HOST: 192.168.1.193
+      MIX_ENV: prod
       PGUSER: postgres
       PGPASSWORD: postgres
       PGDATABASE: lifetown-clinic
+      SECRET_KEY_BASE: VyGA4fd8Dr68fsZqOtDKC2dEfo/zOCVx+FBzn8WkIALyLXl02u3NF533fbX4fj89
       PGPORT: 5432
       PGHOST: db
+      DATABASE_URL: ecto://postgres:postgres@db:5432/lifetown-clinic
     ports:
       - "4000:4000"
     depends_on:

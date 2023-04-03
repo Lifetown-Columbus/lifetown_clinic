@@ -106,9 +106,9 @@ defmodule LifetownClinicWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-      endpoint: LifetownClinicWeb.Endpoint,
-      router: LifetownClinicWeb.Router,
-      statics: LifetownClinicWeb.static_paths()
+        endpoint: LifetownClinicWeb.Endpoint,
+        router: LifetownClinicWeb.Router,
+        statics: LifetownClinicWeb.static_paths()
     end
   end
 
