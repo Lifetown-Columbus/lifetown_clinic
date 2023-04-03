@@ -5,7 +5,6 @@ defmodule LifetownClinic.FrontDesk do
   use GenServer
   alias Phoenix.PubSub
   alias LifetownClinic.Student
-  alias LifetownClinic.Repo
 
   @pubsub LifetownClinic.PubSub
 
@@ -21,8 +20,8 @@ defmodule LifetownClinic.FrontDesk do
     GenServer.call(__MODULE__, {:check_in, name})
   end
 
-  def confirm(name) do
-    GenServer.call(__MODULE__, {:confirm, name})
+  def remove(name) do
+    GenServer.call(__MODULE__, {:remove, name})
   end
 
   def all() do
@@ -49,13 +48,15 @@ defmodule LifetownClinic.FrontDesk do
     end
   end
 
-  def handle_call({:confirm, name}, _from, state) do
+  def handle_call({:remove, name}, _from, state) do
+    PubSub.broadcast(@pubsub, "front_desk", :student_removed)
+
     state =
       MapSet.reject(state, fn student ->
         student.name == name
       end)
 
-    Repo.insert!(%Student{name: name})
+    # Repo.insert!(%Student{name: name})
     {:reply, state, state}
   end
 

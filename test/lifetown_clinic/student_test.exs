@@ -27,4 +27,16 @@ defmodule LifetownClinic.StudentTest do
 
     assert school == student.school
   end
+
+  test "It can save a student with a new school" do
+    %Student{name: "BillyB", school: %School{name: "Crazy Middle School"}}
+    |> Repo.insert!()
+
+    student =
+      Student
+      |> Repo.get_by(name: "BillyB")
+      |> Repo.preload(:school)
+
+    assert student.school.name == "Crazy Middle School"
+  end
 end

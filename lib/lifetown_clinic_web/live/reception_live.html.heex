@@ -13,6 +13,21 @@
   <%= for student <- @confirmed do %>
     <li>
       <%= student.name %>
+      <%= if student.school do %>
+        <%= student.school.name %>
+      <% end %>
     </li>
   <% end %>
 </ul>
+
+<%= if @confirming do %>
+  <div class="modal">
+    <h4><%= @confirming.name %></h4>
+    <form phx-submit="save">
+      <input name="name" type="hidden" value={@confirming.name} />
+      <label for="school">School</label>
+      <input name="school" type="text" />
+      <button>Save</button>
+    </form>
+  </div>
+<% end %> 

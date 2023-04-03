@@ -4,6 +4,7 @@ defmodule LifetownClinic.School do
 
   schema "schools" do
     field :name, :string
+    has_many :students, LifetownClinic.Student
 
     timestamps()
   end
