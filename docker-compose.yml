@@ -5,7 +5,7 @@ services:
     image: lifetown_clinic:latest
     environment:
       PHX_SERVER: true
-      PHX_HOST: 192.168.1.193
+      PHX_HOST: 192.168.20.62
       MIX_ENV: prod
       PGUSER: postgres
       PGPASSWORD: postgres
