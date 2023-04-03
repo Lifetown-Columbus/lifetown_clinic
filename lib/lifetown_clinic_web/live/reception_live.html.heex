@@ -41,7 +41,12 @@
       <form phx-submit="save">
         <input name="name" type="hidden" value={@confirming.name} />
         <label for="school">School</label>
-        <input name="school" type="text" />
+        <input list="schools" autocomplete="off" name="school" phx-change="lookup-school"/>
+        <datalist id="schools">
+          <%= for school <- @confirming.possible_schools do %>
+            <option value={school.name} />
+          <% end %>
+        </datalist>
         <button>Save</button>
       </form>
     </div>

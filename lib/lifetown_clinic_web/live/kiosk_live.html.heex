@@ -4,7 +4,7 @@
     <%= if @error do %>
       <label class="error" for="name"><%= @error %></label>
     <% end %>
-    <input type="text" name="name" value={@name} />
+    <input autocomplete="off" type="text" name="name" value={@name} />
     <button>Check In</button>
   </form>
 </div>
