@@ -1,6 +1,7 @@
 defmodule LifetownClinic.Student do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   schema "students" do
     field :name, :string
@@ -8,6 +9,14 @@ defmodule LifetownClinic.Student do
     has_many :lessons, LifetownClinic.Lesson
 
     timestamps()
+  end
+
+  def checked_in_today() do
+    today = Date.utc_today()
+
+    from s in __MODULE__,
+      where: fragment("date(inserted_at) = ?", ^today),
+      select: s
   end
 
   @doc false
