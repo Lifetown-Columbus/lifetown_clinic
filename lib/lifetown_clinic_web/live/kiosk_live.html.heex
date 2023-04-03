@@ -1,6 +1,9 @@
 <div class="container check-in">
   <h1>Clinic Check-In</h1>
   <form class="center" phx-change="validate" phx-submit="check_in">
+    <%= if @error do %>
+      <label class="error" for="name"><%= @error %></label>
+    <% end %>
     <input type="text" name="name" value={@name} />
     <button>Check In</button>
   </form>

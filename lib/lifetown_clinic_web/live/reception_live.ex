@@ -20,4 +20,8 @@ defmodule LifetownClinicWeb.ReceptionLive do
   def handle_info(:student_checked_in, socket) do
     {:noreply, assign(socket, :checked_in, FrontDesk.all())}
   end
+
+  def handle_event("confirm", %{"name" => name}, socket) do
+    {:noreply, socket}
+  end
 end

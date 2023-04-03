@@ -3,7 +3,7 @@
   <%= for student <- @checked_in do %>
     <li>
       <%= student.name %>
-      <button phx-click="find_student" phx-value-name={student.name}>Find Student</button>
+      <button phx-click="confirm" phx-value-name={student.name}>Confirm</button>
     </li>
   <% end %>
 </ul>

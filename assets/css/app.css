@@ -17,3 +17,7 @@
   display: block;
   margin: auto;
 }
+
+label.error {
+  color: red;
+} 

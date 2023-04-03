@@ -20,15 +20,31 @@ defmodule LifetownClinic.FrontDesk do
     GenServer.call(__MODULE__, {:check_in, name})
   end
 
+  # def confirm(name) do
+  # end
+
   def all() do
     GenServer.call(__MODULE__, :all)
   end
 
   def handle_call({:check_in, name}, _from, state) do
-    student = %Student{name: name}
-    PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
+    student = Student.changeset(%Student{}, %{name: name})
 
-    {:reply, :ok, MapSet.put(state, student)}
+    if student.valid? do
+      PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
+      {:reply, :ok, MapSet.put(state, Ecto.Changeset.apply_changes(student))}
+    else
+      msg =
+        Ecto.Changeset.traverse_errors(student, fn {message, opts} ->
+          Regex.replace(~r"%{(\w+)}", message, fn _, key ->
+            opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
+          end)
+        end)
+        |> Map.values()
+        |> Enum.join(" ")
+
+      {:reply, {:error, msg}, state}
+    end
   end
 
   def handle_call(:all, _from, state) do

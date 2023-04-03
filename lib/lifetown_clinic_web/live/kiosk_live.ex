@@ -3,7 +3,7 @@ defmodule LifetownClinicWeb.KioskLive do
   alias LifetownClinic.FrontDesk
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :name, "")}
+    {:ok, reset_page(socket)}
   end
 
   def handle_event("validate", %{"name" => text}, socket) do
@@ -11,8 +11,18 @@ defmodule LifetownClinicWeb.KioskLive do
   end
 
   def handle_event("check_in", %{"name" => name}, socket) do
-    :ok = FrontDesk.check_in(name)
+    case FrontDesk.check_in(name) do
+      :ok ->
+        {:noreply, reset_page(socket)}
 
-    {:noreply, assign(socket, :name, "")}
+      {:error, msg} ->
+        {:noreply, assign(socket, :error, msg)}
+    end
+  end
+
+  defp reset_page(socket) do
+    socket
+    |> assign(:name, "")
+    |> assign(:error, nil)
   end
 end
