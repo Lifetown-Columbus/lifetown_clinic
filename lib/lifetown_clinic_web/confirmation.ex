@@ -1,9 +1,8 @@
 defmodule LifetownClinicWeb.Confirmation do
   defstruct [:name, :student, :possible_schools]
 
-  alias LifetownClinic.Student
-  alias LifetownClinic.School
   alias LifetownClinic.Repo
+  alias LifetownClinic.Schema.{Student, School}
 
   def new_student(name) do
     %__MODULE__{name: name, student: %Student{name: name}, possible_schools: []}

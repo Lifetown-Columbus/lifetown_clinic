@@ -1,6 +1,6 @@
 defmodule LifetownClinicWeb.KioskLive do
   use LifetownClinicWeb, :live_view
-  alias LifetownClinic.FrontDesk
+  alias LifetownClinic.Reception
 
   def mount(_params, _session, socket) do
     {:ok, reset_page(socket)}
@@ -11,7 +11,7 @@ defmodule LifetownClinicWeb.KioskLive do
   end
 
   def handle_event("check_in", %{"name" => name}, socket) do
-    case FrontDesk.check_in(name) do
+    case Reception.check_in(name) do
       :ok ->
         {:noreply, reset_page(socket)}
 

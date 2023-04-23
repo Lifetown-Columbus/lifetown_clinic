@@ -1,7 +1,7 @@
 defmodule LifetownClinic.StudentTest do
   use LifetownClinic.DataCase
 
-  alias LifetownClinic.{Student, School, Lesson}
+  alias LifetownClinic.Schema.{Student, School, Lesson}
   alias LifetownClinic.Repo
 
   test "It should create a student with a school and lessons" do

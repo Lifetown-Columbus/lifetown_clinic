@@ -1,12 +1,12 @@
-defmodule LifetownClinic.Student do
+defmodule LifetownClinic.Schema.Student do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
 
   schema "students" do
     field :name, :string
-    belongs_to :school, LifetownClinic.School
-    has_many :lessons, LifetownClinic.Lesson
+    belongs_to :school, LifetownClinic.Schema.School
+    has_many :lessons, LifetownClinic.Schema.Lesson
 
     timestamps()
   end

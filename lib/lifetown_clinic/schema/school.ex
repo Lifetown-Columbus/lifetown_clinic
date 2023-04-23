@@ -1,11 +1,11 @@
-defmodule LifetownClinic.School do
+defmodule LifetownClinic.Schema.School do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
 
   schema "schools" do
     field :name, :string
-    has_many :students, LifetownClinic.Student
+    has_many :students, LifetownClinic.Schema.Student
 
     timestamps()
   end

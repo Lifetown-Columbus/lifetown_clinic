@@ -2,7 +2,10 @@ defmodule LifetownClinicWeb.ReceptionLive do
   use LifetownClinicWeb, :live_view
 
   alias Phoenix.PubSub
-  alias LifetownClinic.{FrontDesk, School, Student, Repo}
+  alias LifetownClinic.Reception
+  alias LifetownClinic.Repo
+  alias LifetownClinic.Schema.School
+  alias LifetownClinic.Schema.Student
   alias LifetownClinicWeb.Confirmation
 
   @pubsub LifetownClinic.PubSub
@@ -19,7 +22,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_info(:student_checked_in, socket) do
-    {:noreply, assign(socket, :checked_in, FrontDesk.all())}
+    {:noreply, assign(socket, :checked_in, Reception.all())}
   end
 
   def handle_info(:student_removed, socket) do
@@ -31,7 +34,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_event("save", %{"name" => name, "school" => school}, socket) do
-    FrontDesk.remove(name)
+    Reception.remove(name)
 
     %Student{}
     |> maybe_find_school(school)
@@ -59,7 +62,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
       |> Repo.preload(:school)
 
     socket
-    |> assign(:checked_in, FrontDesk.all())
+    |> assign(:checked_in, Reception.all())
     |> assign(:confirmed, confirmed_today)
   end
 

@@ -1,10 +1,10 @@
-defmodule LifetownClinic.FrontDesk do
+defmodule LifetownClinic.Reception do
   @moduledoc """
-  The FrontDesk context.
+  The Reception context.
   """
   use GenServer
   alias Phoenix.PubSub
-  alias LifetownClinic.Student
+  alias LifetownClinic.Schema.Student
 
   @pubsub LifetownClinic.PubSub
 

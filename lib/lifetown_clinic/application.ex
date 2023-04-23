@@ -16,7 +16,7 @@ defmodule LifetownClinic.Application do
       {Phoenix.PubSub, name: LifetownClinic.PubSub},
       # Start the Endpoint (http/https)
       LifetownClinicWeb.Endpoint,
-      LifetownClinic.FrontDesk
+      LifetownClinic.Reception
       # Start a worker by calling: LifetownClinic.Worker.start_link(arg)
       # {LifetownClinic.Worker, arg}
     ]
