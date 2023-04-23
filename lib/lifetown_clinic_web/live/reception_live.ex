@@ -29,7 +29,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_event("confirm", %{"name" => name}, socket) do
-    {:noreply, assign(socket, :confirming, Confirmation.new_student(name))}
+    {:noreply, assign(socket, :confirming, Confirmation.new(name))}
   end
 
   def handle_event("save", %{"name" => name, "school" => school}, socket) do
