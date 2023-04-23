@@ -4,6 +4,8 @@ defmodule LifetownClinic.Reception do
   """
   use GenServer
   alias Phoenix.PubSub
+  alias LifetownClinic.Repo
+  alias LifetownClinic.Schema.School
   alias LifetownClinic.Schema.Student
 
   @pubsub LifetownClinic.PubSub
@@ -20,12 +22,28 @@ defmodule LifetownClinic.Reception do
     GenServer.call(__MODULE__, {:check_in, name})
   end
 
-  def remove(name) do
-    GenServer.call(__MODULE__, {:remove, name})
+  def confirm(name, school) do
+    GenServer.call(__MODULE__, {:confirm, name, school})
   end
 
   def all() do
     GenServer.call(__MODULE__, :all)
+  end
+
+  def handle_call({:confirm, name, school}, _from, state) do
+    %Student{}
+    |> maybe_find_school(school)
+    |> Student.changeset(%{name: name})
+    |> Repo.insert!()
+
+    PubSub.broadcast(@pubsub, "front_desk", :student_removed)
+
+    state =
+      MapSet.reject(state, fn student ->
+        student.name == name
+      end)
+
+    {:reply, state, state}
   end
 
   def handle_call({:check_in, name}, _from, state) do
@@ -48,19 +66,17 @@ defmodule LifetownClinic.Reception do
     end
   end
 
-  def handle_call({:remove, name}, _from, state) do
-    PubSub.broadcast(@pubsub, "front_desk", :student_removed)
-
-    state =
-      MapSet.reject(state, fn student ->
-        student.name == name
-      end)
-
-    # Repo.insert!(%Student{name: name})
+  def handle_call(:all, _from, state) do
     {:reply, state, state}
   end
 
-  def handle_call(:all, _from, state) do
-    {:reply, state, state}
+  defp maybe_find_school(student, school_name) do
+    case Repo.get_by(School, name: school_name) do
+      nil ->
+        Map.put(student, :school, %School{name: school_name})
+
+      school ->
+        Map.put(student, :school, school)
+    end
   end
 end

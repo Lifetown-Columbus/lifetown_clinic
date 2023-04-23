@@ -4,7 +4,6 @@ defmodule LifetownClinicWeb.ReceptionLive do
   alias Phoenix.PubSub
   alias LifetownClinic.Reception
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.School
   alias LifetownClinic.Schema.Student
   alias LifetownClinicWeb.Confirmation
 
@@ -34,12 +33,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_event("save", %{"name" => name, "school" => school}, socket) do
-    Reception.remove(name)
-
-    %Student{}
-    |> maybe_find_school(school)
-    |> Student.changeset(%{name: name})
-    |> Repo.insert!()
+    Reception.confirm(name, school)
 
     socket =
       socket
@@ -64,15 +58,5 @@ defmodule LifetownClinicWeb.ReceptionLive do
     socket
     |> assign(:checked_in, Reception.all())
     |> assign(:confirmed, confirmed_today)
-  end
-
-  defp maybe_find_school(student, school_name) do
-    case Repo.get_by(School, name: school_name) do
-      nil ->
-        Map.put(student, :school, %School{name: school_name})
-
-      school ->
-        Map.put(student, :school, school)
-    end
   end
 end
