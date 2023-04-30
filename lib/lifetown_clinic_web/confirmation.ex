@@ -12,7 +12,7 @@ defmodule LifetownClinicWeb.Confirmation do
 
     %__MODULE__{
       name: name,
-      student: %Student{name: name},
+      student: nil,
       possible_schools: [],
       possible_students: possible_students
     }
@@ -26,5 +26,18 @@ defmodule LifetownClinicWeb.Confirmation do
 
     confirmation
     |> Map.put(:possible_schools, schools)
+  end
+
+  def select_student(confirmation, nil) do
+    Map.put(confirmation, :student, %Student{name: confirmation.name})
+  end
+
+  def select_student(confirmation, id) do
+    student =
+      Student
+      |> Repo.get!(id)
+      |> Repo.preload(:school)
+
+    Map.put(confirmation, :student, student)
   end
 end

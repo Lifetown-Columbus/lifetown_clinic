@@ -32,6 +32,10 @@ defmodule LifetownClinicWeb.ReceptionLive do
     {:noreply, assign(socket, :confirming, Confirmation.new(name))}
   end
 
+  def handle_event("select_student", %{"id" => "new"}, socket) do
+    {:noreply, update(socket, :confirming, fn c -> Confirmation.select_student(c, nil) end)}
+  end
+
   def handle_event("save", %{"name" => name, "school" => school}, socket) do
     Reception.confirm(name, school)
 
