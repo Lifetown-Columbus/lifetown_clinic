@@ -33,7 +33,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_event("cancel_confirmation", _, socket) do
-    {:noreply, assign(socket, :confirming, nil)}
+    {:noreply, assign(socket, :confirming, nil) |> fetch_all()}
   end
 
   def handle_event("update_name", %{"name" => name}, socket) do

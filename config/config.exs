@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :elixir, :time_zone_database, Tz
+
 config :lifetown_clinic,
   ecto_repos: [LifetownClinic.Repo]
 

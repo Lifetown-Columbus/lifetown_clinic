@@ -4,7 +4,7 @@ ARG MIX_ENV="prod"
 FROM hexpm/elixir:1.14.3-erlang-25.3-alpine-3.17.2 AS build
 
 # install build dependencies
-RUN apk add --no-cache build-base git python3 curl
+RUN apk add --no-cache build-base git python3 curl tzdata
 
 # sets work dir
 WORKDIR /app
@@ -50,8 +50,10 @@ FROM alpine:3.17.2 AS app
 ARG MIX_ENV
 
 # install runtime dependencies
-RUN apk add --no-cache libstdc++ openssl ncurses-libs
+RUN apk add --no-cache libstdc++ openssl ncurses-libs tzdata
 
+
+ENV TZ=America/New_York
 ENV USER="elixir"
 
 WORKDIR "/home/${USER}/app"
