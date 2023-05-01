@@ -17,6 +17,12 @@
   flex: 4;
 }
 
+input:focus {
+  outline: none !important;
+  border-color: var(--light-green) !important;
+}
+
+
 button.cancel {
   background-color: var(--orange);
 }
