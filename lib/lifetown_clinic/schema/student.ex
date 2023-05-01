@@ -34,9 +34,10 @@ defmodule LifetownClinic.Schema.Student do
   @doc false
   def changeset(student, attrs \\ %{}) do
     student
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :school_id])
     |> validate_required([:name])
     |> cast_assoc(:school, required: true, with: &School.changeset/2)
+    |> unique_constraint([:name, :school_id])
     |> assoc_constraint(:school)
   end
 end
