@@ -55,6 +55,7 @@ header.reception img {
 
 header.reception h1 {
   text-align: center;
+  margin-top: 20px;
 }
 
 .checked-in {
@@ -96,9 +97,25 @@ ul {
 
 ul li {
   border: solid 1px var(--gray);
+  border-bottom: 0;
   padding: 10px;
   margin: 0;
   display: flex;
+}
+
+ul li:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+
+ul li:last-child {
+  border-radius: 0 0 5px 5px;
+  border-bottom: solid 1px var(--gray);
+}
+
+ul li:only-child {
+  border-radius: 5px;
+  border: solid 1px var(--gray);
 }
 
 ul li:hover {
