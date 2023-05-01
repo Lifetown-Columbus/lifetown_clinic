@@ -32,10 +32,11 @@ defmodule LifetownClinic.StudentTest do
     assert student.school.name == "Crazy Middle School"
   end
 
-  test "It can find students created today" do
+  test "It can find students updated today" do
     today =
-      %Student{name: "Today", updated_at: Timex.today(:utc) |> Timex.to_naive_datetime()}
-      |> Repo.insert!()
+      %Student{name: "Today"}
+      |> Student.changeset(%{})
+      |> Repo.insert!(force: true)
 
     %Student{
       name: "Yesterday",
@@ -60,5 +61,29 @@ defmodule LifetownClinic.StudentTest do
            |> Student.by_name()
            |> Repo.all()
            |> Repo.preload(:school) == [billy_1, billy_2]
+  end
+
+  test "It can only have 6 lessons" do
+    {:ok, student} =
+      %Student{}
+      |> Student.changeset(%{
+        name: "Bob",
+        school: %{name: "some school"},
+        lessons: [%{}, %{}, %{}, %{}, %{}, %{}]
+      })
+      |> Repo.insert()
+
+    assert Enum.count(student.lessons) == 6
+
+    {:error, changeset} =
+      %Student{}
+      |> Student.changeset(%{
+        name: "Bob",
+        school: %{name: "some school"},
+        lessons: [%{}, %{}, %{}, %{}, %{}, %{}, %{}]
+      })
+      |> Repo.insert()
+
+    refute changeset.valid?
   end
 end

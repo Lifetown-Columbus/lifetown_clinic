@@ -12,6 +12,7 @@ defmodule LifetownClinic.Schema.Lesson do
   def changeset(lesson, attrs) do
     lesson
     |> cast(attrs, [])
+    |> assoc_constraint(:student)
     |> validate_required([])
   end
 end
