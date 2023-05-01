@@ -6,7 +6,7 @@ defmodule LifetownClinic.Schema.Student do
 
   schema "students" do
     field :name, :string
-    belongs_to :school, School
+    belongs_to :school, School, on_replace: :nilify
     has_many :lessons, Lesson
 
     timestamps()
@@ -36,8 +36,8 @@ defmodule LifetownClinic.Schema.Student do
     student
     |> cast(attrs, [:name, :school_id])
     |> validate_required([:name])
-    |> cast_assoc(:school, required: true, with: &School.changeset/2)
-    |> unique_constraint([:name, :school_id])
+    |> cast_assoc(:school, with: &School.changeset/2)
     |> assoc_constraint(:school)
+    |> unique_constraint([:name, :school_id])
   end
 end

@@ -21,9 +21,7 @@
         </div>
         <div class="school">
           <span class="label">School: </span>
-          <%= if student.school do %>
-            <%= student.school.name %>
-          <% end %>
+          <%= student.school.name %>
         </div>
         <div class="progress">
           <span class="label">Progress: </span>
@@ -42,7 +40,7 @@
           <label for="name">Name</label>
           <input name="name" value={@confirming.name} />
           <label for="school">School</label>
-          <input list="schools" autocomplete="off" name="school" phx-change="lookup-school"/>
+          <input list="schools" value={@confirming.student.school.name} autocomplete="off" name="school" phx-change="lookup-school"/>
           <datalist id="schools">
             <%= for school <- @confirming.possible_schools do %>
               <option value={school.name} />
@@ -52,7 +50,23 @@
         </form>
       <% end %>
       <ul>
-        <li id="new" phx-click="select_student" phx-value-id="new">New Student</li>
+        <%= for student <- @confirming.possible_students do%>
+          <li phx-click="select_student" phx-value-id={student.id}>
+            <div class="name">
+              <span class="label">Name: </span>
+              <%= student.name %>
+            </div>
+            <div class="school">
+              <span class="label">School: </span>
+              <%= student.school.name %>
+            </div>
+            <div class="progress">
+              <span class="label">Progress: </span>
+              2/6
+            </div>
+          </li>
+        <% end %>
+        <li phx-click="select_student" phx-value-id="new">New Student</li>
       </ul>
     </div>
   </div>

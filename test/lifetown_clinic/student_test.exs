@@ -10,23 +10,14 @@ defmodule LifetownClinic.StudentTest do
       %School{name: "Really Cool High School"}
       |> Repo.insert!()
 
-    %Student{name: "BillyB"}
+    %Student{}
+    |> Student.changeset(%{name: "BillyB"})
+    |> Ecto.Changeset.put_assoc(:school, school)
     |> Repo.insert!()
 
     student = Repo.get_by(Student, name: "BillyB") |> Repo.preload(:school)
     assert student.name == "BillyB"
-
-    student
-    |> Student.changeset(%{})
-    |> Ecto.Changeset.put_assoc(:school, school)
-    |> Repo.update!()
-
-    student =
-      Student
-      |> Repo.get_by(name: "BillyB")
-      |> Repo.preload(:school)
-
-    assert school == student.school
+    assert student.school == school
   end
 
   test "It can save a student with a new school" do
@@ -43,12 +34,12 @@ defmodule LifetownClinic.StudentTest do
 
   test "It can find students created today" do
     today =
-      %Student{name: "Today", inserted_at: Timex.today(:utc) |> Timex.to_naive_datetime()}
+      %Student{name: "Today", updated_at: Timex.today(:utc) |> Timex.to_naive_datetime()}
       |> Repo.insert!()
 
     %Student{
       name: "Yesterday",
-      inserted_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime()
+      updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime()
     }
     |> Repo.insert!()
 

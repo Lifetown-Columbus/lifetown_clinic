@@ -36,9 +36,14 @@ defmodule LifetownClinicWeb.ReceptionLive do
     {:noreply, update(socket, :confirming, fn c -> Confirmation.select_student(c, nil) end)}
   end
 
-  def handle_event("save", %{"name" => name, "school" => school}, socket) do
-    with {:ok, _} <- save_student(name, school) do
-      Reception.confirm(name)
+  def handle_event("select_student", %{"id" => id}, socket) do
+    {:noreply, update(socket, :confirming, fn c -> Confirmation.select_student(c, id) end)}
+  end
+
+  def handle_event("save", %{"school" => school}, socket) do
+    with confirmation <- socket.assigns.confirming,
+         {:ok, _} <- save_student(confirmation, school) do
+      Reception.confirm(confirmation.name)
 
       socket =
         socket
@@ -60,11 +65,11 @@ defmodule LifetownClinicWeb.ReceptionLive do
     {:noreply, assign(socket, :confirming, confirmation)}
   end
 
-  defp save_student(name, school) do
-    %Student{}
+  defp save_student(confirmation, school) do
+    confirmation.student
+    |> Student.changeset(%{name: confirmation.name})
     |> maybe_find_school(school)
-    |> Student.changeset(%{name: name})
-    |> Repo.insert()
+    |> Repo.insert_or_update()
   end
 
   defp fetch_all(socket) do
@@ -78,13 +83,13 @@ defmodule LifetownClinicWeb.ReceptionLive do
     |> assign(:confirmed, confirmed_today)
   end
 
-  defp maybe_find_school(student, school_name) do
+  defp maybe_find_school(changeset, school_name) do
     case Repo.get_by(School, name: school_name) do
       nil ->
-        Map.put(student, :school, %School{name: school_name})
+        Ecto.Changeset.put_assoc(changeset, :school, name: school_name)
 
       school ->
-        Map.put(student, :school, school)
+        Ecto.Changeset.put_assoc(changeset, :school, school)
     end
   end
 end

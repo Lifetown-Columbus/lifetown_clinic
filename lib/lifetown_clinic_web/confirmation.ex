@@ -29,7 +29,10 @@ defmodule LifetownClinicWeb.Confirmation do
   end
 
   def select_student(confirmation, nil) do
-    Map.put(confirmation, :student, %Student{name: confirmation.name})
+    Map.put(confirmation, :student, %Student{
+      name: confirmation.name,
+      school: %School{name: nil}
+    })
   end
 
   def select_student(confirmation, id) do

@@ -43,7 +43,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       |> Confirmation.new()
       |> Confirmation.select_student(nil)
 
-    assert result.student == %Student{name: "Billy"}
+    assert result.student == %Student{name: "Billy", school: %School{name: nil}}
   end
 
   test "it should allow you to select an existing student" do
