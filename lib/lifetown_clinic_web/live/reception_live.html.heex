@@ -33,7 +33,7 @@
 </div>
 
 <%= if @confirming do %>
-  <div class="modal">
+  <div class="modal" phx-capture-click="cancel_confirmation">
     <div class="modal-body">
       <%= if @confirming.student do %>
         <form phx-submit="save">
@@ -68,6 +68,7 @@
         <% end %>
         <li phx-click="select_student" phx-value-id="new">New Student</li>
       </ul>
+      <button phx-click="cancel_confirmation">Cancel</button>
     </div>
   </div>
 <% end %> 

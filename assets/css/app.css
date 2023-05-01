@@ -26,27 +26,27 @@ ul {
   list-style: none;
 }
 
-.reception ul li {
+ul li {
   border: solid 1px #c5c5c5;
   padding: 10px;
   margin: 0;
   display: flex;
 }
 
-.reception ul li:hover {
+ul li:hover {
   background-color: #a6f2f7;
   cursor: pointer;
 }
 
-.reception ul li .name {
+ul li .name {
   flex: 2;
 }
 
-.reception ul li .school {
+ul li .school {
   flex: 3;
 }
 
-.reception ul li .progress {
+ul li .progress {
   flex: 1;
 }
 

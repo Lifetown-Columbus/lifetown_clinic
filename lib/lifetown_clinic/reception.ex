@@ -47,24 +47,6 @@ defmodule LifetownClinic.Reception do
     else
       {:reply, {:error, "Name cannot be blank"}, state}
     end
-
-    # student = Student.changeset(%Student{}, %{name: name})
-
-    # if student.valid? do
-    #   PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
-    #   {:reply, :ok, MapSet.put(state, Ecto.Changeset.apply_changes(student))}
-    # else
-    #   msg =
-    #     Ecto.Changeset.traverse_errors(student, fn {message, opts} ->
-    #       Regex.replace(~r"%{(\w+)}", message, fn _, key ->
-    #         opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-    #       end)
-    #     end)
-    #     |> Map.values()
-    #     |> Enum.join(" ")
-
-    #   {:reply, {:error, msg}, state}
-    # end
   end
 
   def handle_call(:all, _from, state) do
