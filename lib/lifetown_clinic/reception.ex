@@ -8,7 +8,7 @@ defmodule LifetownClinic.Reception do
   @pubsub LifetownClinic.PubSub
 
   def init([]) do
-    {:ok, MapSet.new()}
+    {:ok, []}
   end
 
   def start_link(opts) do
@@ -31,7 +31,7 @@ defmodule LifetownClinic.Reception do
     PubSub.broadcast(@pubsub, "front_desk", :student_removed)
 
     state =
-      MapSet.reject(state, fn student ->
+      Enum.reject(state, fn student ->
         student.name == name
       end)
 
@@ -43,7 +43,7 @@ defmodule LifetownClinic.Reception do
 
     if String.length(name) > 0 do
       PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
-      {:reply, :ok, MapSet.put(state, %{name: name})}
+      {:reply, :ok, [%{name: name} | state]}
     else
       {:reply, {:error, "Name cannot be blank"}, state}
     end

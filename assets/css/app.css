@@ -1,5 +1,37 @@
 @import "./phoenix.css";
 
+:root {
+  --light-green: #36e48c;
+  --dark-green: #114b3f;
+  --orange: #ff330d;
+}
+
+
+button {
+  background-color: var(--dark-green);
+}
+
+button:hover {
+  background-color: var(--light-green);
+  color: black;
+}
+
+@keyframes blink-in {
+  from { background-color: white; }
+    to { background-color: var(--orange); }
+}
+
+@keyframes blink-out {
+  from { background-color: var(--orange); }
+    to { background-color: white; }
+}
+
+.checked-in {
+  animation: blink-in 0.5s;
+  animation: blink-out 0.5s;
+}
+
+
 .check-in {
   text-align: center;
 }
@@ -34,7 +66,7 @@ ul li {
 }
 
 ul li:hover {
-  background-color: #a6f2f7;
+  background-color: var(--light-green);
   cursor: pointer;
 }
 

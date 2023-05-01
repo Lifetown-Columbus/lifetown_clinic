@@ -6,6 +6,7 @@ services:
     environment:
       PHX_SERVER: true
       PHX_HOST: 192.168.20.62
+      # PHX_HOST: 127.0.0.1
       MIX_ENV: prod
       PGUSER: postgres
       PGPASSWORD: postgres

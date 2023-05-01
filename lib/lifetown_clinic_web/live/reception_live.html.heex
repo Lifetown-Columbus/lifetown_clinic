@@ -1,8 +1,8 @@
 <div class="container reception">
   <h2>Awaiting Confirmation</h2>
   <ul id="checked-in">
-    <%= for student <- @checked_in do %>
-      <li phx-click="confirm" phx-value-name={student.name}>
+    <%= for student <- Enum.reverse(@checked_in) do %>
+      <li id={student.name} class="checked-in" phx-click="confirm" phx-value-name={student.name}>
         <div class="name">
           <span class="label">Name: </span>
           <%= student.name %>

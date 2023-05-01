@@ -1,10 +1,10 @@
 <div class="container check-in">
-  <h1>Stop To Live Check-In</h1>
+  <img src="/images/stop_to_live.jpeg" />
   <form class="center" phx-change="validate" phx-submit="check_in">
     <%= if @error do %>
       <label class="error" for="name"><%= @error %></label>
     <% end %>
-    <input autocomplete="off" type="text" name="name" value={@name} />
+    <input autocomplete="off" placeholder="Enter your name" type="text" name="name" value={@name} />
     <button>Check In</button>
   </form>
 </div>
