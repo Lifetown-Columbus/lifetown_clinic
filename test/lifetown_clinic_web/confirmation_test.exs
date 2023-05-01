@@ -29,6 +29,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
     student =
       %Student{name: "Billy", school: %School{name: "Nitro High School"}}
       |> Repo.insert!()
+      |> Repo.preload(:lessons)
 
     result = Confirmation.new("Billy")
     assert result.name == "Billy"
@@ -51,6 +52,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       %Student{name: "Billy", school: %School{name: "Nitro High School"}}
       |> Repo.insert!()
       |> Repo.preload(:school)
+      |> Repo.preload(:lessons)
 
     result =
       "Billy"

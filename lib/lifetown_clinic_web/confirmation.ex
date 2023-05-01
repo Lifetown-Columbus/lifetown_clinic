@@ -9,6 +9,7 @@ defmodule LifetownClinicWeb.Confirmation do
       Student.by_name(name)
       |> Repo.all()
       |> Repo.preload(:school)
+      |> Repo.preload(:lessons)
 
     %__MODULE__{
       name: name,
@@ -40,6 +41,7 @@ defmodule LifetownClinicWeb.Confirmation do
       Student
       |> Repo.get!(id)
       |> Repo.preload(:school)
+      |> Repo.preload(:lessons)
 
     Map.put(confirmation, :student, student)
   end

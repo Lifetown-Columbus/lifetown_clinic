@@ -25,7 +25,7 @@
         </div>
         <div class="progress">
           <span class="label">Progress: </span>
-          2/6
+          <%= Enum.count(student.lessons) %>/6
         </div>
       </li>
     <% end %>
@@ -48,6 +48,12 @@
           </datalist>
           <button>Save</button>
         </form>
+        <div class="progress">
+          <span class="label">Progress: </span>
+          <%= Enum.count(@confirming.student.lessons) %>/6
+        </div>
+        <button phx-click="remove_lesson">Remove Lesson</button>
+        <button phx-click="add_lesson">Add Lesson</button>
       <% end %>
       <ul>
         <%= for student <- @confirming.possible_students do%>
@@ -62,7 +68,7 @@
             </div>
             <div class="progress">
               <span class="label">Progress: </span>
-              2/6
+              <%= Enum.count(student.lessons) %>/6
             </div>
           </li>
         <% end %>
