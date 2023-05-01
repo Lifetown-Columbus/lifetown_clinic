@@ -14,7 +14,7 @@
   <h2>Confirmed</h2>
   <ul>
     <%= for student <- @confirmed do %>
-      <li>
+      <li phx-click="select_student" phx-value-id={student.id}>
         <div class="name">
           <span class="label">Name: </span>
           <%= student.name %>
@@ -38,7 +38,7 @@
       <%= if @confirming.student do %>
         <form phx-submit="save">
           <label for="name">Name</label>
-          <input name="name" value={@confirming.name} />
+          <input name="name" phx-change="update_name" value={@confirming.name} />
           <label for="school">School</label>
           <input list="schools" value={@confirming.student.school.name} autocomplete="off" name="school" phx-change="lookup-school"/>
           <datalist id="schools">

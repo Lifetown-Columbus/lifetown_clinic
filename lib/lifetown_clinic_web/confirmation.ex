@@ -43,6 +43,12 @@ defmodule LifetownClinicWeb.Confirmation do
       |> Repo.preload(:school)
       |> Repo.preload(:lessons)
 
-    Map.put(confirmation, :student, student)
+    confirmation
+    |> Map.put(:student, student)
+    |> Map.put(:name, student.name)
+  end
+
+  def update_name(confirmation, name) do
+    Map.put(confirmation, :name, name)
   end
 end
