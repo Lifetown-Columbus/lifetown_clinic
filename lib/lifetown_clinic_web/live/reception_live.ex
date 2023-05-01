@@ -53,8 +53,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
       {:noreply, socket}
     else
       {:error, changeset} ->
-        IO.inspect(changeset)
-
+        IO.inspect(changeset, label: "TODO")
         {:noreply, socket}
     end
   end
@@ -69,7 +68,8 @@ defmodule LifetownClinicWeb.ReceptionLive do
     confirmation.student
     |> Student.changeset(%{name: confirmation.name})
     |> maybe_find_school(school)
-    |> Repo.insert_or_update()
+    # force updated_at to change to now
+    |> Repo.insert_or_update(force: true)
   end
 
   defp fetch_all(socket) do
@@ -86,7 +86,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   defp maybe_find_school(changeset, school_name) do
     case Repo.get_by(School, name: school_name) do
       nil ->
-        Ecto.Changeset.put_assoc(changeset, :school, name: school_name)
+        Student.changeset(changeset, %{school: %{name: school_name}})
 
       school ->
         Ecto.Changeset.put_assoc(changeset, :school, school)
