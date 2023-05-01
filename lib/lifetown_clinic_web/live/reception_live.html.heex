@@ -1,6 +1,20 @@
-<div class="container reception">
-  <h2>Awaiting Confirmation</h2>
+<header class="reception">
+  <div>
+    <img src="/images/stop_to_live.jpeg" />
+  </div>
+  <div class="flex-4 center">
+    <h1>Reception Desk</h1>
+  </div>
+</header>
+
+<div class="container">
+  <h3>Awaiting Confirmation</h3>
   <ul id="checked-in">
+    <%= if Enum.count(@checked_in) == 0 do %>
+      <div class="empty-list-note">
+        <p>All caught up!</p>
+      </div>
+    <% end %>
     <%= for student <- Enum.reverse(@checked_in) do %>
       <li id={student.name} class="checked-in" phx-click="confirm" phx-value-name={student.name}>
         <div class="name">
@@ -11,7 +25,12 @@
     <% end %>
   </ul>
 
-  <h2>Confirmed</h2>
+  <h3>Confirmed Today</h3>
+  <%= if Enum.count(@confirmed) == 0 do %>
+    <div class="empty-list-note">
+      <p>No students confirmed today</p>
+    </div>
+  <% end %>
   <ul>
     <%= for student <- @confirmed do %>
       <li phx-click="select_student" phx-value-id={student.id}>
@@ -76,7 +95,7 @@
         <% end %>
         <li phx-click="select_student" phx-value-id="new">New Student</li>
       </ul>
-      <button phx-click="cancel_confirmation">Cancel</button>
+      <button class="cancel" phx-click="cancel_confirmation">Cancel</button>
     </div>
   </div>
 <% end %> 

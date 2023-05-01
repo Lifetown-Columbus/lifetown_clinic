@@ -4,8 +4,27 @@
   --light-green: #36e48c;
   --dark-green: #114b3f;
   --orange: #ff330d;
+  --light-orange: #ff7e63;
+  --gray:  #c5c5c5;
+  --dark-gray:  #555555;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
+button.cancel {
+  background-color: var(--orange);
+}
+
+button.cancel:hover {
+  background-color: var(--light-orange);
+  color: black;
+}
 
 button {
   background-color: var(--dark-green);
@@ -26,11 +45,22 @@ button:hover {
     to { background-color: white; }
 }
 
+header.reception {
+  display: flex;
+}
+
+header.reception img {
+  width: 75px;
+}
+
+header.reception h1 {
+  text-align: center;
+}
+
 .checked-in {
   animation: blink-in 0.5s;
   animation: blink-out 0.5s;
 }
-
 
 .check-in {
   text-align: center;
@@ -50,6 +80,12 @@ button:hover {
   margin: auto;
 }
 
+.empty-list-note {
+  text-align: center;
+  color: var(--dark-gray);
+  font-size: 1.25em;
+}
+
 label.error {
   color: red;
 } 
@@ -59,7 +95,7 @@ ul {
 }
 
 ul li {
-  border: solid 1px #c5c5c5;
+  border: solid 1px var(--gray);
   padding: 10px;
   margin: 0;
   display: flex;
@@ -102,6 +138,6 @@ span.label {
   box-shadow: 10px 5px 20px rgba(189,195,199, 1);
   padding: 10px;
   border-radius: 10px;
-  border: solid 1px #c5c5c5;
+  border: solid 1px var(--gray);
 }
 
