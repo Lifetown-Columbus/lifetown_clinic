@@ -4,7 +4,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   alias Phoenix.PubSub
   alias LifetownClinic.Reception
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.Student
+  alias LifetownClinic.Schema.{School, Student}
   alias LifetownClinicWeb.Confirmation
 
   @pubsub LifetownClinic.PubSub
@@ -37,20 +37,34 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   def handle_event("save", %{"name" => name, "school" => school}, socket) do
-    Reception.confirm(name, school)
+    with {:ok, _} <- save_student(name, school) do
+      Reception.confirm(name)
 
-    socket =
-      socket
-      |> assign(:confirming, nil)
-      |> fetch_all()
+      socket =
+        socket
+        |> assign(:confirming, nil)
+        |> fetch_all()
 
-    {:noreply, socket}
+      {:noreply, socket}
+    else
+      {:error, changeset} ->
+        IO.inspect(changeset)
+
+        {:noreply, socket}
+    end
   end
 
   def handle_event("lookup-school", %{"school" => school}, socket) do
     confirmation = Confirmation.lookup_school(socket.assigns.confirming, school)
 
     {:noreply, assign(socket, :confirming, confirmation)}
+  end
+
+  defp save_student(name, school) do
+    %Student{}
+    |> maybe_find_school(school)
+    |> Student.changeset(%{name: name})
+    |> Repo.insert()
   end
 
   defp fetch_all(socket) do
@@ -62,5 +76,15 @@ defmodule LifetownClinicWeb.ReceptionLive do
     socket
     |> assign(:checked_in, Reception.all())
     |> assign(:confirmed, confirmed_today)
+  end
+
+  defp maybe_find_school(student, school_name) do
+    case Repo.get_by(School, name: school_name) do
+      nil ->
+        Map.put(student, :school, %School{name: school_name})
+
+      school ->
+        Map.put(student, :school, school)
+    end
   end
 end
