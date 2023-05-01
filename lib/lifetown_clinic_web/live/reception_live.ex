@@ -135,7 +135,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   defp maybe_find_school(changeset, school_name) do
     case Repo.get_by(School, name: school_name) do
       nil ->
-        Student.changeset(changeset, %{school: %{name: school_name}})
+        Student.changeset(changeset, %{school: %{id: 1, name: school_name}})
 
       school ->
         Ecto.Changeset.put_assoc(changeset, :school, school)
