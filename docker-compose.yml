@@ -15,6 +15,7 @@ services:
       PGPORT: 5432
       PGHOST: db
       DATABASE_URL: ecto://postgres:postgres@db:5432/lifetown-clinic
+    restart: always
     ports:
       - "4000:4000"
     depends_on:
