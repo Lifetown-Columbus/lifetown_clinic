@@ -16,7 +16,7 @@
       </div>
     <% end %>
     <%= for student <- Enum.reverse(@checked_in) do %>
-      <li id={student.name} class="checked-in" phx-click="confirm" phx-value-name={student.name}>
+      <li id={student.name} class="checked-in" phx-click="confirm" phx-value-name={student.name} phx-value-id={student.id}>
         <div class="name">
           <span class="label">Name: </span>
           <%= student.name %>

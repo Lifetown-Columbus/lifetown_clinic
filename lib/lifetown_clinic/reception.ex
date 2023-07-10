@@ -19,20 +19,20 @@ defmodule LifetownClinic.Reception do
     GenServer.call(__MODULE__, {:check_in, name})
   end
 
-  def confirm(name) do
-    GenServer.call(__MODULE__, {:confirm, name})
+  def confirm(id) do
+    GenServer.call(__MODULE__, {:confirm, id})
   end
 
   def all() do
     GenServer.call(__MODULE__, :all)
   end
 
-  def handle_call({:confirm, name}, _from, state) do
+  def handle_call({:confirm, id}, _from, state) do
     PubSub.broadcast(@pubsub, "front_desk", :student_removed)
 
     state =
       Enum.reject(state, fn student ->
-        student.name == name
+        student.id == id
       end)
 
     {:reply, state, state}
@@ -40,10 +40,11 @@ defmodule LifetownClinic.Reception do
 
   def handle_call({:check_in, name}, _from, state) do
     name = String.trim(name)
+    id = Ecto.UUID.generate()
 
     if String.length(name) > 0 do
       PubSub.broadcast(@pubsub, "front_desk", :student_checked_in)
-      {:reply, :ok, [%{name: name} | state]}
+      {:reply, :ok, [%{id: id, name: name} | state]}
     else
       {:reply, {:error, "Name cannot be blank"}, state}
     end

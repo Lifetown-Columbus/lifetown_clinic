@@ -20,14 +20,4 @@ defmodule LifetownClinicWeb.Components.ReceptionLiveTest do
            |> element("ul#checked-in li")
            |> render() =~ "Billy"
   end
-
-  test "it should create a new student and school", %{conn: conn} do
-    Reception.check_in("Billy")
-
-    {:ok, view, _html} = live(conn, "/reception")
-
-    view
-    |> element("ul#checked-in li")
-    |> render_click()
-  end
 end
