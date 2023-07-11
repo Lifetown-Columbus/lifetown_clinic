@@ -1,1 +1,9 @@
-<h1>Admin</h1>
+<div id="filters">
+  <form phx-change="filter_updated">
+    <label for="start-date">Start Date</label>
+    <input type="date" name="start-date" value={@start_date} />
+    <label for="end-date">End Date</label>
+    <input type="date" name="end-date" value={@end_date} />
+  </form>
+</div>
+<div id="results"></div>
