@@ -23,6 +23,11 @@ defmodule LifetownClinic.Reception do
     GenServer.call(__MODULE__, {:confirm, id})
   end
 
+  def remove(id) do
+    # confirming just removes the student from state
+    GenServer.call(__MODULE__, {:confirm, id})
+  end
+
   def all() do
     GenServer.call(__MODULE__, :all)
   end

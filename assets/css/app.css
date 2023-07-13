@@ -34,6 +34,7 @@ button.cancel:hover {
 
 button {
   background-color: var(--dark-green);
+  margin: 0 5px;
 }
 
 button:hover {
@@ -73,7 +74,7 @@ header.reception h1 {
   text-align: center;
 }
 
-.check-in  h1{
+.check-in h1{
   margin-bottom: 80px;
 }
 
@@ -107,6 +108,7 @@ ul li {
   padding: 10px;
   margin: 0;
   display: flex;
+  align-items: center;
 }
 
 ul li:first-child {
@@ -124,7 +126,7 @@ ul li:only-child {
   border: solid 1px var(--gray);
 }
 
-ul li:hover {
+ul li.clickable:hover {
   background-color: var(--light-green);
   cursor: pointer;
 }
@@ -163,4 +165,41 @@ span.label {
   border-radius: 10px;
   border: solid 1px var(--gray);
 }
+
+.admin {
+  padding: 20px;
+}
+
+.admin .filters {
+  display: flex;
+  align-items: center;
+}
+
+.admin .filters>label {
+  flex: 1;
+  margin: 10px;
+  text-align: right;
+}
+
+.admin .filters>input {
+  flex: 3;
+}
+
+.admin .results {
+  padding: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin .panel {
+  border: solid 1px var(--gray);
+  border-radius: 5px;
+  padding: 25px;
+  text-align: center;
+}
+
+.admin .panel h1 {
+  font-size: 4em;
+}
+
 
