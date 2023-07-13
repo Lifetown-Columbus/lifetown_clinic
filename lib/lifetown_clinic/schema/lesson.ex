@@ -11,7 +11,7 @@ defmodule LifetownClinic.Schema.Lesson do
   @doc false
   def changeset(lesson, attrs) do
     lesson
-    |> cast(attrs, [])
+    |> cast(attrs, [:inserted_at])
     |> assoc_constraint(:student)
     |> validate_required([])
   end

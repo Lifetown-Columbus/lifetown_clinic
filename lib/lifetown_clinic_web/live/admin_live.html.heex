@@ -1,9 +1,14 @@
 <div id="filters">
   <form phx-change="filter_updated">
-    <label for="start-date">Start Date</label>
+    <label for="start-date">Check-In Start Date</label>
     <input type="date" name="start-date" value={@start_date} />
-    <label for="end-date">End Date</label>
+    <label for="end-date">Check-In End Date</label>
     <input type="date" name="end-date" value={@end_date} />
   </form>
 </div>
-<div id="results"></div>
+<div id="results">
+  <div class="panel">
+    Total Students Checked In: <%= @total_student_count %>
+    Total Schools Checked In: <%= @total_school_count %>
+  </div>
+</div>
