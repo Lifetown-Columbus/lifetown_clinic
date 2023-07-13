@@ -149,7 +149,7 @@ span.label {
 }
 
 .modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -164,6 +164,10 @@ span.label {
   padding: 10px;
   border-radius: 10px;
   border: solid 1px var(--gray);
+}
+
+.modal-body ul {
+  margin-top: 10px;
 }
 
 .admin {
