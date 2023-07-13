@@ -1,15 +1,24 @@
-<div id="filters">
-  <form phx-change="filter_updated">
-    <label for="start-date">Check-In Start Date</label>
-    <input type="date" name="start-date" value={@start_date} />
-    <label for="end-date">Check-In End Date</label>
-    <input type="date" name="end-date" value={@end_date} />
-  </form>
-</div>
-<div id="results">
-  <div class="panel">
-    Total Students Checked In: <%= @student_count %>
-    Total Schools Checked In: <%= @school_count %>
-    Total Lessons Completed: <%= @lesson_count %>
+<div class="admin">
+  <div id="filters">
+    <form class="filters" phx-change="filter_updated">
+      <label for="start-date">After:</label>
+      <input type="date" name="start-date" value={@start_date} />
+      <label for="end-date">Before:</label>
+      <input type="date" name="end-date" value={@end_date} />
+    </form>
+  </div>
+  <div class="results">
+    <div class="panel">
+      <h4>Students Checked In: </h4>
+      <h1><%= @student_count %></h1>
+    </div>
+    <div class="panel">
+      <h4>Schools Checked In: </h4>
+      <h1><%= @school_count %></h1>
+    </div>
+    <div class="panel">
+      <h4>Lessons Completed: </h4>
+      <h1><%= @lesson_count %></h1>
+    </div>
   </div>
 </div>

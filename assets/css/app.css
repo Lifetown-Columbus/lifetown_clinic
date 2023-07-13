@@ -164,3 +164,40 @@ span.label {
   border: solid 1px var(--gray);
 }
 
+.admin {
+  padding: 20px;
+}
+
+.admin .filters {
+  display: flex;
+  align-items: center;
+}
+
+.admin .filters>label {
+  flex: 1;
+  margin: 10px;
+  text-align: right;
+}
+
+.admin .filters>input {
+  flex: 3;
+}
+
+.admin .results {
+  padding: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin .panel {
+  border: solid 1px var(--gray);
+  border-radius: 5px;
+  padding: 25px;
+  text-align: center;
+}
+
+.admin .panel h1 {
+  font-size: 4em;
+}
+
+
