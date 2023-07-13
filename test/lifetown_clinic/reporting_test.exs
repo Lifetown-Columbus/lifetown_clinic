@@ -22,6 +22,7 @@ defmodule LifetownClinic.ReportinTest do
     |> Repo.insert!()
     |> create_student("Sally")
     |> check_in(last_week)
+    |> check_in(last_week)
 
     :ok
   end

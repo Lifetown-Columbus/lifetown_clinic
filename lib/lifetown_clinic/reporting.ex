@@ -4,7 +4,9 @@ defmodule LifetownClinic.Reporting do
   alias LifetownClinic.Schema.{Lesson, School, Student}
 
   def student_count(nil, nil) do
-    from s in Student, select: count()
+    epoch = Timex.zero() |> Timex.to_datetime()
+    today = Timex.now() |> Timex.to_datetime()
+    student_count(epoch, today)
   end
 
   def student_count(start_date, nil) do
@@ -24,11 +26,13 @@ defmodule LifetownClinic.Reporting do
       where:
         l.inserted_at >= ^start_date and
           l.inserted_at <= ^end_date,
-      select: count()
+      select: count(s.id, :distinct)
   end
 
   def school_count(nil, nil) do
-    from s in School, select: count()
+    epoch = Timex.zero() |> Timex.to_datetime()
+    today = Timex.now() |> Timex.to_datetime()
+    school_count(epoch, today)
   end
 
   def school_count(start_date, nil) do
