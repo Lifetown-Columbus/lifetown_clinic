@@ -32,6 +32,11 @@ defmodule LifetownClinicWeb.ReceptionLive do
     {:noreply, assign(socket, :confirming, Confirmation.new(id, name))}
   end
 
+  def handle_event("remove", %{"id" => id}, socket) do
+    Reception.remove(id)
+    {:noreply, assign(socket, :confirming, nil)}
+  end
+
   def handle_event("cancel_confirmation", _, socket) do
     {:noreply, assign(socket, :confirming, nil) |> fetch_all()}
   end
