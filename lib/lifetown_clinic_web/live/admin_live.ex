@@ -30,16 +30,20 @@ defmodule LifetownClinicWeb.AdminLive do
 
   defp fetch_results(socket) do
     start_datetime = parse_date(socket.assigns.start_date)
-    end_datetime = parse_date(socket.assigns.end_date |> IO.inspect())
+    end_datetime = parse_date(socket.assigns.end_date)
 
     socket
     |> assign(
-      :total_student_count,
+      :student_count,
       Repo.one(Reporting.student_count(start_datetime, end_datetime))
     )
     |> assign(
-      :total_school_count,
+      :school_count,
       Repo.one(Reporting.school_count(start_datetime, end_datetime))
+    )
+    |> assign(
+      :lesson_count,
+      Repo.one(Reporting.lesson_count(start_datetime, end_datetime))
     )
   end
 

@@ -12,17 +12,17 @@ defmodule LifetownClinic.ReportinTest do
 
     school
     |> create_student("Bob")
-    |> check_in()
+    |> complete_lesson()
 
     school
     |> create_student("Fred")
-    |> check_in()
+    |> complete_lesson()
 
     %School{name: "Another Really Cool High School"}
     |> Repo.insert!()
     |> create_student("Sally")
-    |> check_in(last_week)
-    |> check_in(last_week)
+    |> complete_lesson(last_week)
+    |> complete_lesson(last_week)
 
     :ok
   end
@@ -59,6 +59,22 @@ defmodule LifetownClinic.ReportinTest do
     assert 1 == Repo.one(Reporting.school_count(nil, last_week))
   end
 
+  test "It should return lesson count for a given date range" do
+    last_week = days_ago(7)
+    last_month = days_ago(30)
+    yesterday = days_ago(1)
+    today = Timex.now() |> Timex.to_datetime()
+
+    assert 4 == Repo.one(Reporting.lesson_count(nil, nil))
+    assert 2 == Repo.one(Reporting.lesson_count(yesterday, nil))
+    assert 4 == Repo.one(Reporting.lesson_count(last_week, nil))
+    assert 2 == Repo.one(Reporting.lesson_count(yesterday, today))
+    assert 4 == Repo.one(Reporting.lesson_count(last_week, today))
+    assert 2 == Repo.one(Reporting.lesson_count(last_month, last_week))
+    assert 4 == Repo.one(Reporting.lesson_count(nil, today))
+    assert 2 == Repo.one(Reporting.lesson_count(nil, last_week))
+  end
+
   defp days_ago(count) do
     Timex.today() |> Timex.shift(days: -count) |> Timex.to_datetime()
   end
@@ -70,14 +86,14 @@ defmodule LifetownClinic.ReportinTest do
     |> Repo.insert!()
   end
 
-  defp check_in(student) do
+  defp complete_lesson(student) do
     today = Timex.today() |> Timex.to_datetime()
 
     student
-    |> check_in(today)
+    |> complete_lesson(today)
   end
 
-  defp check_in(student, date) do
+  defp complete_lesson(student, date) do
     student
     |> Ecto.build_assoc(:lessons)
     |> Lesson.changeset(%{inserted_at: date})
