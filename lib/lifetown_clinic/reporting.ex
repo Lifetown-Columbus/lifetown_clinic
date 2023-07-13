@@ -27,7 +27,29 @@ defmodule LifetownClinic.Reporting do
       select: count()
   end
 
-  def school_count do
+  def school_count(nil, nil) do
     from s in School, select: count()
+  end
+
+  def school_count(start_date, nil) do
+    today = Timex.now() |> Timex.to_datetime()
+    school_count(start_date, today)
+  end
+
+  def school_count(nil, end_date) do
+    epoch = Timex.zero() |> Timex.to_datetime()
+    school_count(epoch, end_date)
+  end
+
+  def school_count(start_date, end_date) do
+    from sc in School,
+      join: st in Student,
+      where: st.school_id == sc.id,
+      join: l in Lesson,
+      on: l.student_id == st.id,
+      where:
+        l.inserted_at >= ^start_date and
+          l.inserted_at <= ^end_date,
+      select: count(sc.id, :distinct)
   end
 end

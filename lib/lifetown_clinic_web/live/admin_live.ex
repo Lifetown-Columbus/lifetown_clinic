@@ -37,7 +37,10 @@ defmodule LifetownClinicWeb.AdminLive do
       :total_student_count,
       Repo.one(Reporting.student_count(start_datetime, end_datetime))
     )
-    |> assign(:total_school_count, Repo.one(Reporting.school_count()))
+    |> assign(
+      :total_school_count,
+      Repo.one(Reporting.school_count(start_datetime, end_datetime))
+    )
   end
 
   defp parse_date(""), do: nil
