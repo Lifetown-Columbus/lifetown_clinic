@@ -16,11 +16,13 @@
       </div>
     <% end %>
     <%= for student <- Enum.reverse(@checked_in) do %>
-      <li id={student.name} class="checked-in" phx-click="confirm" phx-value-name={student.name}>
+      <li id={student.name}>
         <div class="name">
           <span class="label">Name: </span>
           <%= student.name %>
         </div>
+        <button phx-click="confirm" phx-value-name={student.name} phx-value-id={student.id}>&check;</button>
+        <button class="cancel" phx-click="remove" phx-value-id={student.id}>X</button>
       </li>
     <% end %>
   </ul>
@@ -33,7 +35,7 @@
   <% end %>
   <ul>
     <%= for student <- @confirmed do %>
-      <li phx-click="select_student" phx-value-id={student.id}>
+      <li class="clickable" phx-click="select_student" phx-value-id={student.id}>
         <div class="name">
           <span class="label">Name: </span>
           <%= student.name %>
@@ -78,7 +80,7 @@
       <% end %>
       <ul>
         <%= for student <- @confirming.possible_students do%>
-          <li phx-click="select_student" phx-value-id={student.id}>
+          <li class="clickable" phx-click="select_student" phx-value-id={student.id}>
             <div class="name">
               <span class="label">Name: </span>
               <%= student.name %>
@@ -93,7 +95,7 @@
             </div>
           </li>
         <% end %>
-        <li phx-click="select_student" phx-value-id="new">New Student</li>
+        <li class="clickable" phx-click="select_student" phx-value-id="new">New Student</li>
       </ul>
       <button class="cancel" phx-click="cancel_confirmation">Cancel</button>
     </div>

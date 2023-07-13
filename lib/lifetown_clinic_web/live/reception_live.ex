@@ -28,8 +28,13 @@ defmodule LifetownClinicWeb.ReceptionLive do
     {:noreply, fetch_all(socket)}
   end
 
-  def handle_event("confirm", %{"name" => name}, socket) do
-    {:noreply, assign(socket, :confirming, Confirmation.new(name))}
+  def handle_event("confirm", %{"id" => id, "name" => name}, socket) do
+    {:noreply, assign(socket, :confirming, Confirmation.new(id, name))}
+  end
+
+  def handle_event("remove", %{"id" => id}, socket) do
+    Reception.remove(id)
+    {:noreply, assign(socket, :confirming, nil)}
   end
 
   def handle_event("cancel_confirmation", _, socket) do
@@ -52,7 +57,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
         assign(
           socket,
           :confirming,
-          Confirmation.select_student(Confirmation.new(""), id)
+          Confirmation.select_student(Confirmation.new(id, ""), id)
         )
 
       {:noreply, socket}
@@ -64,7 +69,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   def handle_event("save", %{"school" => school}, socket) do
     with confirmation <- socket.assigns.confirming,
          {:ok, _} <- save_student(confirmation, school) do
-      Reception.confirm(confirmation.name)
+      Reception.confirm(confirmation.id)
 
       socket =
         socket

@@ -1,10 +1,10 @@
 defmodule LifetownClinicWeb.Confirmation do
-  defstruct [:name, :student, :possible_schools, :possible_students]
+  defstruct [:id, :name, :student, :possible_schools, :possible_students]
 
   alias LifetownClinic.Repo
   alias LifetownClinic.Schema.{Student, School}
 
-  def new(name) do
+  def new(id, name) do
     possible_students =
       Student.by_name(name)
       |> Repo.all()
@@ -12,6 +12,7 @@ defmodule LifetownClinicWeb.Confirmation do
       |> Repo.preload(:lessons)
 
     %__MODULE__{
+      id: id,
       name: name,
       student: nil,
       possible_schools: [],

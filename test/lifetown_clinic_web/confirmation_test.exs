@@ -7,7 +7,8 @@ defmodule LifetownClinicWeb.ConfirmationTest do
   alias LifetownClinic.Schema.Student
 
   test "it should create a new confirmation" do
-    result = Confirmation.new("Billy")
+    result = Confirmation.new("abc123", "Billy")
+    assert result.id == "abc123"
     assert result.name == "Billy"
     assert result.student == nil
     assert result.possible_schools == []
@@ -19,8 +20,8 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       %School{name: "Nitro High School"}
       |> Repo.insert!()
 
-    assert "Billy"
-           |> Confirmation.new()
+    assert "abc123"
+           |> Confirmation.new("Billy")
            |> Confirmation.lookup_school("ni")
            |> Map.get(:possible_schools) == [school]
   end
@@ -31,7 +32,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       |> Repo.insert!()
       |> Repo.preload(:lessons)
 
-    result = Confirmation.new("Billy")
+    result = Confirmation.new("abc123", "Billy")
     assert result.name == "Billy"
     assert result.student == nil
     assert result.possible_schools == []
@@ -40,11 +41,11 @@ defmodule LifetownClinicWeb.ConfirmationTest do
 
   test "it should allow you to select a new student" do
     result =
-      "Billy"
-      |> Confirmation.new()
+      "abc123"
+      |> Confirmation.new("Billy")
       |> Confirmation.select_student(nil)
 
-    assert result.student == %Student{name: "Billy", school: %School{name: nil}}
+    assert result.student == %Student{name: "Billy", lessons: [], school: %School{name: nil}}
   end
 
   test "it should allow you to select an existing student" do
@@ -55,8 +56,8 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       |> Repo.preload(:lessons)
 
     result =
-      "Billy"
-      |> Confirmation.new()
+      "some-id"
+      |> Confirmation.new("Billy")
       |> Confirmation.select_student(student.id)
 
     assert result.student == student
