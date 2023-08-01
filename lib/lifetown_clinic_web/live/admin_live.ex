@@ -45,6 +45,10 @@ defmodule LifetownClinicWeb.AdminLive do
       :lesson_count,
       Repo.one(Reporting.lesson_count(start_datetime, end_datetime))
     )
+    |> assign(
+      :attendance_per_school,
+      Repo.all(Reporting.attendance_per_school(start_datetime, end_datetime))
+    )
   end
 
   defp parse_date(""), do: nil

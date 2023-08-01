@@ -10,6 +10,10 @@ defmodule LifetownClinic.ReportinTest do
       %School{name: "Really Cool High School"}
       |> Repo.insert!()
 
+    other_school =
+      %School{name: "Another Really Cool High School"}
+      |> Repo.insert!()
+
     school
     |> create_student("Bob")
     |> complete_lesson()
@@ -18,13 +22,12 @@ defmodule LifetownClinic.ReportinTest do
     |> create_student("Fred")
     |> complete_lesson()
 
-    %School{name: "Another Really Cool High School"}
-    |> Repo.insert!()
+    other_school
     |> create_student("Sally")
     |> complete_lesson(last_week)
     |> complete_lesson(last_week)
 
-    :ok
+    %{school: school, other_school: other_school}
   end
 
   test "It should return student count for a given date range" do
@@ -73,6 +76,40 @@ defmodule LifetownClinic.ReportinTest do
     assert 2 == Repo.one(Reporting.lesson_count(last_month, last_week))
     assert 4 == Repo.one(Reporting.lesson_count(nil, today))
     assert 2 == Repo.one(Reporting.lesson_count(nil, last_week))
+  end
+
+  test "It should return students per lessons completed" do
+  end
+
+  test "It should return student attendance per school", %{
+    school: school,
+    other_school: other_school
+  } do
+    last_week = days_ago(7)
+    last_month = days_ago(30)
+    yesterday = days_ago(1)
+    today = Timex.now() |> Timex.to_datetime()
+
+    assert [%{school: school, attendance: 2}, %{school: other_school, attendance: 1}] ==
+             Repo.all(Reporting.attendance_per_school(nil, nil))
+
+    assert [%{school: school, attendance: 2}] ==
+             Repo.all(Reporting.attendance_per_school(yesterday, nil))
+
+    assert [%{school: school, attendance: 2}, %{school: other_school, attendance: 1}] ==
+             Repo.all(Reporting.attendance_per_school(last_week, nil))
+
+    assert [%{school: school, attendance: 2}] ==
+             Repo.all(Reporting.attendance_per_school(yesterday, today))
+
+    assert [%{school: other_school, attendance: 1}] ==
+             Repo.all(Reporting.attendance_per_school(last_month, last_week))
+
+    assert [%{school: school, attendance: 2}, %{school: other_school, attendance: 1}] ==
+             Repo.all(Reporting.attendance_per_school(nil, today))
+
+    assert [%{school: other_school, attendance: 1}] ==
+             Repo.all(Reporting.attendance_per_school(nil, last_week))
   end
 
   defp days_ago(count) do

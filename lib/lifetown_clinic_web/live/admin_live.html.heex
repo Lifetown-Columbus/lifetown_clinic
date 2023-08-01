@@ -9,16 +9,66 @@
   </div>
   <div class="results">
     <div class="panel">
-      <h4>Students Checked In: </h4>
+      <h4>Students Attended</h4>
       <h1><%= @student_count %></h1>
     </div>
     <div class="panel">
-      <h4>Schools Checked In: </h4>
+      <h4>Schools Attended</h4>
       <h1><%= @school_count %></h1>
     </div>
     <div class="panel">
-      <h4>Lessons Completed: </h4>
+      <h4>Lessons Completed</h4>
       <h1><%= @lesson_count %></h1>
+    </div>
+  </div>
+  <div class="results">
+    <div class="panel">
+      <table>
+      <h4>Students per Lessons Completed</h4>
+        <tr>
+          <th>Lessons Completed</th>
+          <th>Student Count</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>10</td>
+        </tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h4>Student Attendance per School</h4>
+      <table>
+        <tr>
+          <th>School Name</th>
+          <th>Students Attended</th>
+        </tr>
+        <%= for record <- @attendance_per_school do %>
+        <tr>
+          <td><%= record.school.name %></td>
+          <td><%= record.attendance %></td>
+        </tr>
+        <% end %>
+      </table>
     </div>
   </div>
 </div>
