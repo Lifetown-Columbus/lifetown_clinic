@@ -27,7 +27,7 @@ defmodule LifetownClinic.Schema.Student do
 
   def by_name(name) do
     from s in __MODULE__,
-      where: s.name == ^name,
+      where: ilike(s.name, ^name),
       select: s
   end
 
