@@ -9,6 +9,10 @@
   --dark-gray:  #555555;
 }
 
+.error {
+  color: var(--orange)
+}
+
 .flex-1 {
   flex: 1;
 }
