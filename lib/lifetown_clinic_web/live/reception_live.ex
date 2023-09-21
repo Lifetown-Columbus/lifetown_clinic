@@ -4,7 +4,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   alias Phoenix.PubSub
   alias LifetownClinic.Reception
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.{Lesson, Student}
+  alias LifetownClinic.Schema.Student
   alias LifetownClinicWeb.Confirmation
 
   @pubsub LifetownClinic.PubSub
@@ -75,33 +75,6 @@ defmodule LifetownClinicWeb.ReceptionLive do
     else
       {:noreply, update(socket, :confirming, fn c -> Confirmation.select_student(c, id) end)}
     end
-  end
-
-  def handle_event("add_lesson", _, socket) do
-    student = socket.assigns.confirming.student
-
-    if Enum.count(student.lessons) < 6 do
-      student
-      |> Ecto.build_assoc(:lessons)
-      |> Lesson.changeset(%{})
-      |> Repo.insert()
-    end
-
-    {:noreply,
-     update(socket, :confirming, fn c -> Confirmation.select_student(c, student.id) end)}
-  end
-
-  def handle_event("remove_lesson", _, socket) do
-    student = socket.assigns.confirming.student
-
-    if Enum.count(student.lessons) > 0 do
-      student.lessons
-      |> List.last()
-      |> Repo.delete()
-    end
-
-    {:noreply,
-     update(socket, :confirming, fn c -> Confirmation.select_student(c, student.id) end)}
   end
 
   defp fetch_all(socket) do
