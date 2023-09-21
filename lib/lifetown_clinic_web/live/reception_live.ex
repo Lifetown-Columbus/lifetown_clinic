@@ -4,7 +4,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
   alias Phoenix.PubSub
   alias LifetownClinic.Reception
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.{Lesson, School, Student}
+  alias LifetownClinic.Schema.{Lesson, Student}
   alias LifetownClinicWeb.Confirmation
 
   @pubsub LifetownClinic.PubSub
@@ -26,6 +26,17 @@ defmodule LifetownClinicWeb.ReceptionLive do
 
   def handle_info(:student_removed, socket) do
     {:noreply, fetch_all(socket)}
+  end
+
+  def handle_info(:student_confirmed, socket) do
+    Reception.confirm(socket.assigns.confirming.id)
+
+    socket =
+      socket
+      |> assign(:confirming, nil)
+      |> fetch_all()
+
+    {:noreply, socket}
   end
 
   def handle_event("confirm", %{"id" => id, "name" => name}, socket) do
@@ -66,30 +77,6 @@ defmodule LifetownClinicWeb.ReceptionLive do
     end
   end
 
-  def handle_event("save", %{"school" => school}, socket) do
-    with confirmation <- socket.assigns.confirming,
-         {:ok, _} <- save_student(confirmation, school) do
-      Reception.confirm(confirmation.id)
-
-      socket =
-        socket
-        |> assign(:confirming, nil)
-        |> fetch_all()
-
-      {:noreply, socket}
-    else
-      {:error, changeset} ->
-        IO.inspect(changeset, label: "TODO")
-        {:noreply, socket}
-    end
-  end
-
-  def handle_event("lookup-school", %{"school" => school}, socket) do
-    confirmation = Confirmation.lookup_school(socket.assigns.confirming, school)
-
-    {:noreply, assign(socket, :confirming, confirmation)}
-  end
-
   def handle_event("add_lesson", _, socket) do
     student = socket.assigns.confirming.student
 
@@ -117,14 +104,6 @@ defmodule LifetownClinicWeb.ReceptionLive do
      update(socket, :confirming, fn c -> Confirmation.select_student(c, student.id) end)}
   end
 
-  defp save_student(confirmation, school) do
-    confirmation.student
-    |> Student.changeset(%{name: confirmation.name})
-    |> maybe_find_school(school)
-    # force updated_at to change to now
-    |> Repo.insert_or_update(force: true)
-  end
-
   defp fetch_all(socket) do
     confirmed_today =
       Student.checked_in_today()
@@ -135,15 +114,5 @@ defmodule LifetownClinicWeb.ReceptionLive do
     socket
     |> assign(:checked_in, Reception.all())
     |> assign(:confirmed, confirmed_today)
-  end
-
-  defp maybe_find_school(changeset, school_name) do
-    case Repo.get_by(School, name: school_name) do
-      nil ->
-        Student.changeset(changeset, %{school: %{id: 1, name: school_name}})
-
-      school ->
-        Ecto.Changeset.put_assoc(changeset, :school, school)
-    end
   end
 end

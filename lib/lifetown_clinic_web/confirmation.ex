@@ -1,8 +1,8 @@
 defmodule LifetownClinicWeb.Confirmation do
-  defstruct [:id, :name, :student, :possible_schools, :possible_students]
+  defstruct [:id, :name, :student, :possible_students]
 
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.{Student, School}
+  alias LifetownClinic.Schema.Student
 
   def new(id, name) do
     possible_students =
@@ -15,25 +15,13 @@ defmodule LifetownClinicWeb.Confirmation do
       id: id,
       name: name,
       student: nil,
-      possible_schools: [],
       possible_students: possible_students
     }
-  end
-
-  def lookup_school(confirmation, query) do
-    schools =
-      query
-      |> School.starts_with()
-      |> Repo.all()
-
-    confirmation
-    |> Map.put(:possible_schools, schools)
   end
 
   def select_student(confirmation, nil) do
     Map.put(confirmation, :student, %Student{
       name: confirmation.name,
-      school: %School{name: nil},
       lessons: []
     })
   end
