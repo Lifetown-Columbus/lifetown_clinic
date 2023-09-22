@@ -22,23 +22,18 @@ defmodule LifetownClinicWeb.StudentForm do
       socket
       |> assign(:form, form)
       |> assign(:schools, schools)
+      |> assign(:student, assigns.student)
 
     {:ok, socket}
-  end
-
-  def handle_event("validate", %{"student" => params}, socket) do
-    form =
-      socket.assigns.form.data
-      |> Student.changeset(params)
-      |> to_form()
-
-    {:noreply, assign(socket, :form, form)}
   end
 
   def handle_event("add_lesson", _, socket) do
     socket =
       update(socket, :form, fn %{source: changeset} ->
-        existing = Ecto.Changeset.get_field(changeset, :lessons)
+        existing =
+          changeset
+          |> Ecto.Changeset.get_field(:lessons)
+          |> Enum.filter(fn lesson -> !lesson.delete end)
 
         if Enum.count(existing) < 6 do
           changeset = Ecto.Changeset.put_assoc(changeset, :lessons, existing ++ [%{}])
@@ -49,21 +44,40 @@ defmodule LifetownClinicWeb.StudentForm do
     {:noreply, socket}
   end
 
-  # def handle_event("remove_lesson", _, socket) do
-  #   student = socket.assigns.confirming.student
+  def handle_event("remove_lesson", %{"index" => index}, socket) do
+    index = String.to_integer(index)
 
-  #   if Enum.count(student.lessons) > 0 do
-  #     student.lessons
-  #     |> List.last()
-  #     |> Repo.delete()
-  #   end
+    socket =
+      update(socket, :form, fn %{source: changeset} ->
+        existing = Ecto.Changeset.get_field(changeset, :lessons)
+        {to_delete, rest} = List.pop_at(existing, index)
 
-  #   {:noreply,
-  #    update(socket, :confirming, fn c -> Confirmation.select_student(c, student.id) end)}
-  # end
+        new_lessons =
+          if Ecto.Changeset.change(to_delete).data.id do
+            List.replace_at(existing, index, Ecto.Changeset.change(to_delete, delete: true))
+          else
+            rest
+          end
+
+        changeset
+        |> Ecto.Changeset.put_assoc(:lessons, new_lessons)
+        |> to_form()
+      end)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("validate", %{"student" => params}, socket) do
+    form =
+      socket.assigns.student
+      |> Student.changeset(params)
+      |> to_form()
+
+    {:noreply, assign(socket, :form, form)}
+  end
 
   def handle_event("save", %{"student" => params}, socket) do
-    case Students.save_student(socket.assigns.form.source) do
+    case Students.save_student(socket.assigns.student, params) do
       {:ok, _} ->
         send(self(), :student_confirmed)
         {:noreply, socket}
@@ -82,7 +96,10 @@ defmodule LifetownClinicWeb.StudentForm do
       <.form for={@form} phx-target={@myself} phx-change="validate" phx-submit="save">
         <.input type="text" label="Name" field={@form[:name]} />
         <.input type="select" label="School" field={@form[:school_id]} options={@schools} />
-        <.progress cid={@myself} field={@form[:lessons]} />
+        <.inputs_for :let={lesson} field={@form[:lessons]}>
+          <.progress cid={@myself} field={lesson} />
+        </.inputs_for>
+        <button type="button" phx-target={@myself} phx-click="add_lesson">Add Lesson</button>
         <button>Save</button>
       </.form>
     </div>
@@ -93,11 +110,35 @@ defmodule LifetownClinicWeb.StudentForm do
   attr :cid, Phoenix.LiveComponent.CID
 
   defp progress(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :deleted,
+        Phoenix.HTML.Form.input_value(assigns.field, :delete) == true
+      )
+
     ~H"""
     <fieldset>
-      <button type="button" phx-target={@cid} phx-click="remove_lesson">Remove Lesson</button>
-      <p><%= Enum.count(@field.value) %></p>
-      <button type="button" phx-target={@cid} phx-click="add_lesson">Add Lesson</button>
+      <div class={if(@deleted, do: "hide")}>
+        <input
+          type="hidden"
+          name={Phoenix.HTML.Form.input_name(@field, :delete)}
+          value={to_string(Phoenix.HTML.Form.input_value(@field, :delete))}
+        />
+        <p>
+          <%= to_string(Phoenix.HTML.Form.input_value(@field, :inserted_at)) %>
+        </p>
+        <button
+          class="cancel"
+          disabled={@deleted}
+          type="button"
+          phx-target={@cid}
+          phx-value-index={@field.index}
+          phx-click="remove_lesson"
+        >
+          X
+        </button>
+      </div>
     </fieldset>
     """
   end

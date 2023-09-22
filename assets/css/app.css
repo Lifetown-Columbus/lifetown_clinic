@@ -10,7 +10,11 @@
 }
 
 .error {
-  color: var(--orange)
+  color: var(--orange);
+}
+
+.hide {
+  display: none;
 }
 
 .flex-1 {
