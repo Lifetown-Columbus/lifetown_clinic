@@ -1,14 +1,30 @@
 <div class="admin">
-  <div>
-    <h2>School Management</h2>
-    <h4>Total School Count</h4>
-    <h1><%= @total_schools %></h1>
+  <h2>School Management</h2>
+  <div class="results">
+    <div class="panel">
+      <h4>Total School Count</h4>
+      <h1><%= @total_schools %></h1>
 
-    <form phx-submit="add-school">
-      <label for="school-name">School Name</label>
-      <input type="text" name="school-name"/>
-      <button>Add School</button>
-    </form>
+      <form phx-submit="add-school">
+        <label for="school-name">School Name</label>
+        <input type="text" name="school-name"/>
+        <button>Add School</button>
+      </form>
+    </div>
+    <div class="panel">
+      <h4>School Search</h4>
+      <form phx-submit="find-school">
+        <label for="query">School Name</label>
+        <input type="text" name="query"/>
+        <button>Search</button>
+      </form>
+      <ul>
+        <li class="school" :for={school <- @schools}>
+          <div><%= school.name %></div>
+          <div>Students: <%= Enum.count(school.students) %></div>
+        </li>
+      </ul>
+    </div>
   </div>
   <div>
     <h2>Reporting</h2>

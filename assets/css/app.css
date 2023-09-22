@@ -155,6 +155,11 @@ ul li .progress {
   flex: 1;
 }
 
+li.school {
+  display: flex;
+  justify-content: space-between;
+}
+
 span.label {
   font-weight: bold;
   margin-right: 10px;

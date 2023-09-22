@@ -10,6 +10,7 @@ defmodule LifetownClinicWeb.AdminLive do
       socket
       |> assign(:start_date, nil)
       |> assign(:end_date, nil)
+      |> assign(:schools, [])
       |> fetch_results()
 
     {:ok, socket}
@@ -39,6 +40,16 @@ defmodule LifetownClinicWeb.AdminLive do
       |> fetch_results()
 
     {:noreply, socket}
+  end
+
+  def handle_event("find-school", %{"query" => school_name}, socket) do
+    schools =
+      school_name
+      |> School.starts_with()
+      |> Repo.all()
+      |> Repo.preload(:students)
+
+    {:noreply, assign(socket, :schools, schools)}
   end
 
   defp fetch_results(socket) do
