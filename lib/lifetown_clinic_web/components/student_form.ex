@@ -114,9 +114,9 @@ defmodule LifetownClinicWeb.StudentForm do
           <.inputs_for :let={lesson} field={@form[:lessons]}>
             <.progress cid={@myself} field={lesson} />
           </.inputs_for>
+           <button type="button" phx-target={@myself} phx-click="add_lesson">Add Lesson</button>
         </fieldset>
-        <button type="button" phx-target={@myself} phx-click="add_lesson">Add Lesson</button>
-        <button>Save</button>
+         <button>Save</button>
       </.form>
     </div>
     """
@@ -144,6 +144,7 @@ defmodule LifetownClinicWeb.StudentForm do
         <p>
           <%= to_string(Phoenix.HTML.Form.input_value(@field, :inserted_at)) %>
         </p>
+        
         <button
           class="cancel"
           disabled={@deleted}
@@ -189,6 +190,7 @@ defmodule LifetownClinicWeb.StudentForm do
       <select id={@field.id} name={@field.name} {@rest}>
         <%= Phoenix.HTML.Form.options_for_select(@options, @field.value) %>
       </select>
+      
       <%= for {err, _} <- @field.errors do %>
         <.error><%= err %></.error>
       <% end %>

@@ -1,74 +1,71 @@
 <div class="admin">
-  <div id="filters">
-    <form class="filters" phx-change="filter_updated">
-      <label for="start-date">After:</label>
-      <input type="date" name="start-date" value={@start_date} />
-      <label for="end-date">Before:</label>
-      <input type="date" name="end-date" value={@end_date} />
-    </form>
-  </div>
+  <h2>School Management</h2>
   <div class="results">
     <div class="panel">
-      <h4>Students Attended</h4>
-      <h1><%= @student_count %></h1>
+      <h4>Total School Count</h4>
+      <h1><%= @total_schools %></h1>
+
+      <form phx-submit="add-school">
+        <label for="school-name">School Name</label>
+        <input type="text" name="school-name"/>
+        <button>Add School</button>
+      </form>
     </div>
     <div class="panel">
-      <h4>Schools Attended</h4>
-      <h1><%= @school_count %></h1>
-    </div>
-    <div class="panel">
-      <h4>Lessons Completed</h4>
-      <h1><%= @lesson_count %></h1>
+      <h4>School Search</h4>
+      <form phx-submit="find-school">
+        <label for="query">School Name</label>
+        <input type="text" name="query"/>
+        <button>Search</button>
+      </form>
+      <ul>
+        <li class="school" :for={school <- @schools}>
+          <div><.link navigate={"/school/#{school.id}"}><%= school.name %></.link></div>
+          <div>Students: <%= Enum.count(school.students) %></div>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="results">
-    <div class="panel">
-      <table>
-      <h4>Students per Lessons Completed</h4>
-        <tr>
-          <th>Lessons Completed</th>
-          <th>Student Count</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>10</td>
-        </tr>
-      </table>
+  <div>
+    <h2>Reporting</h2>
+    <div id="filters">
+      <form class="filters" phx-change="filter_updated">
+        <label for="start-date">After:</label>
+        <input type="date" name="start-date" value={@start_date} />
+        <label for="end-date">Before:</label>
+        <input type="date" name="end-date" value={@end_date} />
+      </form>
     </div>
-    <div class="panel">
-      <h4>Student Attendance per School</h4>
-      <table>
-        <tr>
-          <th>School Name</th>
-          <th>Students Attended</th>
-        </tr>
-        <%= for record <- @attendance_per_school do %>
-        <tr>
-          <td><%= record.school.name %></td>
-          <td><%= record.attendance %></td>
-        </tr>
-        <% end %>
-      </table>
+    <div class="results">
+      <div class="panel">
+        <h4>Students Attended</h4>
+        <h1><%= @student_count %></h1>
+      </div>
+      <div class="panel">
+        <h4>Schools Attended</h4>
+        <h1><%= @school_count %></h1>
+      </div>
+      <div class="panel">
+        <h4>Lessons Completed</h4>
+        <h1><%= @lesson_count %></h1>
+      </div>
+    </div>
+    <div class="results">
+      <div class="panel">
+        <h4>Student Attendance per School</h4>
+        <table>
+          <tr>
+            <th>School Name</th>
+            <th>Students Attended</th>
+          </tr>
+          <%= for record <- @attendance_per_school do %>
+          <tr>
+            <td><%= record.school.name %></td>
+            <td><%= record.attendance %></td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
     </div>
   </div>
 </div>

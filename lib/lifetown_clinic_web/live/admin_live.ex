@@ -3,12 +3,14 @@ defmodule LifetownClinicWeb.AdminLive do
 
   alias LifetownClinic.Reporting
   alias LifetownClinic.Repo
+  alias LifetownClinic.Schema.School
 
   def mount(_, _, socket) do
     socket =
       socket
       |> assign(:start_date, nil)
       |> assign(:end_date, nil)
+      |> assign(:schools, [])
       |> fetch_results()
 
     {:ok, socket}
@@ -26,6 +28,28 @@ defmodule LifetownClinicWeb.AdminLive do
       |> fetch_results()
 
     {:noreply, socket}
+  end
+
+  def handle_event("add-school", %{"school-name" => school_name}, socket) do
+    %School{}
+    |> School.changeset(%{"name" => school_name})
+    |> Repo.insert()
+
+    socket =
+      socket
+      |> fetch_results()
+
+    {:noreply, socket}
+  end
+
+  def handle_event("find-school", %{"query" => school_name}, socket) do
+    schools =
+      school_name
+      |> School.starts_with()
+      |> Repo.all()
+      |> Repo.preload(:students)
+
+    {:noreply, assign(socket, :schools, schools)}
   end
 
   defp fetch_results(socket) do
@@ -48,6 +72,10 @@ defmodule LifetownClinicWeb.AdminLive do
     |> assign(
       :attendance_per_school,
       Repo.all(Reporting.attendance_per_school(start_datetime, end_datetime))
+    )
+    |> assign(
+      :total_schools,
+      Repo.all(School) |> Enum.count()
     )
   end
 
