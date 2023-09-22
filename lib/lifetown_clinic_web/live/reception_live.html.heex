@@ -57,26 +57,7 @@
   <div class="modal" phx-capture-click="cancel_confirmation">
     <div class="modal-body">
       <%= if @confirming.student do %>
-        <form phx-submit="save">
-          <label for="name">Name</label>
-          <input name="name" phx-change="update_name" value={@confirming.name} />
-          <label for="school">School</label>
-          <input list="schools" value={@confirming.student.school.name} autocomplete="off" name="school" phx-change="lookup-school"/>
-          <datalist id="schools">
-            <%= for school <- @confirming.possible_schools do %>
-              <option value={school.name} />
-            <% end %>
-          </datalist>
-          <button>Save</button>
-        </form>
-        <%= if @confirming.student.id do %>
-          <div class="progress">
-            <span class="label">Progress: </span>
-            <%= Enum.count(@confirming.student.lessons) %>/6
-          </div>
-          <button phx-click="remove_lesson">Remove Lesson</button>
-          <button phx-click="add_lesson">Add Lesson</button>
-        <% end %>
+        <.live_component module={LifetownClinicWeb.StudentForm} student={@confirming.student} id="student-form" />
       <% end %>
       <ul>
         <%= for student <- @confirming.possible_students do%>

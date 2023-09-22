@@ -9,6 +9,18 @@
   --dark-gray:  #555555;
 }
 
+.lesson {
+  display: flex;
+}
+
+.error {
+  color: var(--orange);
+}
+
+.hide {
+  display: none;
+}
+
 .flex-1 {
   flex: 1;
 }
@@ -192,14 +204,19 @@ span.label {
 .admin .results {
   padding: 50px;
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
 }
 
-.admin .panel {
+.results .panel {
   border: solid 1px var(--gray);
   border-radius: 5px;
   padding: 25px;
   text-align: center;
+  flex: 1;
+}
+
+.results .panel dl {
+  text-align: left;
 }
 
 .admin .panel h1 {

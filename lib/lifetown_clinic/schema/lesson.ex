@@ -5,14 +5,23 @@ defmodule LifetownClinic.Schema.Lesson do
   schema "lessons" do
     belongs_to :student, LifetownClinic.Schema.Student
 
+    field :delete, :boolean, virtual: true, default: false
+
     timestamps()
   end
 
   @doc false
   def changeset(lesson, attrs) do
-    lesson
-    |> cast(attrs, [:inserted_at])
-    |> assoc_constraint(:student)
-    |> validate_required([])
+    changeset =
+      lesson
+      |> cast(attrs, [:inserted_at, :delete])
+      |> assoc_constraint(:student)
+      |> validate_required([])
+
+    if get_change(changeset, :delete) do
+      %{changeset | action: :delete}
+    else
+      changeset
+    end
   end
 end
