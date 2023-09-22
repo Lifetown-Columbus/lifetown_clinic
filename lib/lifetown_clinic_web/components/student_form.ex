@@ -12,7 +12,7 @@ defmodule LifetownClinicWeb.StudentForm do
       |> to_form()
 
     schools =
-      School
+      School.all()
       |> Repo.all()
       |> Enum.reduce([], fn %{id: id, name: name}, list ->
         [{String.to_atom(name), id}] ++ list

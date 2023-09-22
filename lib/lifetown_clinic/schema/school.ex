@@ -16,6 +16,12 @@ defmodule LifetownClinic.Schema.School do
       select: school
   end
 
+  def all() do
+    from school in __MODULE__,
+      order_by: [desc: school.name],
+      select: school
+  end
+
   @doc false
   def changeset(school, attrs) do
     school
