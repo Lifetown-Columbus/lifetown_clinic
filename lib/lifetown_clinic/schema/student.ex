@@ -31,6 +31,12 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
+  def by_school(school_id) do
+    from s in __MODULE__,
+      where: s.school_id == ^school_id,
+      select: s
+  end
+
   @doc false
   def changeset(student, attrs \\ %{}) do
     student

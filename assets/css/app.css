@@ -155,7 +155,7 @@ ul li .progress {
   flex: 1;
 }
 
-li.school {
+li.school, li.student {
   display: flex;
   justify-content: space-between;
 }

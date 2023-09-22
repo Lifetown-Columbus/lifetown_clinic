@@ -20,7 +20,7 @@
       </form>
       <ul>
         <li class="school" :for={school <- @schools}>
-          <div><%= school.name %></div>
+          <div><.link navigate={"/school/#{school.id}"}><%= school.name %></.link></div>
           <div>Students: <%= Enum.count(school.students) %></div>
         </li>
       </ul>
