@@ -9,6 +9,10 @@
   --dark-gray:  #555555;
 }
 
+.lesson {
+  display: flex;
+}
+
 .error {
   color: var(--orange);
 }

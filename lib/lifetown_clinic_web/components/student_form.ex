@@ -33,10 +33,23 @@ defmodule LifetownClinicWeb.StudentForm do
         existing =
           changeset
           |> Ecto.Changeset.get_field(:lessons)
-          |> Enum.filter(fn lesson -> !lesson.delete end)
 
-        if Enum.count(existing) < 6 do
-          changeset = Ecto.Changeset.put_assoc(changeset, :lessons, existing ++ [%{}])
+        count =
+          existing
+          |> Enum.filter(fn lesson -> !lesson.delete end)
+          |> Enum.count()
+          |> IO.inspect()
+
+        if count < 6 do
+          changeset =
+            Ecto.Changeset.put_assoc(
+              changeset,
+              :lessons,
+              existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
+            )
+
+          to_form(changeset)
+        else
           to_form(changeset)
         end
       end)
@@ -96,9 +109,12 @@ defmodule LifetownClinicWeb.StudentForm do
       <.form for={@form} phx-target={@myself} phx-change="validate" phx-submit="save">
         <.input type="text" label="Name" field={@form[:name]} />
         <.input type="select" label="School" field={@form[:school_id]} options={@schools} />
-        <.inputs_for :let={lesson} field={@form[:lessons]}>
-          <.progress cid={@myself} field={lesson} />
-        </.inputs_for>
+        <fieldset>
+          <label for="lessons">Lessons Completed</label>
+          <.inputs_for :let={lesson} field={@form[:lessons]}>
+            <.progress cid={@myself} field={lesson} />
+          </.inputs_for>
+        </fieldset>
         <button type="button" phx-target={@myself} phx-click="add_lesson">Add Lesson</button>
         <button>Save</button>
       </.form>
@@ -118,8 +134,8 @@ defmodule LifetownClinicWeb.StudentForm do
       )
 
     ~H"""
-    <fieldset>
-      <div class={if(@deleted, do: "hide")}>
+    <div class={if(@deleted, do: "hide")}>
+      <div class="lesson">
         <input
           type="hidden"
           name={Phoenix.HTML.Form.input_name(@field, :delete)}
@@ -139,7 +155,7 @@ defmodule LifetownClinicWeb.StudentForm do
           X
         </button>
       </div>
-    </fieldset>
+    </div>
     """
   end
 
