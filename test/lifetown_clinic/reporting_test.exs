@@ -118,8 +118,7 @@ defmodule LifetownClinic.ReportinTest do
 
   defp create_student(school, name) do
     %Student{}
-    |> Student.changeset(%{name: name})
-    |> Ecto.Changeset.put_assoc(:school, school)
+    |> Student.changeset(%{name: name, school_id: school.id})
     |> Repo.insert!()
   end
 

@@ -11,19 +11,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
     assert result.id == "abc123"
     assert result.name == "Billy"
     assert result.student == nil
-    assert result.possible_schools == []
     assert result.possible_students == []
-  end
-
-  test "it should lookup schools that start with some query" do
-    school =
-      %School{name: "Nitro High School"}
-      |> Repo.insert!()
-
-    assert "abc123"
-           |> Confirmation.new("Billy")
-           |> Confirmation.lookup_school("ni")
-           |> Map.get(:possible_schools) == [school]
   end
 
   test "it should lookup possible students when a new confirmation is created with a given name" do
@@ -35,7 +23,6 @@ defmodule LifetownClinicWeb.ConfirmationTest do
     result = Confirmation.new("abc123", "Billy")
     assert result.name == "Billy"
     assert result.student == nil
-    assert result.possible_schools == []
     assert result.possible_students == [student]
   end
 
@@ -45,7 +32,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
       |> Confirmation.new("Billy")
       |> Confirmation.select_student(nil)
 
-    assert result.student == %Student{name: "Billy", lessons: [], school: %School{name: nil}}
+    assert result.student == %Student{name: "Billy", lessons: []}
   end
 
   test "it should allow you to select an existing student" do
