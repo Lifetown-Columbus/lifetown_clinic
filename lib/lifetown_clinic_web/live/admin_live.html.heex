@@ -52,6 +52,39 @@
     </div>
     <div class="results">
       <div class="panel">
+        <h4>Student Progress</h4>
+        <table>
+          <tr>
+            <th>Lesson Completed</th>
+            <th>Students Count</th>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 6, [])) %></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 5, [])) %></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 4, [])) %></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 3, [])) %></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 2, [])) %></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td><%= Enum.count(Map.get(@students_per_lesson, 1, [])) %></td>
+          </tr>
+        </table>
+      </div>
+      <div class="panel">
         <h4>Student Attendance per School</h4>
         <table>
           <tr>
