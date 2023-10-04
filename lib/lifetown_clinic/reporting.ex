@@ -62,6 +62,26 @@ defmodule LifetownClinic.Reporting do
       select: %{school: sc, attendance: count(st.id, :distinct)}
   end
 
+  def students_attended(nil, nil),
+    do: students_attended(epoch(), today())
+
+  def students_attended(nil, end_date),
+    do: students_attended(epoch(), end_date)
+
+  def students_attended(start_date, nil),
+    do: students_attended(start_date, today())
+
+  def students_attended(start_date, end_date) do
+    from s in Student,
+      join: l in Lesson,
+      on: l.student_id == s.id,
+      where:
+        l.inserted_at >= ^start_date and
+          l.inserted_at <= ^end_date,
+      distinct: s.id,
+      select: s
+  end
+
   defp epoch, do: Timex.zero() |> Timex.to_datetime()
   defp today, do: Timex.now() |> Timex.to_datetime()
 end

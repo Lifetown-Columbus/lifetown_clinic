@@ -77,6 +77,13 @@ defmodule LifetownClinicWeb.AdminLive do
       :total_schools,
       Repo.all(School) |> Enum.count()
     )
+    |> assign(
+      :students_per_lesson,
+      Reporting.students_attended(start_datetime, end_datetime)
+      |> Repo.all()
+      |> Repo.preload(:lessons)
+      |> Enum.group_by(fn student -> Enum.count(student.lessons) end)
+    )
   end
 
   defp parse_date(""), do: nil

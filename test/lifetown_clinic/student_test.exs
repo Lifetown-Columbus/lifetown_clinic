@@ -11,8 +11,7 @@ defmodule LifetownClinic.StudentTest do
       |> Repo.insert!()
 
     %Student{}
-    |> Student.changeset(%{name: "BillyB"})
-    |> Ecto.Changeset.put_assoc(:school, school)
+    |> Student.changeset(%{name: "BillyB", school_id: school.id})
     |> Repo.insert!()
 
     student = Repo.get_by(Student, name: "BillyB") |> Repo.preload(:school)
@@ -33,15 +32,19 @@ defmodule LifetownClinic.StudentTest do
   end
 
   test "It can find students updated today" do
+    school =
+      %School{name: "Really Cool High School"}
+      |> Repo.insert!()
+
     today =
-      %Student{name: "Today"}
-      |> Student.changeset(%{})
+      %Student{}
+      |> Student.changeset(%{name: "Today", school_id: school.id})
       |> Repo.insert!(force: true)
 
     %Student{
-      name: "Yesterday",
       updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime()
     }
+    |> Student.changeset(%{name: "Yesterday", school_id: school.id})
     |> Repo.insert!()
 
     assert Student.checked_in_today()

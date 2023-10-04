@@ -78,9 +78,6 @@ defmodule LifetownClinic.ReportinTest do
     assert 2 == Repo.one(Reporting.lesson_count(nil, last_week))
   end
 
-  test "It should return students per lessons completed" do
-  end
-
   test "It should return student attendance per school", %{
     school: school,
     other_school: other_school
@@ -112,14 +109,50 @@ defmodule LifetownClinic.ReportinTest do
              Repo.all(Reporting.attendance_per_school(nil, last_week))
   end
 
+  test "It should return students that attended" do
+    last_week = days_ago(7)
+    last_month = days_ago(30)
+    yesterday = days_ago(1)
+    today = Timex.now() |> Timex.to_datetime()
+
+    assert ["Bob", "Fred", "Sally"] ==
+             Reporting.students_attended(nil, nil)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+
+    assert ["Bob", "Fred", "Sally"] ==
+             Reporting.students_attended(nil, today)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+
+    assert ["Bob", "Fred", "Sally"] ==
+             Reporting.students_attended(last_week, today)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+
+    assert ["Bob", "Fred", "Sally"] ==
+             Reporting.students_attended(last_week, nil)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+
+    assert ["Bob", "Fred"] ==
+             Reporting.students_attended(yesterday, today)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+
+    assert ["Sally"] ==
+             Reporting.students_attended(last_month, last_week)
+             |> Repo.all()
+             |> Enum.map(&Map.get(&1, :name))
+  end
+
   defp days_ago(count) do
     Timex.today() |> Timex.shift(days: -count) |> Timex.to_datetime()
   end
 
   defp create_student(school, name) do
     %Student{}
-    |> Student.changeset(%{name: name})
-    |> Ecto.Changeset.put_assoc(:school, school)
+    |> Student.changeset(%{name: name, school_id: school.id})
     |> Repo.insert!()
   end
 
