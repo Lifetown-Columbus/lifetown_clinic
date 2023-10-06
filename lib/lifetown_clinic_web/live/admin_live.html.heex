@@ -114,7 +114,7 @@
           </tr>
           <%= for record <- @attendance_per_school do %>
           <tr>
-            <td><%= record.school.name %></td>
+            <td><.link navigate={"/school/#{record.school.id}"}><%= record.school.name %></.link></td>
             <td><%= record.attendance %></td>
           </tr>
           <% end %>
