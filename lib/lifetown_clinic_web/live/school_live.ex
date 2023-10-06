@@ -15,11 +15,12 @@ defmodule LifetownClinicWeb.SchoolLive do
       |> Student.by_school()
       |> Repo.all()
       |> Repo.preload(:lessons)
+      |> Enum.group_by(fn st -> Enum.count(st.lessons) end)
 
     socket =
       socket
       |> assign(:school, school)
-      |> assign(:students, students)
+      |> assign(:students_by_progress, students)
 
     {:ok, socket}
   end
