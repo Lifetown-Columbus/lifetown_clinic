@@ -9,8 +9,9 @@ defmodule LifetownClinicWeb.SchoolLive do
     school =
       School
       |> Repo.get(id)
+      |> Repo.preload(:students)
 
-    students =
+    students_by_progress =
       id
       |> Student.by_school()
       |> Repo.all()
@@ -20,7 +21,8 @@ defmodule LifetownClinicWeb.SchoolLive do
     socket =
       socket
       |> assign(:school, school)
-      |> assign(:students_by_progress, students)
+      |> assign(:student_count, Enum.count(school.students))
+      |> assign(:students_by_progress, students_by_progress)
 
     {:ok, socket}
   end
