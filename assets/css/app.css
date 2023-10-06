@@ -285,3 +285,15 @@ nav>ul>li.active, nav>ul>li.active a {
   color: white;
   background-color: var(--dark-gray)
 }
+
+.progress-inputs {
+  display: flex;
+  justify-content: space-around;
+}
+
+div.star {
+  border: none;
+  background-color: white;
+  font-size: 2em;
+  color: var(--orange); 
+}
