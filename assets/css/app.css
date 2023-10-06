@@ -115,6 +115,10 @@ label.error {
   color: red;
 } 
 
+li.nested {
+  border: none !important;
+}
+
 ul {
   list-style: none;
 }
