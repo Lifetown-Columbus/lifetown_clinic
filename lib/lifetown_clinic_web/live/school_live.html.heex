@@ -2,14 +2,13 @@
   <%= if @form == nil do %>
     <h1><%= @school.name %></h1>
     <button class="icon" type="button" phx-click="edit">✎</button>
-  <%= else %>
-  <.form for={@form} phx-change="validate" phx-submit="save">
-    <.input type="text" label="Name" field={@form[:name]} />
-    <button disabled={!@form.source.valid?}>Save</button>
-    <button class="cancel" phx-click="cancel" type="button">Cancel</button>
-  </.form>
-
-  <%end%>
+  <% else %>
+    <.form for={@form} phx-change="validate" phx-submit="save">
+      <.input type="text" label="Name" field={@form[:name]} />
+      <button disabled={!@form.source.valid?}>Save</button>
+      <button class="cancel" phx-click="cancel" type="button">Cancel</button>
+    </.form>
+  <% end %>
 </header>
 
 <div class="results">

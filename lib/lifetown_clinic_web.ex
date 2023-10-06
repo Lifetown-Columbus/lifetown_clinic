@@ -97,6 +97,7 @@ defmodule LifetownClinicWeb do
       import Phoenix.View
 
       import LifetownClinicWeb.ErrorHelpers
+      import LifetownClinicWeb.CoreComponents
       import LifetownClinicWeb.Gettext
       alias LifetownClinicWeb.Router.Helpers, as: Routes
       unquote(verified_routes())
