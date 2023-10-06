@@ -10,9 +10,9 @@ defmodule LifetownClinic.Schema.School do
     timestamps()
   end
 
-  def starts_with(text) do
+  def search(text) do
     from school in __MODULE__,
-      where: ilike(school.name, ^(text <> "%")),
+      where: ilike(school.name, ^("%" <> text <> "%")),
       select: school
   end
 
