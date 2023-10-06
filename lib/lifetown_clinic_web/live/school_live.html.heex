@@ -3,13 +3,21 @@
   <div class="panel">
   <h2>Students</h2>
   <h4>Total Count: <span><%= @student_count %></span></h4>
-  <dl>
+  <table>
+  <tr>
+    <th>Lessons Completed</th>
+    <th>Student Name</th>
+  </tr>
   <%= for i <- 6..0 do %> 
-    <dt>Lesson <span><%= i %></span></dt>
-    <dd :for={student <- Map.get(@students_by_progress, i, [])}>
-      <div><.link navigate={"/student/#{student.id}"}><%= student.name %></.link></div>
-    </dd>
+    <tr>
+      <td><%= i %></td>
+      <td>
+        <div :for={student <- Map.get(@students_by_progress, i, [])}>
+          <.link navigate={"/student/#{student.id}"}><%= student.name %></.link>
+        </div>
+      </td>
+    </tr>
   <% end %>
-  </dl>
+  </table>
   </div>
 </div>
