@@ -1,3 +1,18 @@
 <div class="container">
   <.live_component module={LifetownClinicWeb.StudentForm} student={@student} id="student-form" />
+  <button class="cancel" type="button" phx-click="delete">Delete Student</button>
 </div>
+<%= if @deleting do %>
+<div class="modal" phx-capture-click="cancel_delete">
+  <div class="modal-body">
+    <h2>
+      <span class="warning">⚠</span>
+      <span>Are you sure you want to delete </span>
+      <span><%= @student.name %></span>
+      <span>?</span>
+    </h2>
+    <button phx-click="confirm_delete">Yes</button>
+    <button class="cancel" phx-click="cancel_delete">No</button>
+  </div>
+</div>
+<% end %>

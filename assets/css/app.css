@@ -9,6 +9,11 @@
   --dark-gray:  #555555;
 }
 
+.warning {
+  font-size: 1.7em;
+  color: var(--orange);
+}
+
 .lesson {
   display: flex;
 }
