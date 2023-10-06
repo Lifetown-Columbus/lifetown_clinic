@@ -84,6 +84,7 @@ defmodule LifetownClinicWeb.StudentForm do
     form =
       socket.assigns.student
       |> Student.changeset(params)
+      |> Map.put(:action, :update)
       |> to_form()
 
     {:noreply, assign(socket, :form, form)}
@@ -116,7 +117,7 @@ defmodule LifetownClinicWeb.StudentForm do
           </.inputs_for>
            <button type="button" phx-target={@myself} phx-click="add_lesson">Add Lesson</button>
         </fieldset>
-         <button>Save</button>
+         <button disabled={!@form.source.valid?}>Save</button>
       </.form>
     </div>
     """
