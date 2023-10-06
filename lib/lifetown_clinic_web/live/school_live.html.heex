@@ -1,9 +1,11 @@
 <h1><%= @school.name %></h1>
 
-<h2>Students</h2>
-<ul>
-  <li class="student" :for={student <- @students}>
-    <div><%= student.name %></div>
-    <div>Lessons complete: <%= Enum.count(student.lessons) %></div>
-  </li>
-</ul>
+<div class="container">
+  <h2>Students</h2>
+  <ul>
+    <li class="student" :for={student <- @students}>
+      <div><.link navigate={"/student/#{student.id}"}><%= student.name %></.link></div>
+      <div>Lessons complete: <%= Enum.count(student.lessons) %></div>
+    </li>
+  </ul>
+</div>

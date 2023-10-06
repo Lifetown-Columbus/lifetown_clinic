@@ -1,4 +1,25 @@
 <div class="admin">
+  <h2>Student Management</h2>
+  <div class="results">
+    <div class="panel">
+      <h4>Total Student Count</h4>
+      <h1><%= @total_students %></h1>
+    </div>
+    <div class="panel">
+      <h4>Student Search</h4>
+      <form phx-submit="find-student">
+        <label for="query">Student Name</label>
+        <input type="text" name="query"/>
+        <button>Search</button>
+      </form>
+      <ul>
+        <li class="student" :for={student <- @students}>
+          <div><.link navigate={"/student/#{student.id}"}><%= student.name %></.link></div>
+          <div>School: <%= student.school.name %></div>
+        </li>
+      </ul>
+    </div>
+  </div>
   <h2>School Management</h2>
   <div class="results">
     <div class="panel">

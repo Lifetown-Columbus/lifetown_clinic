@@ -10,7 +10,7 @@ defmodule LifetownClinic.Students do
 
   def lookup_school(query) do
     query
-    |> School.starts_with()
+    |> School.search()
     |> Repo.all()
   end
 end

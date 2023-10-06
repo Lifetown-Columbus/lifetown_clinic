@@ -37,6 +37,12 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
+  def search(text) do
+    from student in __MODULE__,
+      where: ilike(student.name, ^("%" <> text <> "%")),
+      select: student
+  end
+
   @doc false
   def changeset(student, attrs \\ %{}) do
     student

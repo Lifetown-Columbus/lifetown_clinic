@@ -212,7 +212,7 @@ span.label {
   gap: 20px;
 }
 
-.results .panel {
+.panel {
   border: solid 1px var(--gray);
   border-radius: 5px;
   padding: 25px;
@@ -220,12 +220,10 @@ span.label {
   flex: 1;
 }
 
-.results .panel dl {
+.panel dl {
   text-align: left;
 }
 
-.admin .panel h1 {
+.panel h1 {
   font-size: 4em;
 }
-
-
