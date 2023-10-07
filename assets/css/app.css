@@ -80,11 +80,11 @@ header {
   justify-content: center;
 }
 
-header.reception img {
+header img {
   width: 75px;
 }
 
-header.reception h1 {
+header h1 {
   text-align: center;
   margin-top: 20px;
 }
@@ -242,4 +242,46 @@ span.label {
 
 .panel h1 {
   font-size: 4em;
+}
+
+nav>ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+nav>ul>li, nav>ul>li:last-child, nav>ul>li:first-child {
+  display: flex;
+  flex: 1;
+  padding: 0;
+  display: flex;
+  border: none;
+  border-radius: 0; 
+}
+
+nav>ul>li:hover {
+  background-color: var(--dark-gray)
+}
+
+nav>ul {
+  background-color: var(--gray)
+}
+
+nav>ul>li>a {
+  flex: 1;
+  text-align: center;
+  padding: 10px 15px;
+  display: block;
+  color: black;
+}
+
+nav>ul>li>a:hover {
+  color: white;
+}
+
+nav>ul>li.active, nav>ul>li.active a {
+  color: white;
+  background-color: var(--dark-gray)
 }

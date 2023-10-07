@@ -1,13 +1,25 @@
+<header>
+  <div>
+    <img src="/images/stop_to_live.jpeg" />
+  </div>
+  <div class="flex-4 center">
+    <h1>Administration</h1>
+  </div>
+</header>
+<nav>
+  <ul>
+    <li class={if @live_action == :reports do "active" end}>
+      <.link navigate={~p"/admin/reports"}>Reports</.link>
+    </li>
+    <li class={if @live_action == :schools do "active" end}>
+      <.link navigate={~p"/admin/schools"}>Schools</.link>
+    </li>
+    <li class={if @live_action == :students do "active" end}>
+      <.link navigate={~p"/admin/students"}>Students</.link>
+    </li>
+  </ul>
+</nav>
 <div class="admin">
-  <nav>
-    <ul>
-      <li>
-        <.link navigate={~p"/admin/reports"}>Reports</.link>
-        <.link navigate={~p"/admin/schools"}>Schools</.link>
-        <.link navigate={~p"/admin/students"}>Students</.link>
-      </li>
-    </ul>
-  </nav>
   <.live_component
      id="page"
      module={@page}></.live_component>
