@@ -1,125 +1,26 @@
-<div class="admin">
-  <h2>Student Management</h2>
-  <div class="results">
-    <div class="panel">
-      <h4>Total Student Count</h4>
-      <h1><%= @total_students %></h1>
-    </div>
-    <div class="panel">
-      <h4>Student Search</h4>
-      <form phx-submit="find-student">
-        <label for="query">Student Name</label>
-        <input type="text" name="query"/>
-        <button>Search</button>
-      </form>
-      <ul>
-        <li class="student" :for={student <- @students}>
-          <div><.link navigate={"/student/#{student.id}"}><%= student.name %></.link></div>
-          <div>School: <%= student.school.name %></div>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <h2>School Management</h2>
-  <div class="results">
-    <div class="panel">
-      <h4>Total School Count</h4>
-      <h1><%= @total_schools %></h1>
-
-      <form phx-submit="add-school">
-        <label for="school-name">School Name</label>
-        <input type="text" name="school-name"/>
-        <button>Add School</button>
-      </form>
-    </div>
-    <div class="panel">
-      <h4>School Search</h4>
-      <form phx-submit="find-school">
-        <label for="query">School Name</label>
-        <input type="text" name="query"/>
-        <button>Search</button>
-      </form>
-      <ul>
-        <li class="school" :for={school <- @schools}>
-          <div><.link navigate={"/school/#{school.id}"}><%= school.name %></.link></div>
-          <div>Students: <%= Enum.count(school.students) %></div>
-        </li>
-      </ul>
-    </div>
-  </div>
+<header>
   <div>
-    <h2>Reporting</h2>
-    <div id="filters">
-      <form class="filters" phx-change="filter_updated">
-        <label for="start-date">After:</label>
-        <input type="date" name="start-date" value={@start_date} />
-        <label for="end-date">Before:</label>
-        <input type="date" name="end-date" value={@end_date} />
-      </form>
-    </div>
-    <div class="results">
-      <div class="panel">
-        <h4>Students Attended</h4>
-        <h1><%= @student_count %></h1>
-      </div>
-      <div class="panel">
-        <h4>Schools Attended</h4>
-        <h1><%= @school_count %></h1>
-      </div>
-      <div class="panel">
-        <h4>Lessons Completed</h4>
-        <h1><%= @lesson_count %></h1>
-      </div>
-    </div>
-    <div class="results">
-      <div class="panel">
-        <h4>Student Progress</h4>
-        <table>
-          <tr>
-            <th>Lesson Completed</th>
-            <th>Students Count</th>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 6, [])) %></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 5, [])) %></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 4, [])) %></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 3, [])) %></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 2, [])) %></td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td><%= Enum.count(Map.get(@students_per_lesson, 1, [])) %></td>
-          </tr>
-        </table>
-      </div>
-      <div class="panel">
-        <h4>Student Attendance per School</h4>
-        <table>
-          <tr>
-            <th>School Name</th>
-            <th>Students Attended</th>
-          </tr>
-          <%= for record <- @attendance_per_school do %>
-          <tr>
-            <td><.link navigate={"/school/#{record.school.id}"}><%= record.school.name %></.link></td>
-            <td><%= record.attendance %></td>
-          </tr>
-          <% end %>
-        </table>
-      </div>
-    </div>
+    <img src="/images/stop_to_live.jpeg" />
   </div>
+  <div class="flex-4 center">
+    <h1>Administration</h1>
+  </div>
+</header>
+<nav>
+  <ul>
+    <li class={if @live_action == :reports do "active" end}>
+      <.link navigate={~p"/admin/reports"}>Reports</.link>
+    </li>
+    <li class={if @live_action == :schools do "active" end}>
+      <.link navigate={~p"/admin/schools"}>Schools</.link>
+    </li>
+    <li class={if @live_action == :students do "active" end}>
+      <.link navigate={~p"/admin/students"}>Students</.link>
+    </li>
+  </ul>
+</nav>
+<div class="admin">
+  <.live_component
+     id="page"
+     module={@page}></.live_component>
 </div>

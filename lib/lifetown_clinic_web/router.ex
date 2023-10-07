@@ -20,6 +20,9 @@ defmodule LifetownClinicWeb.Router do
     get "/", PageController, :index
     live "/kiosk", KioskLive, :index
     live "/admin", AdminLive, :index
+    live "/admin/reports", AdminLive, :reports
+    live "/admin/schools", AdminLive, :schools
+    live "/admin/students", AdminLive, :students
     live "/reception", ReceptionLive, :index
     live "/school/:id", SchoolLive, :index
     live "/student/:id", StudentLive, :index
