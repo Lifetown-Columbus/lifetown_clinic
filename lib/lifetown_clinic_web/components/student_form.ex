@@ -45,25 +45,18 @@ defmodule LifetownClinicWeb.StudentForm do
           |> Enum.count()
 
         if count < 6 do
-          changeset =
-            Ecto.Changeset.put_assoc(
-              changeset,
-              :lessons,
-              existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
-            )
-
-          to_form(changeset)
+          changeset
+          |> Ecto.Changeset.put_assoc(
+            :lessons,
+            existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
+          )
+          |> Map.put(:action, :update)
+          |> to_form()
         else
           to_form(changeset)
         end
       end)
-      |> assign(
-        :lessons_count,
-        socket.assigns.form
-        |> Phoenix.HTML.Form.inputs_for(:lessons)
-        |> Enum.filter(fn lesson -> !Phoenix.HTML.Form.input_value(lesson, :delete) end)
-        |> Enum.count()
-      )
+      |> count_lessons()
 
     {:noreply, socket}
   end
@@ -81,16 +74,11 @@ defmodule LifetownClinicWeb.StudentForm do
         else
           changeset
           |> Ecto.Changeset.put_assoc(:lessons, remove_lesson(existing, index))
+          |> Map.put(:action, :update)
           |> to_form()
         end
       end)
-      |> assign(
-        :lessons_count,
-        socket.assigns.form
-        |> Phoenix.HTML.Form.inputs_for(:lessons)
-        |> Enum.filter(fn lesson -> !Phoenix.HTML.Form.input_value(lesson, :delete) end)
-        |> Enum.count()
-      )
+      |> count_lessons()
 
     {:noreply, socket}
   end
@@ -99,6 +87,7 @@ defmodule LifetownClinicWeb.StudentForm do
     form =
       socket.assigns.student
       |> Student.changeset(params)
+      |> Map.put(:action, :update)
       |> to_form()
 
     {:noreply, assign(socket, :form, form)}
@@ -122,6 +111,22 @@ defmodule LifetownClinicWeb.StudentForm do
       List.replace_at(existing, index, Ecto.Changeset.change(to_delete, delete: true))
     else
       rest
+    end
+  end
+
+  defp count_lessons(socket) do
+    lessons = Ecto.Changeset.get_change(socket.assigns.form.source, :lessons)
+
+    if lessons != nil do
+      socket
+      |> assign(
+        :lessons_count,
+        lessons
+        |> Enum.filter(fn lesson -> !Ecto.Changeset.get_field(lesson, :delete) end)
+        |> Enum.count()
+      )
+    else
+      socket
     end
   end
 
