@@ -3,7 +3,6 @@ defmodule LifetownClinic.Repo.Migrations.CreateLessons do
 
   def change do
     create table(:lessons) do
-
       timestamps()
     end
   end
