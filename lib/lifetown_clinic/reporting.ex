@@ -24,7 +24,7 @@ defmodule LifetownClinic.Reporting do
   def school_count(start_date, end_date) do
     from sc in School,
       join: st in Student,
-      where: st.school_id == sc.id,
+      on: st.school_id == sc.id,
       join: l in Lesson,
       on: l.student_id == st.id,
       where:
@@ -52,7 +52,7 @@ defmodule LifetownClinic.Reporting do
   def attendance_per_school(start_date, end_date) do
     from sc in School,
       join: st in Student,
-      where: st.school_id == sc.id,
+      on: st.school_id == sc.id,
       join: l in Lesson,
       on: l.student_id == st.id,
       where:

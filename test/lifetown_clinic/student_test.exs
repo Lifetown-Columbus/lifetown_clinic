@@ -2,7 +2,7 @@ defmodule LifetownClinic.StudentTest do
   use LifetownClinic.DataCase
   use Timex
 
-  alias LifetownClinic.Schema.{Student, School, Lesson}
+  alias LifetownClinic.Schema.{School, Student}
   alias LifetownClinic.Repo
 
   test "It should create a student with a school and lessons" do
