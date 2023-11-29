@@ -39,6 +39,23 @@ defmodule LifetownClinicWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "date"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@field.name}>
+      <label for={@field.id}><%= @label %></label>
+      <input
+        type="date"
+        name={@field.name}
+        value={Phoenix.HTML.Form.normalize_value("date", @field.value)}
+      />
+
+      <%= for {err, _} <- @field.errors do %>
+        <.error><%= err %></.error>
+      <% end %>
+    </div>
+    """
+  end
+
   def input(assigns) do
     ~H"""
     <p>Weird Error... Call Stephen</p>
