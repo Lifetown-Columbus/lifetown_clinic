@@ -3,10 +3,10 @@ defmodule LifetownClinic.Repo.Migrations.AddCompletedAtColumn do
 
   def change do
     alter table("lessons") do
-      add(:completed_at, :utc_datetime)
+      add(:completed_at, :date)
     end
 
-    execute("UPDATE lessons SET completed_at = inserted_at")
+    execute("UPDATE lessons SET completed_at = inserted_at::date")
 
     create(index("lessons", [:completed_at]))
   end

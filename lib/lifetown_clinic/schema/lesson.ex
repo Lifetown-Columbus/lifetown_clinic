@@ -6,7 +6,7 @@ defmodule LifetownClinic.Schema.Lesson do
     belongs_to :student, LifetownClinic.Schema.Student
 
     field :delete, :boolean, virtual: true, default: false
-    field :completed_at, :utc_datetime, default: Timex.today() |> Timex.to_datetime()
+    field :completed_at, :date, default: Timex.today()
 
     timestamps()
   end
@@ -15,7 +15,7 @@ defmodule LifetownClinic.Schema.Lesson do
   def changeset(lesson, attrs) do
     changeset =
       lesson
-      |> cast(attrs, [:inserted_at, :delete])
+      |> cast(attrs, [:completed_at, :delete])
       |> assoc_constraint(:student)
       |> validate_required([])
 

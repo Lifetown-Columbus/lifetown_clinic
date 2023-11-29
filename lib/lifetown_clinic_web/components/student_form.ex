@@ -141,9 +141,7 @@ defmodule LifetownClinicWeb.StudentForm do
           name={Phoenix.HTML.Form.input_name(@field, :delete)}
           value={to_string(Phoenix.HTML.Form.input_value(@field, :delete))}
         />
-        <p>
-          <%= to_string(Phoenix.HTML.Form.input_value(@field, :inserted_at)) %>
-        </p>
+        <.input type="date" label="Completed At" field={@field[:completed_at]} />
 
         <button
           class="cancel"

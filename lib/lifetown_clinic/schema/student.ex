@@ -12,6 +12,7 @@ defmodule LifetownClinic.Schema.Student do
     timestamps()
   end
 
+  # TODO this should check lessons in case something else changed
   def checked_in_today() do
     today = DateTime.to_date(Timex.local())
 
