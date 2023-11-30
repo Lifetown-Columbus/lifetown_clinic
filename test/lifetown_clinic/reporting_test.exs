@@ -1,4 +1,4 @@
-defmodule LifetownClinic.ReportinTest do
+defmodule LifetownClinic.ReportingTest do
   use LifetownClinic.DataCase
   alias LifetownClinic.Schema.{Student, School, Lesson}
   alias LifetownClinic.Reporting
@@ -34,7 +34,7 @@ defmodule LifetownClinic.ReportinTest do
     last_week = days_ago(7)
     last_month = days_ago(30)
     yesterday = days_ago(1)
-    today = Timex.now() |> Timex.to_datetime()
+    today = Timex.today()
 
     assert 3 == Repo.one(Reporting.student_count(nil, nil))
     assert 2 == Repo.one(Reporting.student_count(yesterday, nil))
@@ -50,7 +50,7 @@ defmodule LifetownClinic.ReportinTest do
     last_week = days_ago(7)
     last_month = days_ago(30)
     yesterday = days_ago(1)
-    today = Timex.now() |> Timex.to_datetime()
+    today = Timex.today()
 
     assert 2 == Repo.one(Reporting.school_count(nil, nil))
     assert 1 == Repo.one(Reporting.school_count(yesterday, nil))
@@ -66,7 +66,7 @@ defmodule LifetownClinic.ReportinTest do
     last_week = days_ago(7)
     last_month = days_ago(30)
     yesterday = days_ago(1)
-    today = Timex.now() |> Timex.to_datetime()
+    today = Timex.today()
 
     assert 4 == Repo.one(Reporting.lesson_count(nil, nil))
     assert 2 == Repo.one(Reporting.lesson_count(yesterday, nil))
@@ -85,7 +85,7 @@ defmodule LifetownClinic.ReportinTest do
     last_week = days_ago(7)
     last_month = days_ago(30)
     yesterday = days_ago(1)
-    today = Timex.now() |> Timex.to_datetime()
+    today = Timex.today()
 
     assert [%{school: school, attendance: 2}, %{school: other_school, attendance: 1}] ==
              Repo.all(Reporting.attendance_per_school(nil, nil))
@@ -113,7 +113,7 @@ defmodule LifetownClinic.ReportinTest do
     last_week = days_ago(7)
     last_month = days_ago(30)
     yesterday = days_ago(1)
-    today = Timex.now() |> Timex.to_datetime()
+    today = Timex.today()
 
     assert ["Bob", "Fred", "Sally"] ==
              Reporting.students_attended(nil, nil)
@@ -147,7 +147,7 @@ defmodule LifetownClinic.ReportinTest do
   end
 
   defp days_ago(count) do
-    Timex.today() |> Timex.shift(days: -count) |> Timex.to_datetime()
+    Timex.today() |> Timex.shift(days: -count)
   end
 
   defp create_student(school, name) do
@@ -156,17 +156,12 @@ defmodule LifetownClinic.ReportinTest do
     |> Repo.insert!()
   end
 
-  defp complete_lesson(student) do
-    today = Timex.today() |> Timex.to_datetime()
-
-    student
-    |> complete_lesson(today)
-  end
+  defp complete_lesson(student), do: complete_lesson(student, Timex.today())
 
   defp complete_lesson(student, date) do
     student
     |> Ecto.build_assoc(:lessons)
-    |> Lesson.changeset(%{inserted_at: date})
+    |> Lesson.changeset(%{completed_at: date})
     |> Repo.insert!()
 
     student

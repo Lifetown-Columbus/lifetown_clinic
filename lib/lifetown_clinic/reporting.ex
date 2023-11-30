@@ -12,8 +12,8 @@ defmodule LifetownClinic.Reporting do
       join: l in Lesson,
       on: l.student_id == s.id,
       where:
-        l.inserted_at >= ^start_date and
-          l.inserted_at <= ^end_date,
+        l.completed_at >= ^start_date and
+          l.completed_at <= ^end_date,
       select: count(s.id, :distinct)
   end
 
@@ -28,8 +28,8 @@ defmodule LifetownClinic.Reporting do
       join: l in Lesson,
       on: l.student_id == st.id,
       where:
-        l.inserted_at >= ^start_date and
-          l.inserted_at <= ^end_date,
+        l.completed_at >= ^start_date and
+          l.completed_at <= ^end_date,
       select: count(sc.id, :distinct)
   end
 
@@ -40,8 +40,8 @@ defmodule LifetownClinic.Reporting do
   def lesson_count(start_date, end_date) do
     from l in Lesson,
       where:
-        l.inserted_at >= ^start_date and
-          l.inserted_at <= ^end_date,
+        l.completed_at >= ^start_date and
+          l.completed_at <= ^end_date,
       select: count(l.id, :distinct)
   end
 
@@ -56,8 +56,8 @@ defmodule LifetownClinic.Reporting do
       join: l in Lesson,
       on: l.student_id == st.id,
       where:
-        l.inserted_at >= ^start_date and
-          l.inserted_at <= ^end_date,
+        l.completed_at >= ^start_date and
+          l.completed_at <= ^end_date,
       group_by: [sc.id],
       select: %{school: sc, attendance: count(st.id, :distinct)}
   end
@@ -76,12 +76,12 @@ defmodule LifetownClinic.Reporting do
       join: l in Lesson,
       on: l.student_id == s.id,
       where:
-        l.inserted_at >= ^start_date and
-          l.inserted_at <= ^end_date,
+        l.completed_at >= ^start_date and
+          l.completed_at <= ^end_date,
       distinct: s.id,
       select: s
   end
 
-  defp epoch, do: Timex.zero() |> Timex.to_datetime()
-  defp today, do: Timex.now() |> Timex.to_datetime()
+  defp epoch, do: Timex.zero()
+  defp today, do: Timex.today()
 end

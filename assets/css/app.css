@@ -15,7 +15,27 @@
 }
 
 .lesson {
+  border: 1px var(--gray) solid;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
   display: flex;
+}
+
+.lesson > div {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.lesson > div > label {
+  flex: 1;
+  margin: 0;
+}
+
+.lesson > div > input {
+  margin: 0;
+  flex: 3;
 }
 
 .error {
@@ -50,6 +70,17 @@ button.cancel {
 }
 
 button.cancel:hover {
+  background-color: var(--light-orange);
+  color: black;
+}
+
+button.cancel-chill {
+  font-weight: bold;
+  background-color: var(--gray);
+  color: black;
+}
+
+button.cancel-chill:hover {
   background-color: var(--light-orange);
   color: black;
 }
