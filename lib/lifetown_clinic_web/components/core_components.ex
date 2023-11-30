@@ -47,6 +47,7 @@ defmodule LifetownClinicWeb.CoreComponents do
         type="date"
         name={@field.name}
         value={Phoenix.HTML.Form.normalize_value("date", @field.value)}
+        {@rest}
       />
 
       <%= for {err, _} <- @field.errors do %>

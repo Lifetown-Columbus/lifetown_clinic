@@ -144,7 +144,7 @@ defmodule LifetownClinicWeb.StudentForm do
         <.input type="date" label="Completed At" field={@field[:completed_at]} />
 
         <button
-          class="cancel"
+          class="cancel-chill"
           disabled={@deleted}
           type="button"
           phx-target={@cid}
