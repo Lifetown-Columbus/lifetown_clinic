@@ -7,7 +7,10 @@ defmodule LifetownClinic.Schema.Student do
   schema "students" do
     field :name, :string
     belongs_to :school, School, on_replace: :nilify
-    has_many :lessons, Lesson, on_replace: :delete, on_delete: :delete_all
+
+    has_many :lessons, Lesson,
+      on_delete: :delete_all,
+      preload_order: [asc: :completed_at]
 
     timestamps()
   end

@@ -17,7 +17,7 @@ defmodule LifetownClinic.Schema.Lesson do
       lesson
       |> cast(attrs, [:completed_at, :delete])
       |> assoc_constraint(:student)
-      |> validate_required([])
+      |> validate_required([:completed_at])
 
     if get_change(changeset, :delete) do
       %{changeset | action: :delete}
