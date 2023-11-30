@@ -29,6 +29,7 @@ defmodule LifetownClinicWeb.CoreComponents do
     <div phx-feedback-for={@field.name}>
       <label for={@field.id}><%= @label %></label>
       <select id={@field.id} name={@field.name} {@rest}>
+        <option><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @field.value) %>
       </select>
 

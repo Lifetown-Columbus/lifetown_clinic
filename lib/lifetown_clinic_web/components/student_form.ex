@@ -108,7 +108,13 @@ defmodule LifetownClinicWeb.StudentForm do
     <div>
       <.form for={@form} phx-target={@myself} phx-change="validate" phx-submit="save">
         <.input type="text" label="Name" field={@form[:name]} />
-        <.input type="select" label="School" field={@form[:school_id]} options={@schools} />
+        <.input
+          type="select"
+          prompt="Pick a School"
+          label="School"
+          field={@form[:school_id]}
+          options={@schools}
+        />
         <fieldset>
           <label for="lessons">Lessons Completed</label>
           <.inputs_for :let={lesson} field={@form[:lessons]}>
