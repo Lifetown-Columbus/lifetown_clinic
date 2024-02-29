@@ -80,6 +80,16 @@ button.cancel-chill {
   color: black;
 }
 
+button:disabled {
+  background-color: gray;
+  color: black;
+}
+
+button:hover:disabled {
+  background-color: gray;
+}
+
+
 button.cancel-chill:hover {
   background-color: var(--light-orange);
   color: black;
@@ -109,6 +119,7 @@ button:hover {
 header {
   display: flex;
   justify-content: center;
+  padding-top: 20px;
 }
 
 header img {
@@ -117,7 +128,6 @@ header img {
 
 header h1 {
   text-align: center;
-  margin-top: 20px;
 }
 
 .checked-in {

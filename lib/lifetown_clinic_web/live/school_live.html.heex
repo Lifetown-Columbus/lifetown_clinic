@@ -2,6 +2,7 @@
   <%= if @form == nil do %>
     <h1><%= @school.name %></h1>
     <button class="icon" type="button" phx-click="edit">✎</button>
+    <button class="icon cancel" type="button" disabled={@student_count > 0} phx-click="delete">X</button>
   <% else %>
     <.form for={@form} phx-change="validate" phx-submit="save">
       <.input type="text" label="Name" field={@form[:name]} />
@@ -33,3 +34,16 @@
   </table>
   </div>
 </div>
+
+<%= if @deleting do %>
+<div class="modal" phx-capture-click="cancel_delete">
+  <div class="modal-body">
+    <h2>
+      <span class="warning">⚠</span>
+      <span>Are you sure you want to delete: <%= @school.name %>?</span>
+    </h2>
+    <button phx-click="confirm_delete">Yes</button>
+    <button class="cancel" phx-click="cancel_delete">No</button>
+  </div>
+</div>
+<% end %>
