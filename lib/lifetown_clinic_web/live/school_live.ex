@@ -22,6 +22,7 @@ defmodule LifetownClinicWeb.SchoolLive do
       socket
       |> assign(:school, school)
       |> assign(:form, nil)
+      |> assign(:deleting, false)
       |> assign(:student_count, Enum.count(school.students))
       |> assign(:students_by_progress, students_by_progress)
 
@@ -37,8 +38,21 @@ defmodule LifetownClinicWeb.SchoolLive do
     {:noreply, assign(socket, :form, form)}
   end
 
+  def handle_event("delete", _, socket) do
+    {:noreply, assign(socket, :deleting, true)}
+  end
+
   def handle_event("cancel", _, socket) do
     {:noreply, assign(socket, :form, nil)}
+  end
+
+  def handle_event("cancel_delete", _, socket) do
+    {:noreply, assign(socket, :deleting, false)}
+  end
+
+  def handle_event("confirm_delete", _, socket) do
+    Repo.delete!(socket.assigns.school)
+    {:noreply, push_navigate(socket, to: "/admin/schools", replace: true)}
   end
 
   def handle_event("validate", %{"school" => params}, socket) do
