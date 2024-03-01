@@ -147,6 +147,13 @@ defmodule LifetownClinicWeb.StudentForm do
           name={Phoenix.HTML.Form.input_name(@field, :delete)}
           value={to_string(Phoenix.HTML.Form.input_value(@field, :delete))}
         />
+        <.input
+          type="select"
+          prompt="Pick a lesson"
+          label="Lesson Number"
+          field={@field[:number]}
+          options={[1, 2, 3, 4, 5, 6]}
+        />
         <.input type="date" label="Completed On" field={@field[:completed_at]} />
 
         <button
