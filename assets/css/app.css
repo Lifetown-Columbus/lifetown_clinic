@@ -226,6 +226,7 @@ span.label {
   height: 100%;
   padding: 100px;
   background-color: rgba(189, 195, 199, 0.75);
+  overflow: scroll;
 }
 
 .modal-body {
