@@ -59,7 +59,7 @@ defmodule LifetownClinicWeb.Admin.Reports do
           <h4>Student Progress</h4>
           <table>
             <tr>
-              <th>Lesson Completed</th>
+              <th>Lessons Completed</th>
               <th>Students Count</th>
             </tr>
             <tr>
