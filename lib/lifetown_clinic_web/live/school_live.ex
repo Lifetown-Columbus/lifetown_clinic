@@ -13,10 +13,9 @@ defmodule LifetownClinicWeb.SchoolLive do
 
     students_by_progress =
       id
-      |> Student.by_school()
+      |> Student.grouped_by_progress()
       |> Repo.all()
-      |> Repo.preload(:lessons)
-      |> Enum.group_by(fn st -> Enum.count(st.lessons) end)
+      |> Enum.group_by(&List.last/1, &List.first/1)
 
     socket =
       socket

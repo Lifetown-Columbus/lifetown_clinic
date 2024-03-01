@@ -41,6 +41,15 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
+  def grouped_by_progress(school_id) do
+    from s in __MODULE__,
+      where: s.school_id == ^school_id,
+      join: l in Lesson,
+      on: l.student_id == s.id,
+      group_by: [s.id, l.number],
+      select: [s, l.number]
+  end
+
   def search(text) do
     from student in __MODULE__,
       where: ilike(student.name, ^("%" <> text <> "%")),
