@@ -2,31 +2,28 @@ defmodule LifetownClinicWeb.SchoolLive do
   use LifetownClinicWeb, :live_view
 
   alias LifetownClinic.Schema.School
-  alias LifetownClinic.Schema.Student
   alias LifetownClinic.Repo
 
   def mount(%{"id" => id}, _, socket) do
     school =
       School
       |> Repo.get(id)
-      |> Repo.preload(:students)
-
-    students_by_progress =
-      id
-      |> Student.by_school()
-      |> Repo.all()
-      |> Repo.preload(:lessons)
-      |> Enum.group_by(fn st -> Enum.count(st.lessons) end)
+      |> Repo.preload(students: [:lessons])
 
     socket =
       socket
       |> assign(:school, school)
       |> assign(:form, nil)
       |> assign(:deleting, false)
-      |> assign(:student_count, Enum.count(school.students))
-      |> assign(:students_by_progress, students_by_progress)
+      |> assign(:students, school.students)
 
     {:ok, socket}
+  end
+
+  def lessons_string(lessons) do
+    lessons
+    |> Enum.map(fn l -> l.number end)
+    |> Enum.join(",")
   end
 
   def handle_event("edit", _, socket) do
