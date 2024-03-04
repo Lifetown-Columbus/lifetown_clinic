@@ -59,32 +59,32 @@ defmodule LifetownClinicWeb.Admin.Reports do
           <h4>Student Progress</h4>
           <table>
             <tr>
-              <th>Lessons Completed</th>
+              <th>Lesson Completed</th>
               <th>Students Count</th>
             </tr>
             <tr>
               <td>6</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 6, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 6, [])) %></td>
             </tr>
             <tr>
               <td>5</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 5, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 5, [])) %></td>
             </tr>
             <tr>
               <td>4</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 4, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 4, [])) %></td>
             </tr>
             <tr>
               <td>3</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 3, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 3, [])) %></td>
             </tr>
             <tr>
               <td>2</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 2, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 2, [])) %></td>
             </tr>
             <tr>
               <td>1</td>
-              <td><%= Enum.count(Map.get(@students_per_lesson, 1, [])) %></td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 1, [])) %></td>
             </tr>
           </table>
         </div>
@@ -132,11 +132,10 @@ defmodule LifetownClinicWeb.Admin.Reports do
       Repo.all(Reporting.attendance_per_school(start_datetime, end_datetime))
     )
     |> assign(
-      :students_per_lesson,
-      Reporting.students_attended(start_datetime, end_datetime)
+      :lessons_per_number,
+      Reporting.lessons_completed(start_datetime, end_datetime)
       |> Repo.all()
-      |> Repo.preload(:lessons)
-      |> Enum.group_by(fn student -> Enum.count(student.lessons) end)
+      |> Enum.group_by(fn lesson -> lesson.number end)
     )
   end
 
