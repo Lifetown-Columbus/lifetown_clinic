@@ -54,7 +54,7 @@
 </div>
 
 <%= if @confirming do %>
-  <div class="modal" phx-capture-click="cancel_confirmation">
+  <div class="modal">
     <div class="modal-body">
       <%= if @confirming.student do %>
         <.live_component module={LifetownClinicWeb.StudentForm} student={@confirming.student} id="student-form" />
