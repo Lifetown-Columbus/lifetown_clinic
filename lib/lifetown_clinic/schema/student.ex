@@ -54,7 +54,6 @@ defmodule LifetownClinic.Schema.Student do
     |> cast_assoc(:school, with: &School.changeset/2)
     |> cast_assoc(:lessons, with: &Lesson.changeset/2)
     |> validate_required([:name, :school_id])
-    |> validate_length(:lessons, max: 6)
     |> assoc_constraint(:school)
     |> unique_constraint([:name, :school_id])
   end

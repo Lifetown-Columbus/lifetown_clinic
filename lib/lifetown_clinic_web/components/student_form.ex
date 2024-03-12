@@ -34,23 +34,14 @@ defmodule LifetownClinicWeb.StudentForm do
           changeset
           |> Ecto.Changeset.get_field(:lessons)
 
-        count =
-          existing
-          |> Enum.filter(fn lesson -> !lesson.delete end)
-          |> Enum.count()
+        changeset =
+          Ecto.Changeset.put_assoc(
+            changeset,
+            :lessons,
+            existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
+          )
 
-        if count < 6 do
-          changeset =
-            Ecto.Changeset.put_assoc(
-              changeset,
-              :lessons,
-              existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
-            )
-
-          to_form(changeset)
-        else
-          to_form(changeset)
-        end
+        to_form(changeset)
       end)
 
     {:noreply, socket}
