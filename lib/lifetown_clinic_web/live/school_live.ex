@@ -21,6 +21,7 @@ defmodule LifetownClinicWeb.SchoolLive do
     |> assign(:deleting, false)
     |> assign(:students, school.students)
     |> assign(:selected_student, nil)
+    |> assign(:deleting_student, nil)
   end
 
   def lessons_string(lessons) do
@@ -77,6 +78,20 @@ defmodule LifetownClinicWeb.SchoolLive do
       |> assign(:school, school)
 
     {:noreply, socket}
+  end
+
+  def handle_event("delete_student", %{"id" => id}, socket) do
+    student = Repo.get!(Student, id)
+    {:noreply, assign(socket, :deleting_student, student)}
+  end
+
+  def handle_event("confirm_delete_student", _, socket) do
+    Repo.delete!(socket.assigns.deleting_student)
+    {:noreply, fetch_all(socket, socket.assigns.school.id)}
+  end
+
+  def handle_event("cancel_delete_student", _, socket) do
+    {:noreply, assign(socket, :deleting_student, nil)}
   end
 
   def handle_event("select_student", %{"id" => id}, socket) do
