@@ -2,22 +2,25 @@ defmodule LifetownClinicWeb.SchoolLive do
   use LifetownClinicWeb, :live_view
 
   alias LifetownClinic.Schema.School
+  alias LifetownClinic.Schema.Student
   alias LifetownClinic.Repo
 
   def mount(%{"id" => id}, _, socket) do
+    {:ok, fetch_all(socket, id)}
+  end
+
+  def fetch_all(socket, id) do
     school =
       School
       |> Repo.get(id)
       |> Repo.preload(students: [:lessons])
 
-    socket =
-      socket
-      |> assign(:school, school)
-      |> assign(:form, nil)
-      |> assign(:deleting, false)
-      |> assign(:students, school.students)
-
-    {:ok, socket}
+    socket
+    |> assign(:school, school)
+    |> assign(:form, nil)
+    |> assign(:deleting, false)
+    |> assign(:students, school.students)
+    |> assign(:selected_student, nil)
   end
 
   def lessons_string(lessons) do
@@ -74,5 +77,22 @@ defmodule LifetownClinicWeb.SchoolLive do
       |> assign(:school, school)
 
     {:noreply, socket}
+  end
+
+  def handle_event("select_student", %{"id" => id}, socket) do
+    student =
+      Student
+      |> Repo.get!(id)
+      |> Repo.preload([:school, :lessons])
+
+    {:noreply, assign(socket, :selected_student, student)}
+  end
+
+  def handle_event("cancel_student_selection", _, socket) do
+    {:noreply, assign(socket, :selected_student, nil)}
+  end
+
+  def handle_info(:student_confirmed, socket) do
+    {:noreply, fetch_all(socket, socket.assigns.school.id)}
   end
 end

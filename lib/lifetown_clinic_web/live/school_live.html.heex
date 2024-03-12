@@ -23,7 +23,7 @@
   </tr>
   <%= for student <- @students do %> 
     <tr>
-      <td> <.link navigate={"/student/#{student.id}"}><%= student.name %></.link></td>
+      <td> <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link></td>
       <td>
         <%= lessons_string(student.lessons) %>
       </td>
@@ -32,6 +32,15 @@
   </table>
   </div>
 </div>
+
+<%= if @selected_student do %> 
+  <div class="modal">
+    <div class="modal-body">
+      <.live_component module={LifetownClinicWeb.StudentForm} student={@selected_student} id="student-form" />
+      <button class="cancel" phx-click="cancel_student_selection">Cancel</button>
+    </div>
+  </div>
+<% end %>
 
 <%= if @deleting do %>
 <div class="modal" phx-capture-click="cancel_delete">

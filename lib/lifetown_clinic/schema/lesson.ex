@@ -13,18 +13,16 @@ defmodule LifetownClinic.Schema.Lesson do
   end
 
   @doc false
-  def changeset(lesson, attrs) do
-    changeset =
-      lesson
-      |> cast(attrs, [:completed_at, :delete, :number])
-      |> assoc_constraint(:student)
-      |> validate_required([:completed_at, :number])
-      |> validate_number(:number, greater_than: 0, less_than: 7)
+  def changeset(lesson, attrs = %{"delete" => "true"}) do
+    IO.inspect(attrs)
+    %{Ecto.Changeset.change(lesson, delete: true) | action: :delete}
+  end
 
-    if get_change(changeset, :delete) do
-      %{changeset | action: :delete}
-    else
-      changeset
-    end
+  def changeset(lesson, attrs) do
+    lesson
+    |> cast(attrs, [:completed_at, :delete, :number])
+    |> assoc_constraint(:student)
+    |> validate_required([:completed_at, :number])
+    |> validate_number(:number, greater_than: 0, less_than: 7)
   end
 end

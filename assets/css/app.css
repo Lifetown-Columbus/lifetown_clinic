@@ -42,6 +42,10 @@
   display: none;
 }
 
+.deleted {
+  background-color: var(--light-orange);
+}
+
 .flex-1 {
   flex: 1;
 }
