@@ -56,11 +56,11 @@ defmodule LifetownClinicWeb.Admin.Reports do
       </div>
       <div class="results">
         <div class="panel">
-          <h4>Student Progress</h4>
+          <h4>Progress</h4>
           <table>
             <tr>
-              <th>Lesson Completed</th>
-              <th>Students Count</th>
+              <th>Lesson</th>
+              <th>Completed</th>
             </tr>
             <tr>
               <td>6</td>

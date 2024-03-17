@@ -21,14 +21,16 @@
     <th>Student Name</th>
     <th>Lessons Completed</th>
   </tr>
-  <%= for student <- @students do %> 
-    <tr>
-      <td> <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link></td>
-      <td>
-        <%= lessons_string(student.lessons) %>
-      </td>
-    </tr>
-  <% end %>
+   <%= for i <- 6..0 do %> 
+     <tr>
+       <td><%= i %></td>
+       <td>
+         <div :for={student <- students_by_progress(@school.id, i)}>
+          <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
+         </div>
+       </td>
+     </tr>
+   <% end %>
   </table>
   </div>
 </div>

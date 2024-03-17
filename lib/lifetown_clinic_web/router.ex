@@ -24,7 +24,7 @@ defmodule LifetownClinicWeb.Router do
     live "/admin/schools", AdminLive, :schools
     live "/admin/students", AdminLive, :students
     live "/reception", ReceptionLive, :index
-    live "/student/:id", StudentLive, :index
+    live "/school/:id", SchoolLive, :index
   end
 
   # Other scopes may use custom stacks.

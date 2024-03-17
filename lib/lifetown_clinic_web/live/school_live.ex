@@ -24,6 +24,11 @@ defmodule LifetownClinicWeb.SchoolLive do
     |> assign(:deleting_student, nil)
   end
 
+  def students_by_progress(school_id, lesson_number) do
+    Student.by_lesson_number(school_id, lesson_number)
+    |> Repo.all()
+  end
+
   def lessons_string(lessons) do
     lessons
     |> Enum.map(fn l -> l.number end)
