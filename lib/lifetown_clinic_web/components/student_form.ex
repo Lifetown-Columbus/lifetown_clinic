@@ -23,6 +23,7 @@ defmodule LifetownClinicWeb.StudentForm do
       |> assign(:form, form)
       |> assign(:schools, schools)
       |> assign(:student, assigns.student)
+      |> assign(:save_callback, assigns.save_callback)
 
     {:ok, socket}
   end
@@ -82,8 +83,8 @@ defmodule LifetownClinicWeb.StudentForm do
 
   def handle_event("save", %{"student" => params}, socket) do
     case Students.save_student(socket.assigns.student, params) do
-      {:ok, _} ->
-        send(self(), :student_confirmed)
+      {:ok, student} ->
+        socket.assigns.save_callback.(student)
         {:noreply, socket}
 
       {:error, changeset} ->

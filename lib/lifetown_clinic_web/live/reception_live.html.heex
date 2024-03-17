@@ -57,7 +57,11 @@
   <div class="modal">
     <div class="modal-body">
       <%= if @confirming.student do %>
-        <.live_component module={LifetownClinicWeb.StudentForm} student={@confirming.student} id="student-form" />
+        <.live_component 
+          module={LifetownClinicWeb.StudentForm}
+          student={@confirming.student}
+          id="student-form"
+          save_callback={fn _student -> send(self(), :student_confirmed)end} />
       <% end %>
       <ul>
         <%= for student <- @confirming.possible_students do%>
