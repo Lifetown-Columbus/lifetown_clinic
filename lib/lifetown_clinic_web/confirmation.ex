@@ -1,15 +1,11 @@
 defmodule LifetownClinicWeb.Confirmation do
   defstruct [:id, :name, :student, :possible_students]
 
-  alias LifetownClinic.Repo
+  alias LifetownClinic.Students
   alias LifetownClinic.Schema.Student
 
   def new(id, name) do
-    possible_students =
-      Student.by_name(name)
-      |> Repo.all()
-      |> Repo.preload(:school)
-      |> Repo.preload(:lessons)
+    possible_students = Students.by_name_with_lessons(name)
 
     %__MODULE__{
       id: id,
@@ -27,11 +23,7 @@ defmodule LifetownClinicWeb.Confirmation do
   end
 
   def select_student(confirmation, id) do
-    student =
-      Student
-      |> Repo.get!(id)
-      |> Repo.preload(:school)
-      |> Repo.preload(:lessons)
+    student = Students.get_with_lessons(id)
 
     confirmation
     |> Map.put(:student, student)

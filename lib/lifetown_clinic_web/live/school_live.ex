@@ -1,4 +1,5 @@
 defmodule LifetownClinicWeb.SchoolLive do
+  alias LifetownClinic.Students
   use LifetownClinicWeb, :live_view
 
   alias LifetownClinic.Schema.School
@@ -104,11 +105,7 @@ defmodule LifetownClinicWeb.SchoolLive do
   end
 
   def handle_event("select_student", %{"id" => id}, socket) do
-    student =
-      Student
-      |> Repo.get!(id)
-      |> Repo.preload([:school, :lessons])
-
+    student = Students.get_with_lessons(id)
     {:noreply, assign(socket, :selected_student, student)}
   end
 

@@ -84,6 +84,7 @@ defmodule LifetownClinicWeb.StudentForm do
   def handle_event("save", %{"student" => params}, socket) do
     case Students.save_student(socket.assigns.student, params) do
       {:ok, student} ->
+        # The form is stale now and should be reloaded. Best to just close the component and create a new one.
         socket.assigns.save_callback.(student)
         {:noreply, socket}
 
