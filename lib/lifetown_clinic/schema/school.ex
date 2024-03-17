@@ -19,7 +19,7 @@ defmodule LifetownClinic.Schema.School do
 
   def all() do
     from school in __MODULE__,
-      order_by: [asc: school.name],
+      order_by: [desc: school.name],
       select: school
   end
 
