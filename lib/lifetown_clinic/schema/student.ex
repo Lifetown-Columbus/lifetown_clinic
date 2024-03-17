@@ -26,6 +26,7 @@ defmodule LifetownClinic.Schema.Student do
           ^Timex.Timezone.Local.lookup(),
           ^today
         ),
+      order_by: [asc: s.name],
       select: s
   end
 
@@ -39,6 +40,7 @@ defmodule LifetownClinic.Schema.Student do
     from s in __MODULE__,
       where: s.school_id == ^school_id,
       where: fragment("NOT EXISTS (SELECT 1 FROM lessons l WHERE l.student_id = ?)", s.id),
+      order_by: [asc: s.name],
       select: s
   end
 
@@ -48,13 +50,15 @@ defmodule LifetownClinic.Schema.Student do
       join: l in assoc(s, :lessons),
       where: l.number == ^lesson_number,
       distinct: true,
+      order_by: [asc: s.name],
       select: s
   end
 
   def search(text) do
-    from student in __MODULE__,
-      where: ilike(student.name, ^("%" <> text <> "%")),
-      select: student
+    from s in __MODULE__,
+      where: ilike(s.name, ^("%" <> text <> "%")),
+      order_by: [asc: s.name],
+      select: s
   end
 
   @doc false

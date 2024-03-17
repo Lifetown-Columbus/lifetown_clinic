@@ -15,16 +15,20 @@ defmodule LifetownClinicWeb.SchoolLive do
       |> Repo.get(id)
       |> Repo.preload(students: [:lessons])
 
+    progress =
+      Enum.reduce(0..6, %{}, fn i, acc -> Map.put(acc, i, students_by_progress(school.id, i)) end)
+
     socket
     |> assign(:school, school)
     |> assign(:form, nil)
     |> assign(:deleting, false)
     |> assign(:students, school.students)
+    |> assign(:students_by_progress, progress)
     |> assign(:selected_student, nil)
     |> assign(:deleting_student, nil)
   end
 
-  def students_by_progress(school_id, lesson_number) do
+  defp students_by_progress(school_id, lesson_number) do
     Student.by_lesson_number(school_id, lesson_number)
     |> Repo.all()
   end

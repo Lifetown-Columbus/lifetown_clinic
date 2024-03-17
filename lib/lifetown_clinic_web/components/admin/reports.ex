@@ -63,28 +63,28 @@ defmodule LifetownClinicWeb.Admin.Reports do
               <th>Completed</th>
             </tr>
             <tr>
-              <td>6</td>
-              <td><%= Enum.count(Map.get(@lessons_per_number, 6, [])) %></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td><%= Enum.count(Map.get(@lessons_per_number, 5, [])) %></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td><%= Enum.count(Map.get(@lessons_per_number, 4, [])) %></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td><%= Enum.count(Map.get(@lessons_per_number, 3, [])) %></td>
+              <td>1</td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 1, [])) %></td>
             </tr>
             <tr>
               <td>2</td>
               <td><%= Enum.count(Map.get(@lessons_per_number, 2, [])) %></td>
             </tr>
             <tr>
-              <td>1</td>
-              <td><%= Enum.count(Map.get(@lessons_per_number, 1, [])) %></td>
+              <td>3</td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 3, [])) %></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 4, [])) %></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 5, [])) %></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><%= Enum.count(Map.get(@lessons_per_number, 6, [])) %></td>
             </tr>
           </table>
         </div>

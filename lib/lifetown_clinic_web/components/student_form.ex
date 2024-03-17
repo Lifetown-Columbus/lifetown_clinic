@@ -132,10 +132,8 @@ defmodule LifetownClinicWeb.StudentForm do
       )
 
     ~H"""
-    <div class={if(@deleted, do: "deleted")}>
+    <div class={if(@deleted, do: "hide")}>
       <div class="lesson">
-        <pre><%= @field.index %></pre>
-        <pre><%= @field.data.id %></pre>
         <input
           type="hidden"
           name={Phoenix.HTML.Form.input_name(@field, :delete)}

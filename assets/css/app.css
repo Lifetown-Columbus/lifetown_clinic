@@ -42,10 +42,6 @@
   display: none;
 }
 
-.deleted {
-  background-color: var(--light-orange);
-}
-
 .flex-1 {
   flex: 1;
 }
@@ -264,7 +260,7 @@ span.label {
   flex: 3;
 }
 
-.admin .results {
+.results {
   padding: 50px;
   display: flex;
   gap: 20px;

@@ -12,26 +12,35 @@
   <% end %>
 </header>
 
-<div class="results">
-  <div class="panel">
-  <h2>Students</h2>
-  <h4>Total Count: <span><%= Enum.count(@students) %></span></h4>
-  <table>
-  <tr>
-    <th>Student Name</th>
-    <th>Lessons Completed</th>
-  </tr>
-   <%= for i <- 6..0 do %> 
-     <tr>
-       <td><%= i %></td>
-       <td>
-         <div :for={student <- students_by_progress(@school.id, i)}>
-          <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
-         </div>
-       </td>
-     </tr>
-   <% end %>
-  </table>
+<div>
+  <header>
+    <h4>Total Students: <span><%= Enum.count(@students) %></span></h4>
+  </header>
+  <div class="results">
+    <div class="panel">
+      <table>
+        <tr>
+          <th>Lesson Completed</th>
+          <th>Student</th>
+        </tr>
+        <%= for i <- 1..6 do %> 
+          <tr>
+            <td><%= i %></td>
+            <td>
+              <div :for={student <- Map.get(@students_by_progress, i)}>
+                <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>New Students</h2>
+      <div :for={student <- Map.get(@students_by_progress, 0)}>
+        <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
+      </div>
+    </div>
   </div>
 </div>
 
