@@ -39,7 +39,7 @@ defmodule LifetownClinicWeb.StudentForm do
           Ecto.Changeset.put_assoc(
             changeset,
             :lessons,
-            existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
+            existing ++ [%{completed_at: Timex.now() |> Timex.to_date()}]
           )
 
         to_form(changeset)
