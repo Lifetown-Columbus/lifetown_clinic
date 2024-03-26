@@ -92,6 +92,7 @@ defmodule LifetownClinic.Reporting do
         l.completed_at >= ^start_date and
           l.completed_at <= ^end_date,
       distinct: s.id,
+      order_by: [asc: s.name],
       select: s
   end
 

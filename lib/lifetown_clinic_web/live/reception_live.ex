@@ -3,8 +3,7 @@ defmodule LifetownClinicWeb.ReceptionLive do
 
   alias Phoenix.PubSub
   alias LifetownClinic.Reception
-  alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.Student
+  alias LifetownClinic.Students
   alias LifetownClinicWeb.Confirmation
 
   @pubsub LifetownClinic.PubSub
@@ -78,14 +77,8 @@ defmodule LifetownClinicWeb.ReceptionLive do
   end
 
   defp fetch_all(socket) do
-    confirmed_today =
-      Student.checked_in_today()
-      |> Repo.all()
-      |> Repo.preload(:school)
-      |> Repo.preload(:lessons)
-
     socket
     |> assign(:checked_in, Reception.all())
-    |> assign(:confirmed, confirmed_today)
+    |> assign(:confirmed, Students.checked_in_today())
   end
 end

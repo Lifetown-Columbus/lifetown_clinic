@@ -26,6 +26,7 @@ defmodule LifetownClinic.Schema.Student do
           ^Timex.Timezone.Local.lookup(),
           ^today
         ),
+      order_by: [asc: s.name],
       select: s
   end
 
@@ -35,16 +36,29 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
-  def by_school(school_id) do
+  def by_lesson_number(school_id, 0) do
     from s in __MODULE__,
       where: s.school_id == ^school_id,
+      where: fragment("NOT EXISTS (SELECT 1 FROM lessons l WHERE l.student_id = ?)", s.id),
+      order_by: [asc: s.name],
+      select: s
+  end
+
+  def by_lesson_number(school_id, lesson_number) do
+    from s in __MODULE__,
+      where: s.school_id == ^school_id,
+      join: l in assoc(s, :lessons),
+      where: l.number == ^lesson_number,
+      distinct: true,
+      order_by: [asc: s.name],
       select: s
   end
 
   def search(text) do
-    from student in __MODULE__,
-      where: ilike(student.name, ^("%" <> text <> "%")),
-      select: student
+    from s in __MODULE__,
+      where: ilike(s.name, ^("%" <> text <> "%")),
+      order_by: [asc: s.name],
+      select: s
   end
 
   @doc false
@@ -54,7 +68,6 @@ defmodule LifetownClinic.Schema.Student do
     |> cast_assoc(:school, with: &School.changeset/2)
     |> cast_assoc(:lessons, with: &Lesson.changeset/2)
     |> validate_required([:name, :school_id])
-    |> validate_length(:lessons, max: 6)
     |> assoc_constraint(:school)
     |> unique_constraint([:name, :school_id])
   end

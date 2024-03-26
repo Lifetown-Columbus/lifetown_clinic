@@ -12,36 +12,77 @@
   <% end %>
 </header>
 
-<div class="results">
-  <div class="panel">
-  <h2>Students</h2>
-  <h4>Total Count: <span><%= Enum.count(@students) %></span></h4>
-  <table>
-  <tr>
-    <th>Student Name</th>
-    <th>Lessons Completed</th>
-  </tr>
-  <%= for student <- @students do %> 
-    <tr>
-      <td> <.link navigate={"/student/#{student.id}"}><%= student.name %></.link></td>
-      <td>
-        <%= lessons_string(student.lessons) %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
+<div>
+  <header>
+    <h4>Total Students: <span><%= Enum.count(@students) %></span></h4>
+  </header>
+  <div class="results">
+    <div class="panel">
+      <table>
+        <tr>
+          <th>Lesson Completed</th>
+          <th>Student</th>
+        </tr>
+        <%= for i <- 1..6 do %> 
+          <tr>
+            <td><%= i %></td>
+            <td>
+              <div :for={student <- Map.get(@students_by_progress, i)}>
+                <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>New Students</h2>
+      <div :for={student <- Map.get(@students_by_progress, 0)}>
+        <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
+      </div>
+    </div>
   </div>
 </div>
 
+<%= if @selected_student do %> 
+  <div class="modal">
+    <div class="modal-body">
+      <.live_component 
+        module={LifetownClinicWeb.StudentForm}
+        student={@selected_student} 
+        id="student-form"
+        save_callback={fn _student -> send(self(), :student_confirmed)end}
+  />
+    <button class="cancel" phx-click="cancel_student_selection">Cancel</button>
+    <button class="cancel" type="button" phx-click="delete_student" phx-value-id={@selected_student.id}>Delete Student</button>
+  </div>
+</div>
+<% end %>
+
+<%= if @deleting_student do %>
+<div class="modal">
+<div class="modal-body">
+  <h2>
+    <span class="warning">⚠</span>
+    <span>Are you sure you want to delete </span>
+    <span><%= @deleting_student.name %></span>
+    <span>?</span>
+  </h2>
+  <button phx-click="confirm_delete_student">Yes</button>
+  <button class="cancel" phx-click="cancel_delete_student">No</button>
+</div>
+</div>
+<% end %>
+
 <%= if @deleting do %>
 <div class="modal" phx-capture-click="cancel_delete">
-  <div class="modal-body">
-    <h2>
-      <span class="warning">⚠</span>
-      <span>Are you sure you want to delete: <%= @school.name %>?</span>
-    </h2>
-    <button phx-click="confirm_delete">Yes</button>
-    <button class="cancel" phx-click="cancel_delete">No</button>
-  </div>
+<div class="modal-body">
+  <h2>
+    <span class="warning">⚠</span>
+    <span>Are you sure you want to delete: <%= @school.name %>?</span>
+  </h2>
+  <button phx-click="confirm_delete">Yes</button>
+  <button class="cancel" phx-click="cancel_delete">No</button>
+</div>
 </div>
 <% end %>

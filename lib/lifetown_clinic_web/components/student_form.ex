@@ -23,6 +23,7 @@ defmodule LifetownClinicWeb.StudentForm do
       |> assign(:form, form)
       |> assign(:schools, schools)
       |> assign(:student, assigns.student)
+      |> assign(:save_callback, assigns.save_callback)
 
     {:ok, socket}
   end
@@ -34,23 +35,14 @@ defmodule LifetownClinicWeb.StudentForm do
           changeset
           |> Ecto.Changeset.get_field(:lessons)
 
-        count =
-          existing
-          |> Enum.filter(fn lesson -> !lesson.delete end)
-          |> Enum.count()
+        changeset =
+          Ecto.Changeset.put_assoc(
+            changeset,
+            :lessons,
+            existing ++ [%{completed_at: Timex.now() |> Timex.to_date()}]
+          )
 
-        if count < 6 do
-          changeset =
-            Ecto.Changeset.put_assoc(
-              changeset,
-              :lessons,
-              existing ++ [%{inserted_at: Timex.now() |> Timex.to_datetime()}]
-            )
-
-          to_form(changeset)
-        else
-          to_form(changeset)
-        end
+        to_form(changeset)
       end)
 
     {:noreply, socket}
@@ -91,8 +83,9 @@ defmodule LifetownClinicWeb.StudentForm do
 
   def handle_event("save", %{"student" => params}, socket) do
     case Students.save_student(socket.assigns.student, params) do
-      {:ok, _} ->
-        send(self(), :student_confirmed)
+      {:ok, student} ->
+        # The form is stale now and should be reloaded. Best to just close the component and create a new one.
+        socket.assigns.save_callback.(student)
         {:noreply, socket}
 
       {:error, changeset} ->

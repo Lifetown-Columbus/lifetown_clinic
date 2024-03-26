@@ -13,6 +13,7 @@ defmodule LifetownClinic.Schema.School do
   def search(text) do
     from school in __MODULE__,
       where: ilike(school.name, ^("%" <> text <> "%")),
+      order_by: [asc: school.name],
       select: school
   end
 
