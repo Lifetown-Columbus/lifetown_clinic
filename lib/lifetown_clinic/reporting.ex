@@ -72,6 +72,7 @@ defmodule LifetownClinic.Reporting do
         l.completed_at >= ^start_date and
           l.completed_at <= ^end_date,
       group_by: [sc.id],
+      order_by: sc.name,
       select: %{school: sc, attendance: count(st.id, :distinct)}
   end
 
