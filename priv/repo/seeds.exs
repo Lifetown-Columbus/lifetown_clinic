@@ -12,7 +12,7 @@
 Code.require_file("test/support/factory.ex")
 
 alias LifetownClinic.Repo
-alias LifetownClinic.Schema.{Lesson, Student}
+alias LifetownClinic.Schema.{Lesson}
 
 {:ok, _} = Application.ensure_all_started(:ex_machina)
 Faker.start()
@@ -20,14 +20,7 @@ Faker.start()
 schools = LifetownClinic.Factory.insert_list(20, :school)
 
 students =
-  0..350
-  |> Enum.map(fn i ->
-    %Student{
-      name: "Student #{i}",
-      school_id: Enum.random(schools).id
-    }
-  end)
-  |> Enum.map(&Repo.insert!/1)
+  LifetownClinic.Factory.insert_list(350, :student, %{school: fn -> Enum.random(schools) end})
 
 # create a random amount of lessons for each student between 0 and 10. 
 # All should have the lesson number set to 1.
