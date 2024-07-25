@@ -168,11 +168,7 @@ defmodule LifetownClinic.ReportingTest do
   defp complete_lesson(student), do: complete_lesson(student, Timex.today())
 
   defp complete_lesson(student, date) do
-    student
-    |> Ecto.build_assoc(:lessons)
-    |> Lesson.changeset(%{completed_at: date})
-    |> Repo.insert!()
-
+    insert(:lesson, %{student: student, completed_at: date})
     student
   end
 end

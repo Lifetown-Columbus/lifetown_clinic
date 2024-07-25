@@ -21,7 +21,6 @@ defmodule LifetownClinic.StudentTest do
 
   test "It can find students updated today" do
     school = insert(:school)
-
     today = insert(:student, %{name: "Today", school: school})
 
     _yesterday =
