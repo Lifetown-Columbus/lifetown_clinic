@@ -1,18 +1,14 @@
 defmodule LifetownClinic.ReportingTest do
   use LifetownClinic.DataCase
+
   alias LifetownClinic.Schema.{Student, School, Lesson}
   alias LifetownClinic.Reporting
 
   setup do
     last_week = days_ago(7)
 
-    school =
-      %School{name: "AA Really Cool High School"}
-      |> Repo.insert!()
-
-    other_school =
-      %School{name: "BB Another Really Cool High School"}
-      |> Repo.insert!()
+    school = insert(:school, %{name: "AA Really Cool High School"})
+    other_school = insert(:school, %{name: "BB Another Really Cool High School"})
 
     school
     |> create_student("Bob")

@@ -24,6 +24,7 @@ defmodule LifetownClinic.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import LifetownClinic.DataCase
+      import LifetownClinic.Factory
     end
   end
 

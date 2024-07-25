@@ -50,7 +50,9 @@ defmodule LifetownClinic.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:timex, "~> 3.7"},
-      {:tz, "~> 0.26.1"}
+      {:tz, "~> 0.26.1"},
+      {:ex_machina, "~> 2.8.0", only: [:dev, :test]},
+      {:faker, "~> 0.18", only: [:dev, :test]}
     ]
   end
 

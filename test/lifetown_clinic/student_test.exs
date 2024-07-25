@@ -6,21 +6,22 @@ defmodule LifetownClinic.StudentTest do
   alias LifetownClinic.Repo
 
   test "It should create a student with a school and lessons" do
-    school =
-      %School{name: "Really Cool High School"}
-      |> Repo.insert!()
+    school = insert(:school, %{name: "Really Cool High School"})
 
     %Student{}
     |> Student.changeset(%{name: "BillyB", school_id: school.id})
     |> Repo.insert!()
 
     student = Repo.get_by(Student, name: "BillyB") |> Repo.preload(:school)
+
     assert student.name == "BillyB"
     assert student.school == school
   end
 
   test "It can save a student with a new school" do
-    %Student{name: "BillyB", school: %School{name: "Crazy Middle School"}}
+    school = insert(:school)
+
+    %Student{name: "BillyB", school: school}
     |> Repo.insert!()
 
     student =
@@ -28,13 +29,11 @@ defmodule LifetownClinic.StudentTest do
       |> Repo.get_by(name: "BillyB")
       |> Repo.preload(:school)
 
-    assert student.school.name == "Crazy Middle School"
+    assert student.school.name == school.name
   end
 
   test "It can find students updated today" do
-    school =
-      %School{name: "Really Cool High School"}
-      |> Repo.insert!()
+    school = insert(:school)
 
     today =
       %Student{}
@@ -53,11 +52,11 @@ defmodule LifetownClinic.StudentTest do
 
   test "It should find all students with a given name" do
     billy_1 =
-      %Student{name: "BillyB", school: %School{name: "Crazy Middle School"}}
+      %Student{name: "BillyB", school: build(:school)}
       |> Repo.insert!()
 
     billy_2 =
-      %Student{name: "BillyB", school: %School{name: "Nitro High School"}}
+      %Student{name: "BillyB", school: build(:school)}
       |> Repo.insert!()
 
     assert "BillyB"

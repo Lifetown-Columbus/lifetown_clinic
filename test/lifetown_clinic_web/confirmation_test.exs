@@ -16,7 +16,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
 
   test "it should lookup possible students when a new confirmation is created with a given name" do
     student =
-      %Student{name: "Billy", school: %School{name: "Nitro High School"}}
+      %Student{name: "Billy", school: build(:school)}
       |> Repo.insert!()
       |> Repo.preload(:lessons)
 
@@ -37,7 +37,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
 
   test "it should allow you to select an existing student" do
     student =
-      %Student{name: "Billy", school: %School{name: "Nitro High School"}}
+      %Student{name: "Billy", school: build(:school)}
       |> Repo.insert!()
       |> Repo.preload(:school)
       |> Repo.preload(:lessons)
