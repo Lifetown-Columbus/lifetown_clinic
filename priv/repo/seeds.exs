@@ -32,3 +32,9 @@ Enum.each(students, fn student ->
     end
   })
 end)
+
+# generate some "new" students without lessons
+schools
+|> Enum.each(fn school ->
+  LifetownClinic.Factory.insert(:student, %{school: school})
+end)
