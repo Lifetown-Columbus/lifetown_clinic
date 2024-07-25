@@ -61,6 +61,32 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
+  def add_lesson(changeset) do
+    existing =
+      changeset
+      |> Ecto.Changeset.get_field(:lessons)
+
+    Ecto.Changeset.put_assoc(
+      changeset,
+      :lessons,
+      existing ++ [%{completed_at: Timex.now() |> Timex.to_date()}]
+    )
+  end
+
+  def remove_lesson(changeset, index) do
+    existing = Ecto.Changeset.get_field(changeset, :lessons)
+    {to_delete, rest} = List.pop_at(existing, index)
+
+    new_lessons =
+      if Ecto.Changeset.change(to_delete).data.id do
+        List.replace_at(existing, index, Ecto.Changeset.change(to_delete, delete: true))
+      else
+        rest
+      end
+
+    Ecto.Changeset.put_assoc(changeset, :lessons, new_lessons)
+  end
+
   @doc false
   def changeset(student, attrs \\ %{}) do
     student

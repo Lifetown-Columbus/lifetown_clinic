@@ -66,28 +66,21 @@ defmodule LifetownClinic.StudentTest do
            |> Repo.preload(:school) == [billy_1, billy_2]
   end
 
-  # TODO create students with lessons?
-  # test "It can only have 6 lessons" do
-  #   {:ok, student} =
-  #     %Student{}
-  #     |> Student.changeset(%{
-  #       name: "Bob",
-  #       school: %{name: "some school"},
-  #       lessons: [%{}, %{}, %{}, %{}, %{}, %{}]
-  #     })
-  #     |> Repo.insert!()
-
-  #   assert Enum.count(student.lessons) == 6
-
-  #   {:error, changeset} =
-  #     %Student{}
-  #     |> Student.changeset(%{
-  #       name: "Bob",
-  #       school: %{name: "some school"},
-  #       lessons: [%{}, %{}, %{}, %{}, %{}, %{}, %{}]
-  #     })
-  #     |> Repo.insert()
-
-  #   refute changeset.valid?
-  # end
+  test "It can get students by school and current lesson" do
+    # current lesson is defined by the max lesson number completed
+    #
+    # school =
+    #   %School{name: "Really Cool High School"}
+    #   |> Repo.insert!()
+    #
+    # billy =
+    #   %Student{}
+    #   |> Student.changeset(%{name: "Billy", school_id: school.id})
+    #   |> Repo.insert!(force: true)
+    #
+    # bobby =
+    #   %Student{}
+    #   |> Student.changeset(%{name: "Bobby", school_id: school.id})
+    #   |> Repo.insert!(force: true)
+  end
 end

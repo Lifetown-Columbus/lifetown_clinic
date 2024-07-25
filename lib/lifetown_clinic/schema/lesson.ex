@@ -13,8 +13,7 @@ defmodule LifetownClinic.Schema.Lesson do
   end
 
   @doc false
-  def changeset(lesson, attrs = %{"delete" => "true"}) do
-    IO.inspect(attrs)
+  def changeset(lesson, _attrs = %{"delete" => "true"}) do
     %{Ecto.Changeset.change(lesson, delete: true) | action: :delete}
   end
 
