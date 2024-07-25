@@ -7,11 +7,11 @@ defmodule LifetownClinic.ReportingTest do
     last_week = days_ago(7)
 
     school =
-      %School{name: "Really Cool High School"}
+      %School{name: "AA Really Cool High School"}
       |> Repo.insert!()
 
     other_school =
-      %School{name: "Another Really Cool High School"}
+      %School{name: "BB Another Really Cool High School"}
       |> Repo.insert!()
 
     school
@@ -78,7 +78,7 @@ defmodule LifetownClinic.ReportingTest do
     assert 2 == Repo.one(Reporting.lesson_count(nil, last_week))
   end
 
-  test "It should return student attendance per school", %{
+  test "It should return student attendance per school in alphabetical order", %{
     school: school,
     other_school: other_school
   } do
