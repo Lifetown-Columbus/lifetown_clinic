@@ -6,6 +6,7 @@ defmodule LifetownClinic.Students do
   def save_student(student, params) do
     student
     |> Student.changeset(params)
+    # force true so timestamps are updated
     |> Repo.insert_or_update(force: true)
   end
 
