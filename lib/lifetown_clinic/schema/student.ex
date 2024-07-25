@@ -62,9 +62,7 @@ defmodule LifetownClinic.Schema.Student do
   end
 
   def add_lesson(changeset) do
-    existing =
-      changeset
-      |> Ecto.Changeset.get_field(:lessons)
+    existing = Ecto.Changeset.get_field(changeset, :lessons)
 
     Ecto.Changeset.put_assoc(
       changeset,

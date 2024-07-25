@@ -31,7 +31,14 @@ defmodule LifetownClinic.Students do
     |> Repo.preload(lessons: from(l in Lesson, order_by: [asc: l.completed_at]))
   end
 
-  def add_lesson(changeset), do: Student.add_lesson(changeset)
+  def search(query) do
+    query
+    |> Student.search()
+    |> Repo.all()
+    |> Repo.preload(:school)
+    |> Repo.preload(lessons: from(l in Lesson, order_by: [asc: l.completed_at]))
+  end
 
+  def add_lesson(changeset), do: Student.add_lesson(changeset)
   def remove_lesson(changeset, index), do: Student.remove_lesson(changeset, index)
 end
