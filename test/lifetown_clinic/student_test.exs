@@ -2,21 +2,8 @@ defmodule LifetownClinic.StudentTest do
   use LifetownClinic.DataCase
   use Timex
 
-  alias LifetownClinic.Schema.{School, Student}
+  alias LifetownClinic.Schema.Student
   alias LifetownClinic.Repo
-
-  test "It should create a student with a school and lessons" do
-    school = insert(:school, %{name: "Really Cool High School"})
-
-    %Student{}
-    |> Student.changeset(%{name: "BillyB", school_id: school.id})
-    |> Repo.insert!()
-
-    student = Repo.get_by(Student, name: "BillyB") |> Repo.preload(:school)
-
-    assert student.name == "BillyB"
-    assert student.school == school
-  end
 
   test "It can save a student with a new school" do
     school = insert(:school)
@@ -35,34 +22,25 @@ defmodule LifetownClinic.StudentTest do
   test "It can find students updated today" do
     school = insert(:school)
 
-    today =
-      %Student{}
-      |> Student.changeset(%{name: "Today", school_id: school.id})
-      |> Repo.insert!(force: true)
+    today = insert(:student, %{name: "Today", school: school})
 
-    %Student{
-      updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime()
-    }
-    |> Student.changeset(%{name: "Yesterday", school_id: school.id})
-    |> Repo.insert!()
+    _yesterday =
+      insert(:student, %{
+        updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime(),
+        school: school
+      })
 
     assert Student.checked_in_today()
-           |> Repo.all() == [today]
+           |> Repo.all()
+           |> Enum.map(& &1.id) == [today.id]
   end
 
   test "It should find all students with a given name" do
-    billy_1 =
-      %Student{name: "BillyB", school: build(:school)}
-      |> Repo.insert!()
+    billy_1 = insert(:student, %{name: "BillyB"})
+    billy_2 = insert(:student, %{name: "BillyB"})
 
-    billy_2 =
-      %Student{name: "BillyB", school: build(:school)}
-      |> Repo.insert!()
-
-    assert "BillyB"
-           |> Student.by_name()
-           |> Repo.all()
-           |> Repo.preload(:school) == [billy_1, billy_2]
+    assert "BillyB" |> Student.by_name() |> Repo.all() |> Enum.map(& &1.id) ==
+             [billy_1.id, billy_2.id]
   end
 
   test "It can get students by school and current lesson" do

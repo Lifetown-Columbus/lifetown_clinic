@@ -1,7 +1,7 @@
 defmodule LifetownClinic.ReportingTest do
   use LifetownClinic.DataCase
 
-  alias LifetownClinic.Schema.{Student, School, Lesson}
+  alias LifetownClinic.Schema.Lesson
   alias LifetownClinic.Reporting
 
   setup do
@@ -162,9 +162,7 @@ defmodule LifetownClinic.ReportingTest do
   end
 
   defp create_student(school, name) do
-    %Student{}
-    |> Student.changeset(%{name: name, school_id: school.id})
-    |> Repo.insert!()
+    insert(:student, %{name: name, school: school})
   end
 
   defp complete_lesson(student), do: complete_lesson(student, Timex.today())

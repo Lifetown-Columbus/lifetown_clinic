@@ -3,7 +3,6 @@ defmodule LifetownClinicWeb.ConfirmationTest do
 
   alias LifetownClinicWeb.Confirmation
   alias LifetownClinic.Repo
-  alias LifetownClinic.Schema.School
   alias LifetownClinic.Schema.Student
 
   test "it should create a new confirmation" do
@@ -15,10 +14,7 @@ defmodule LifetownClinicWeb.ConfirmationTest do
   end
 
   test "it should lookup possible students when a new confirmation is created with a given name" do
-    student =
-      %Student{name: "Billy", school: build(:school)}
-      |> Repo.insert!()
-      |> Repo.preload(:lessons)
+    student = insert(:student, %{name: "Billy"})
 
     result = Confirmation.new("abc123", "Billy")
     assert result.name == "Billy"
