@@ -78,6 +78,21 @@ defmodule LifetownClinic.ReportingTest do
     assert 2 == Repo.one(Reporting.lesson_count(nil, last_week))
   end
 
+  test "It should return the lessons completed for a given date range" do
+    last_week = days_ago(7)
+    last_month = days_ago(30)
+    yesterday = days_ago(1)
+    today = Timex.today()
+
+    assert 4 == Enum.count(Repo.all(Reporting.lessons_completed(nil, nil)))
+    assert 2 == Enum.count(Repo.all(Reporting.lessons_completed(yesterday, today)))
+    assert 2 == Enum.count(Repo.all(Reporting.lessons_completed(last_month, last_week)))
+    assert 2 == Enum.count(Repo.all(Reporting.lessons_completed(nil, last_week)))
+
+    result = Repo.all(Reporting.lessons_completed(nil, nil))
+    assert Enum.all?(result, fn l -> %Lesson{} = l end)
+  end
+
   test "It should return student attendance per school in alphabetical order", %{
     school: school,
     other_school: other_school
