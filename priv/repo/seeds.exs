@@ -11,9 +11,6 @@
 # and so on) as they will fail if something goes wrong.
 Code.require_file("test/support/factory.ex")
 
-alias LifetownClinic.Repo
-alias LifetownClinic.Schema.{Lesson}
-
 {:ok, _} = Application.ensure_all_started(:ex_machina)
 Faker.start()
 
@@ -25,16 +22,13 @@ students =
 # create a random amount of lessons for each student between 0 and 10. 
 # All should have the lesson number set to 1.
 # All dates should be within the same year.
-students
-|> Enum.map(fn student ->
-  0..:rand.uniform(10)
-  |> Enum.map(fn _ ->
-    %Lesson{
-      student_id: student.id,
-      number: 1,
-      completed_at: Timex.now() |> Timex.shift(days: -Enum.random(0..365)) |> Timex.to_date()
-    }
-  end)
+Enum.each(students, fn student ->
+  LifetownClinic.Factory.insert_list(:rand.uniform(10), :lesson, %{
+    student: student,
+    completed_at: fn ->
+      Timex.now()
+      |> Timex.shift(days: -Enum.random(0..365))
+      |> Timex.to_date()
+    end
+  })
 end)
-|> List.flatten()
-|> Enum.map(&Repo.insert!/1)
