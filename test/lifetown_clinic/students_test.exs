@@ -5,7 +5,7 @@ defmodule LifetownClinic.StudentsTest do
 
   describe "save_student/2" do
     setup do
-      yesterday = Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime()
+      yesterday = Timex.to_naive_datetime(yesterday())
       %{student: insert(:student, %{updated_at: yesterday})}
     end
 
@@ -35,7 +35,7 @@ defmodule LifetownClinic.StudentsTest do
 
       _yesterday =
         insert(:student, %{
-          updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime(),
+          updated_at: Timex.to_naive_datetime(yesterday()),
           school: school
         })
 
