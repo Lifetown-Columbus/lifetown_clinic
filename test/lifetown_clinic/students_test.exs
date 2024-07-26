@@ -2,6 +2,7 @@ defmodule LifetownClinic.StudentsTest do
   use LifetownClinic.DataCase, async: true
 
   alias LifetownClinic.Students
+  alias LifetownClinic.Schema.Student
 
   describe "save_student/2" do
     setup do
@@ -123,11 +124,35 @@ defmodule LifetownClinic.StudentsTest do
     end
   end
 
-  defp it_includes_the_school(student, under_test) do
-    lessons =
-      insert_list(2, :lesson, %{student: student})
-      |> Enum.map(&Ecto.reset_fields(&1, [:school, :student]))
+  describe "add_lesson/1" do
+    test "it can add a new lesson" do
+      changeset = insert(:student) |> Student.changeset(%{})
 
+      result = Students.add_lesson(changeset) |> Repo.insert_or_update!()
+      [new_lesson] = result.lessons
+
+      assert new_lesson.number == 1
+    end
+
+    test "it can add a new lesson to the existing" do
+      student = insert(:student)
+      existing_lesson = insert(:lesson, %{student: student}) |> Ecto.reset_fields([:student])
+
+      changeset =
+        student
+        |> Repo.reload!()
+        |> Repo.preload(:lessons)
+        |> Student.changeset(%{})
+
+      result = Students.add_lesson(changeset) |> Repo.insert_or_update!()
+      lessons = result.lessons
+
+      assert Enum.count(lessons) == 2
+      assert Enum.member?(lessons, existing_lesson)
+    end
+  end
+
+  defp it_includes_the_school(student, under_test) do
     [result] = under_test.()
 
     assert result.school == student.school
