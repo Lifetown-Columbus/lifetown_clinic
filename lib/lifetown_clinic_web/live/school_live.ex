@@ -105,7 +105,7 @@ defmodule LifetownClinicWeb.SchoolLive do
   end
 
   def handle_event("select_student", %{"id" => id}, socket) do
-    student = Students.get_with_lessons(id)
+    student = Students.get(id)
     {:noreply, assign(socket, :selected_student, student)}
   end
 

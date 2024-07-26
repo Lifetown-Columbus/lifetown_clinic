@@ -12,4 +12,6 @@ defmodule LifetownClinic.Helpers do
   def last_month, do: days_ago(30)
   def yesterday, do: days_ago(1)
   def today, do: Timex.today()
+
+  def to_naive_dt(date), do: Timex.to_naive_datetime(date)
 end

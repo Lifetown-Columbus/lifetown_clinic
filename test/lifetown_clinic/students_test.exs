@@ -5,7 +5,7 @@ defmodule LifetownClinic.StudentsTest do
 
   describe "save_student/2" do
     setup do
-      yesterday = Timex.to_naive_datetime(yesterday())
+      yesterday = to_naive_dt(yesterday())
       %{student: insert(:student, %{updated_at: yesterday})}
     end
 
@@ -30,33 +30,67 @@ defmodule LifetownClinic.StudentsTest do
 
   describe "checked_in_today/0" do
     test "It can find students updated today" do
-      school = insert(:school)
-      today = insert(:student, %{name: "Today", school: school})
+      checked_in_today = insert(:student)
 
-      _yesterday =
-        insert(:student, %{
-          updated_at: Timex.to_naive_datetime(yesterday()),
-          school: school
-        })
+      _checked_in_yesterday =
+        insert(:student, %{updated_at: to_naive_dt(yesterday())})
 
-      assert Students.checked_in_today() |> Enum.map(& &1.id) == [today.id]
+      [result] = Students.checked_in_today()
+      assert result.id == checked_in_today.id
+    end
+
+    test "It includes lessons in order" do
+      it_includes_lessons_in_order(insert(:student), &Students.checked_in_today/0)
     end
 
     test "It includes schools and lessons" do
-      school = insert(:school)
-      student = insert(:student, %{name: "Today", school: school})
+      it_includes_the_school(insert(:student), &Students.checked_in_today/0)
+    end
+  end
 
-      lessons =
-        insert_list(2, :lesson, %{student: student})
-        |> Enum.map(&Ecto.reset_fields(&1, [:school, :student]))
-
-      [result] = Students.checked_in_today()
-      assert result.school == school
-
-      assert contains_all?(result.lessons, lessons)
+  describe "get/1" do
+    test "It gets the student" do
+      student = insert(:student)
+      result = Students.get(student.id)
+      assert result == student
     end
 
-    test "It includes lessons in the order they were completed" do
+    test "It includes the school" do
+      student = insert(:student)
+      it_includes_the_school(student, fn -> [Students.get(student.id)] end)
     end
+
+    test "It includes the lessons in order" do
+      student = insert(:student)
+      it_includes_lessons_in_order(student, fn -> [Students.get(student.id)] end)
+    end
+  end
+
+  defp it_includes_the_school(student, under_test) do
+    lessons =
+      insert_list(2, :lesson, %{student: student})
+      |> Enum.map(&Ecto.reset_fields(&1, [:school, :student]))
+
+    [result] = under_test.()
+
+    assert result.school == student.school
+  end
+
+  defp it_includes_lessons_in_order(student, under_test) do
+    first_lesson =
+      insert(:lesson, %{student: student, completed_at: to_naive_dt(last_week())})
+      |> Ecto.reset_fields([:student])
+
+    second_lesson =
+      insert(:lesson, %{student: student, completed_at: to_naive_dt(yesterday())})
+      |> Ecto.reset_fields([:student])
+
+    third_lesson =
+      insert(:lesson, %{student: student, completed_at: to_naive_dt(today())})
+      |> Ecto.reset_fields([:student])
+
+    [result] = under_test.()
+
+    assert result.lessons == [first_lesson, second_lesson, third_lesson]
   end
 end

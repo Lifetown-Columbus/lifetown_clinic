@@ -23,7 +23,7 @@ defmodule LifetownClinicWeb.Confirmation do
   end
 
   def select_student(confirmation, id) do
-    student = Students.get_with_lessons(id)
+    student = Students.get(id)
 
     confirmation
     |> Map.put(:student, student)
