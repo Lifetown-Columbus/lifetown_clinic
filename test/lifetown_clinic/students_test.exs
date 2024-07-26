@@ -139,9 +139,8 @@ defmodule LifetownClinic.StudentsTest do
       existing_lesson = insert(:lesson, %{student: student}) |> Ecto.reset_fields([:student])
 
       changeset =
-        student
-        |> Repo.reload!()
-        |> Repo.preload(:lessons)
+        student.id
+        |> Students.get()
         |> Student.changeset(%{})
 
       result = Students.add_lesson(changeset) |> Repo.insert_or_update!()
@@ -149,6 +148,23 @@ defmodule LifetownClinic.StudentsTest do
 
       assert Enum.count(lessons) == 2
       assert Enum.member?(lessons, existing_lesson)
+    end
+  end
+
+  describe "remove_lesson/2" do
+    test "it can remove a lesson" do
+      student = insert(:student)
+
+      insert(:lesson, %{student: student})
+
+      [result] =
+        Students.get(student.id)
+        |> Student.changeset(%{})
+        |> Students.remove_lesson(0)
+        |> Ecto.Changeset.get_field(:lessons)
+
+      # marks it as delete true so that when used with a Phoenix Form it will be deleted
+      assert result.delete
     end
   end
 
