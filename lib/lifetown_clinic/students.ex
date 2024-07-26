@@ -22,7 +22,7 @@ defmodule LifetownClinic.Students do
     |> with_associations()
   end
 
-  def by_name_with_lessons(name) do
+  def by_name(name) do
     name
     |> Student.by_name()
     |> Repo.all()

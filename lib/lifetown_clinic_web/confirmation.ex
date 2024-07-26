@@ -5,7 +5,7 @@ defmodule LifetownClinicWeb.Confirmation do
   alias LifetownClinic.Schema.Student
 
   def new(id, name) do
-    possible_students = Students.by_name_with_lessons(name)
+    possible_students = Students.by_name(name)
 
     %__MODULE__{
       id: id,

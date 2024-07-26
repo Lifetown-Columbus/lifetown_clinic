@@ -29,7 +29,7 @@ defmodule LifetownClinic.StudentsTest do
   end
 
   describe "checked_in_today/0" do
-    test "It can find students updated today" do
+    test "it can find students updated today" do
       checked_in_today = insert(:student)
 
       _checked_in_yesterday =
@@ -39,30 +39,87 @@ defmodule LifetownClinic.StudentsTest do
       assert result.id == checked_in_today.id
     end
 
-    test "It includes lessons in order" do
+    test "it includes lessons in order" do
       it_includes_lessons_in_order(insert(:student), &Students.checked_in_today/0)
     end
 
-    test "It includes schools and lessons" do
+    test "it includes schools and lessons" do
       it_includes_the_school(insert(:student), &Students.checked_in_today/0)
     end
   end
 
   describe "get/1" do
-    test "It gets the student" do
+    test "it gets the student" do
       student = insert(:student)
       result = Students.get(student.id)
       assert result == student
     end
 
-    test "It includes the school" do
+    test "it includes the school" do
       student = insert(:student)
       it_includes_the_school(student, fn -> [Students.get(student.id)] end)
     end
 
-    test "It includes the lessons in order" do
+    test "it includes the lessons in order" do
       student = insert(:student)
       it_includes_lessons_in_order(student, fn -> [Students.get(student.id)] end)
+    end
+  end
+
+  describe "by_name/1" do
+    test "it can find by full name" do
+      student = insert(:student)
+
+      [result] = Students.by_name(student.name)
+
+      assert result == student
+    end
+
+    test "its case insensitive" do
+      student = insert(:student, %{name: "BOBBY"})
+
+      [result] = Students.by_name("bobby")
+
+      assert result == student
+    end
+
+    test "it includes the school" do
+      student = insert(:student)
+      it_includes_the_school(student, fn -> Students.by_name(student.name) end)
+    end
+
+    test "it includes the lessons in order" do
+      student = insert(:student)
+      it_includes_lessons_in_order(student, fn -> Students.by_name(student.name) end)
+    end
+  end
+
+  describe "search/1" do
+    test "it can find by full name" do
+      student = insert(:student)
+
+      [result] = Students.search(student.name)
+
+      assert result == student
+    end
+
+    test "can search by partial names" do
+      bobby = insert(:student, %{name: "BOBBY"})
+      bob = insert(:student, %{name: "bob"})
+
+      result = Students.search("bob")
+
+      assert contains_all?(result, [bobby, bob])
+    end
+
+    test "it includes the school" do
+      student = insert(:student)
+      it_includes_the_school(student, fn -> Students.search(student.name) end)
+    end
+
+    test "it includes the lessons in order" do
+      student = insert(:student)
+      it_includes_lessons_in_order(student, fn -> Students.search(student.name) end)
     end
   end
 
