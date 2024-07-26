@@ -25,6 +25,7 @@ defmodule LifetownClinic.DataCase do
       import Ecto.Query
       import LifetownClinic.DataCase
       import LifetownClinic.Factory
+      import LifetownClinic.Helpers
     end
   end
 

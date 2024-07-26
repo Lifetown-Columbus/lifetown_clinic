@@ -27,4 +27,36 @@ defmodule LifetownClinic.StudentsTest do
       assert Timex.day(result.updated_at) == Timex.today() |> Timex.day()
     end
   end
+
+  describe "checked_in_today/0" do
+    test "It can find students updated today" do
+      school = insert(:school)
+      today = insert(:student, %{name: "Today", school: school})
+
+      _yesterday =
+        insert(:student, %{
+          updated_at: Timex.today() |> Timex.shift(days: -1) |> Timex.to_naive_datetime(),
+          school: school
+        })
+
+      assert Students.checked_in_today() |> Enum.map(& &1.id) == [today.id]
+    end
+
+    test "It includes schools and lessons" do
+      school = insert(:school)
+      student = insert(:student, %{name: "Today", school: school})
+
+      lessons =
+        insert_list(2, :lesson, %{student: student})
+        |> Enum.map(&Ecto.reset_fields(&1, [:school, :student]))
+
+      [result] = Students.checked_in_today()
+      assert result.school == school
+
+      assert contains_all?(result.lessons, lessons)
+    end
+
+    test "It includes lessons in the order they were completed" do
+    end
+  end
 end

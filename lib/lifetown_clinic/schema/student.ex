@@ -15,7 +15,7 @@ defmodule LifetownClinic.Schema.Student do
     timestamps()
   end
 
-  # TODO this should check lessons in case something else changed
+  # TODO change this to use a new field called last_check_in
   def checked_in_today() do
     today = DateTime.to_date(Timex.local())
 
