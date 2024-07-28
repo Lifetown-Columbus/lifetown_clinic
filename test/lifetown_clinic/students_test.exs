@@ -168,15 +168,32 @@ defmodule LifetownClinic.StudentsTest do
     end
   end
 
-  # describe "get_by_current_lesson/2" do
-  #   test "it should return students by current lesson" do
-  #     school = insert(:school)
-  #     zeros = insert_list(2, :student, %{school: school})
-  #
-  #     result = Students.get_by_current_lesson(school.id, 0)
-  #     assert contains_all?(result, zeros)
-  #   end
-  # end
+  describe "by_current_lesson/1" do
+    test "it should return students mapped by current lesson" do
+      school = insert(:school)
+
+      zeros =
+        insert_list(2, :student, %{school: school})
+        |> Enum.map(&Ecto.reset_fields(&1, [:school, :lessons]))
+        |> IO.inspect()
+
+      two = insert(:student, %{school: school}) |> Ecto.reset_fields([:school, :lessons])
+      insert(:lesson, %{student: two, number: 1})
+      insert(:lesson, %{student: two, number: 2})
+
+      six = insert(:student, %{school: school}) |> Ecto.reset_fields([:school, :lessons])
+      insert(:lesson, %{student: six, number: 4})
+      insert(:lesson, %{student: six, number: 6})
+
+      _other_school = insert(:student)
+
+      result = Students.by_current_lesson(school.id)
+      assert Map.keys(result) == [0, 2, 6]
+      assert Map.get(result, 0) |> contains_all?(zeros)
+      assert Map.get(result, 2) == [two]
+      assert Map.get(result, 6) == [six]
+    end
+  end
 
   defp it_includes_the_school(student, under_test) do
     [result] = under_test.()

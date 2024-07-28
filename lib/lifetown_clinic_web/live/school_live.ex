@@ -28,12 +28,6 @@ defmodule LifetownClinicWeb.SchoolLive do
     |> assign(:deleting_student, nil)
   end
 
-  def lessons_string(lessons) do
-    lessons
-    |> Enum.map(fn l -> l.number end)
-    |> Enum.join(",")
-  end
-
   def handle_event("edit", _, socket) do
     form =
       socket.assigns.school
