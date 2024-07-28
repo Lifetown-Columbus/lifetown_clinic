@@ -168,6 +168,16 @@ defmodule LifetownClinic.StudentsTest do
     end
   end
 
+  # describe "get_by_current_lesson/2" do
+  #   test "it should return students by current lesson" do
+  #     school = insert(:school)
+  #     zeros = insert_list(2, :student, %{school: school})
+  #
+  #     result = Students.get_by_current_lesson(school.id, 0)
+  #     assert contains_all?(result, zeros)
+  #   end
+  # end
+
   defp it_includes_the_school(student, under_test) do
     [result] = under_test.()
 

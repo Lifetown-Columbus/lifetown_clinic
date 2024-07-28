@@ -36,22 +36,14 @@ defmodule LifetownClinic.Schema.Student do
       select: s
   end
 
-  def by_lesson_number(school_id, 0) do
+  def by_current_lesson(school_id) do
     from s in __MODULE__,
+      left_join: l in Lesson,
+      on: l.student_id == s.id,
       where: s.school_id == ^school_id,
-      where: fragment("NOT EXISTS (SELECT 1 FROM lessons l WHERE l.student_id = ?)", s.id),
-      order_by: [asc: s.name],
-      select: s
-  end
-
-  def by_lesson_number(school_id, lesson_number) do
-    from s in __MODULE__,
-      where: s.school_id == ^school_id,
-      join: l in assoc(s, :lessons),
-      where: l.number == ^lesson_number,
-      distinct: true,
-      order_by: [asc: s.name],
-      select: s
+      group_by: s.id,
+      select: %{student: s, current_lesson_number: coalesce(max(l.number), 0)},
+      order_by: [asc: coalesce(max(l.number), 0)]
   end
 
   def search(text) do
