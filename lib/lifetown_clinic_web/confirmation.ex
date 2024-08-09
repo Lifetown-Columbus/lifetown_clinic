@@ -5,7 +5,7 @@ defmodule LifetownClinicWeb.Confirmation do
   alias LifetownClinic.Schema.Student
 
   def new(id, name) do
-    possible_students = Students.by_name_with_lessons(name)
+    possible_students = Students.by_name(name)
 
     %__MODULE__{
       id: id,
@@ -23,7 +23,7 @@ defmodule LifetownClinicWeb.Confirmation do
   end
 
   def select_student(confirmation, id) do
-    student = Students.get_with_lessons(id)
+    student = Students.get(id)
 
     confirmation
     |> Map.put(:student, student)

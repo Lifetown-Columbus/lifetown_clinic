@@ -42,7 +42,7 @@ defmodule LifetownClinic.Reporting do
       where:
         l.completed_at >= ^start_date and
           l.completed_at <= ^end_date,
-      select: count(l.id, :distinct)
+      select: count(l.id)
   end
 
   def lessons_completed(nil, nil), do: lessons_completed(epoch(), today())
@@ -54,7 +54,6 @@ defmodule LifetownClinic.Reporting do
       where:
         l.completed_at >= ^start_date and
           l.completed_at <= ^end_date,
-      distinct: [l.number, l.student_id],
       select: l
   end
 
@@ -72,6 +71,7 @@ defmodule LifetownClinic.Reporting do
         l.completed_at >= ^start_date and
           l.completed_at <= ^end_date,
       group_by: [sc.id],
+      order_by: sc.name,
       select: %{school: sc, attendance: count(st.id, :distinct)}
   end
 

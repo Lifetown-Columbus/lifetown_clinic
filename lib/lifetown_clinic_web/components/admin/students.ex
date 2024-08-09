@@ -2,6 +2,7 @@ defmodule LifetownClinicWeb.Admin.Students do
   use LifetownClinicWeb, :live_component
 
   alias LifetownClinic.Schema.Student
+  alias LifetownClinic.Students
   alias LifetownClinic.Repo
 
   def update(assigns, socket) do
@@ -25,11 +26,7 @@ defmodule LifetownClinicWeb.Admin.Students do
   end
 
   def handle_event("find-student", %{"query" => query}, socket) do
-    students =
-      query
-      |> Student.search()
-      |> Repo.all()
-      |> Repo.preload(:school)
+    students = Students.search(query)
 
     {:noreply, assign(socket, :students, students)}
   end

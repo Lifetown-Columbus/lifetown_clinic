@@ -20,16 +20,20 @@
     <div class="panel">
       <table>
         <tr>
-          <th>Lesson Completed</th>
+          <th>Current Lesson</th>
           <th>Student</th>
         </tr>
         <%= for i <- 1..6 do %> 
           <tr>
             <td><%= i %></td>
             <td>
+            <%= if Map.has_key?(@students_by_progress, i) do %>
               <div :for={student <- Map.get(@students_by_progress, i)}>
                 <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
               </div>
+            <% else %>
+              <div></div>
+            <% end %>
             </td>
           </tr>
         <% end %>

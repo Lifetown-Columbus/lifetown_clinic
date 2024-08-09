@@ -1,9 +1,9 @@
 defmodule LifetownClinicWeb.SchoolLive do
-  alias LifetownClinic.Students
   use LifetownClinicWeb, :live_view
 
   alias LifetownClinic.Schema.School
   alias LifetownClinic.Schema.Student
+  alias LifetownClinic.Students
   alias LifetownClinic.Repo
 
   def mount(%{"id" => id}, _, socket) do
@@ -16,8 +16,7 @@ defmodule LifetownClinicWeb.SchoolLive do
       |> Repo.get(id)
       |> Repo.preload(students: [:lessons])
 
-    progress =
-      Enum.reduce(0..6, %{}, fn i, acc -> Map.put(acc, i, students_by_progress(school.id, i)) end)
+    progress = Students.by_current_lesson(id)
 
     socket
     |> assign(:school, school)
@@ -27,17 +26,6 @@ defmodule LifetownClinicWeb.SchoolLive do
     |> assign(:students_by_progress, progress)
     |> assign(:selected_student, nil)
     |> assign(:deleting_student, nil)
-  end
-
-  defp students_by_progress(school_id, lesson_number) do
-    Student.by_lesson_number(school_id, lesson_number)
-    |> Repo.all()
-  end
-
-  def lessons_string(lessons) do
-    lessons
-    |> Enum.map(fn l -> l.number end)
-    |> Enum.join(",")
   end
 
   def handle_event("edit", _, socket) do
@@ -105,7 +93,7 @@ defmodule LifetownClinicWeb.SchoolLive do
   end
 
   def handle_event("select_student", %{"id" => id}, socket) do
-    student = Students.get_with_lessons(id)
+    student = Students.get(id)
     {:noreply, assign(socket, :selected_student, student)}
   end
 

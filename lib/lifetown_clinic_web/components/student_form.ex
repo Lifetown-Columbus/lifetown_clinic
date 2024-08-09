@@ -31,18 +31,9 @@ defmodule LifetownClinicWeb.StudentForm do
   def handle_event("add_lesson", _, socket) do
     socket =
       update(socket, :form, fn %{source: changeset} ->
-        existing =
-          changeset
-          |> Ecto.Changeset.get_field(:lessons)
-
-        changeset =
-          Ecto.Changeset.put_assoc(
-            changeset,
-            :lessons,
-            existing ++ [%{completed_at: Timex.now() |> Timex.to_date()}]
-          )
-
-        to_form(changeset)
+        changeset
+        |> Students.add_lesson()
+        |> to_form()
       end)
 
     {:noreply, socket}
@@ -53,18 +44,8 @@ defmodule LifetownClinicWeb.StudentForm do
 
     socket =
       update(socket, :form, fn %{source: changeset} ->
-        existing = Ecto.Changeset.get_field(changeset, :lessons)
-        {to_delete, rest} = List.pop_at(existing, index)
-
-        new_lessons =
-          if Ecto.Changeset.change(to_delete).data.id do
-            List.replace_at(existing, index, Ecto.Changeset.change(to_delete, delete: true))
-          else
-            rest
-          end
-
         changeset
-        |> Ecto.Changeset.put_assoc(:lessons, new_lessons)
+        |> Students.remove_lesson(index)
         |> to_form()
       end)
 
