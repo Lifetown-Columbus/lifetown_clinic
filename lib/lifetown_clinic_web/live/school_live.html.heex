@@ -41,7 +41,7 @@
     </div>
     <div class="panel">
       <h2>New Students</h2>
-      <div :for={student <- Map.get(@students_by_progress, 0)}>
+      <div :for={student <- Map.get(@students_by_progress, 0, [])}>
         <.link phx-click="select_student" phx-value-id={student.id} ><%= student.name %></.link>
       </div>
     </div>
